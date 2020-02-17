@@ -1,0 +1,59 @@
+.footerContainer{
+    @include flex(row, center, center);
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    .wrapper{
+        max-width: 1920px;
+        width: 100%;
+        .socialContainer{
+            @include flex(row, center,center);
+            margin-bottom: 2vh;
+            .iconWrap{
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background-color: #222;
+                color: white;
+                position: relative;
+                margin: 0 10px;
+                @include flex(row, center,center);
+            }
+        }
+        .linksContainer{
+            @include flex(row, space-around,center);
+            width: 100%;
+            margin: auto;
+            position: relative;
+            ul{
+                @include flex(row, center,center);
+                list-style: none;
+                width: 50%;
+                li{
+                    font-size: 12px;
+                    margin: 0 5%;
+                    @include flex(row, center, center);
+                    a{
+                        color: white;
+                    }
+                }
+            }
+            &::after{
+                content: '';
+                border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+                width: 80%;
+                position: absolute;
+                bottom: 0;
+            }
+        }
+        .copyrightsContainer{
+            font-size: 12px;
+            padding-top: 1vh;
+            padding-bottom: 2vh;
+            text-align: center;
+            color: white;
+            // background-color: rgba(255, 255, 255, 0.2);
+        }
+    }
+    
+}

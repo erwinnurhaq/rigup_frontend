@@ -1,0 +1,13 @@
+.loginContainer{
+    background-color: #222;
+    width: 100%;
+    min-height: 100vh;
+    padding-top: 70px;
+    padding-bottom: 150px;
+    @include flex(row, center, center);
+    .formWrapper{
+        h3{
+            color: white;
+        }
+    }
+}

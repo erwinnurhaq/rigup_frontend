@@ -1,0 +1,64 @@
+.homeContainer{
+    width: 100%;
+    height: 100vh;
+    @include flex(row, flex-end, center);
+    overflow: hidden;
+    // position: absolute;
+    .title{
+        display: flex;
+        height: 100%;
+        width: 25%;
+        position: absolute;
+        padding: 12.5vh 0;
+        p{
+            width: 45%;
+            font-size: 32px;
+            padding-left: 15%;
+            color: white;
+        }
+        a{
+            position: absolute;
+            right: 0;
+            writing-mode: vertical-lr;
+            color: white;
+            font-size: 17vh;
+            // -webkit-background-clip: text;
+            // -webkit-text-fill-color: transparent;
+            // background-image: url('../img/2.jpg');
+        }
+    }
+    .leftContainer{
+        background-image: url('../img/photo-1547751720-6b718b84699d.jpg');
+        background-attachment: fixed;
+        background-size: contain;
+        background-position: left;
+        height: 100%;
+        width: 25%;
+        @include flex(row, flex-end, center);
+        transition: 1s all ease;
+        cursor: pointer;
+        &.show{
+            width: 75%;
+            .title{
+                pointer-events: none;
+            }
+        }
+    }
+    .rightContainer{
+        background-image: url('../img/2.jpg');
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: right;
+        height: 100%;
+        width: 25%;
+        @include flex(row, flex-end, center);
+        transition: 1s all ease;
+        cursor: pointer;
+        &.show{
+            width: 75%;
+            .title{
+                pointer-events: none;
+            }
+        }
+    }
+}
