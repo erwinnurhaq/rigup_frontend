@@ -1,11 +1,23 @@
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
+import { withRouter, NavLink } from 'react-router-dom'
+import { connect } from 'react-redux'
 import { Button } from '@material-ui/core'
-import { withRouter } from 'react-router-dom'
+import Loading from './Loading'
+
+const Navbar_RightMenu = lazy(() => import('./Navbar_RightMenu'))
+
 
 class Navbar extends React.Component {
 
-    toLogin = () => {
-        this.props.history.push('/login')
+    toLogin = () => this.props.history.push('/login')
+
+    rightContainerRender = () => {
+        const { user, isLogin } = this.props.user
+        if (isLogin) {
+            return <Navbar_RightMenu user={user} />
+        } else {
+            return <Button className="btnLogin" variant="outlined" onClick={this.toLogin}>LOGIN</Button>
+        }
     }
 
     render() {
@@ -13,15 +25,17 @@ class Navbar extends React.Component {
             <div className="navContainer">
                 <div className="wrapper">
                     <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><a href="#">News</a></li>
-                        <li><a href="#">Special Offers</a></li>
+                        <li><NavLink to='/'>Home</NavLink></li>
+                        <li><NavLink to='/news'>News</NavLink></li>
+                        <li><NavLink to='/promo'>Special Offers</NavLink></li>
                     </ul>
                     <div className="logoContainer">
                         <p>RIG-Up!</p>
                     </div>
                     <div className="rightContainer">
-                        <Button className="btnLogin" variant="outlined" onClick={this.toLogin}>LOGIN</Button>
+                        <Suspense fallback={<Loading />}>
+                            {this.rightContainerRender()}
+                        </Suspense>
                     </div>
                 </div>
             </div>
@@ -29,4 +43,10 @@ class Navbar extends React.Component {
     }
 }
 
-export default withRouter(Navbar)
+const stateToProps = ({ user }) => {
+    return {
+        user
+    }
+}
+
+export default withRouter(connect(stateToProps)(Navbar))

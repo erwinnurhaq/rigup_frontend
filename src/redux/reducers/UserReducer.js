@@ -15,7 +15,7 @@ export default (state = initialState, action) => {
             console.log('error: ', action.payload)
             return {
                 ...state,
-                error: action.payload
+                error: action.payload.response.data.error
             }
         case 'USER_LOGIN':
             console.log('login success')
@@ -23,7 +23,8 @@ export default (state = initialState, action) => {
                 ...state,
                 user: action.payload.user,
                 token: action.payload.token,
-                isLogin: true
+                isLogin: true,
+                error: null
             }
         case 'USER_LOGOUT':
             console.log('logout success')

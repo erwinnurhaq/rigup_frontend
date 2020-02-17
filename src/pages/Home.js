@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 
 class Home extends React.Component {
 
@@ -15,6 +16,7 @@ class Home extends React.Component {
             <div className="homeContainer">
                 <div
                     className={`leftContainer ${this.state.clicked ? `show` : ''}`}
+                    onClick={() => this.props.history.push('/store')}
                 >
                     <div className="title" onMouseOver={this.onMouseOverSide}>
                         <p>Take me to</p>
@@ -24,6 +26,7 @@ class Home extends React.Component {
                 </div>
                 <div
                     className={`rightContainer ${this.state.clicked ? '' : `show`}`}
+                    onClick={() => this.props.history.push('/build')}
                 >
                     <div className="title" onMouseOver={this.onMouseOverSide}>
                         <p>I'm ready to</p>
@@ -36,4 +39,4 @@ class Home extends React.Component {
     }
 }
 
-export default Home
+export default withRouter(Home)
