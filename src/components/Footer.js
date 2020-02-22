@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 class Footer extends React.Component {
     render() {
@@ -14,14 +15,14 @@ class Footer extends React.Component {
                     </div>
                     <div className="linksContainer">
                         <ul>
-                            <li><a href="#">Features</a></li>
-                            <li><a href="#">Payment</a></li>
-                            <li><a href="#">Delivery</a></li>
+                            <li><Link to='/'>Features</Link></li>
+                            <li><Link to='/'>Payment</Link></li>
+                            <li><Link to='/'>Delivery</Link></li>
                         </ul>
                         <ul>
-                            <li><a href="#">About</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Support</a></li>
+                            <li><Link to='/'>About</Link></li>
+                            <li><Link to='/'>Privacy Policy</Link></li>
+                            <li><Link to='/'>Support</Link></li>
                         </ul>
                     </div>
                     <div className="copyrightsContainer">

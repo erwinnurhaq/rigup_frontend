@@ -51,3 +51,22 @@ export const userKeepLogin = () => {
         }
     }
 }
+
+export const register = (user) => {
+    return async dispatch => {
+        try {
+            const res = await axios.post(`${API_URL}/users`, user)
+            console.log(res.data)
+            localStorage.setItem('token', res.data.token)
+            dispatch({
+                type: 'USER_LOGIN',
+                payload: res.data
+            })
+        } catch (err) {
+            dispatch({
+                type: 'USER_ERROR',
+                payload: err
+            })
+        }
+    }
+}

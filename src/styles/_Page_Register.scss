@@ -1,0 +1,51 @@
+.registerContainer{
+    // background-color: #222;
+    width: 100%;
+    min-height: 100vh;
+    padding-top: 70px;
+    padding-bottom: 150px;
+    @include flex(row, center, center);
+    .formWrapper{
+        h3{
+            color: #222;
+        }
+        .formTitle{
+            font-size: 48px;
+            color: #222;
+        }
+        .formInput{
+            width: 500px;
+            div{
+                label{
+                    color: lightgray;
+                    font-weight: 300;
+                    font-size: 14px;
+                }
+                div{
+                    &::before{
+                        border-color:#222;
+                    }
+                    &::after{
+                        border-color:#222;
+                    }
+                    input{
+                        color: #222;
+                    }
+                }
+            }
+        }
+        .btnContainer{
+            button{
+                background-color: none;
+                color: #222;
+                font-weight: 300;
+                font-size: 14px;
+                width: 120px;
+                height: 40px;
+                &:hover{
+                    color: white;
+                  }
+            }
+        }
+    }
+}

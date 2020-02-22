@@ -2,8 +2,9 @@ import React, { Component, lazy, Suspense } from 'react'
 import { connect } from 'react-redux'
 
 import { userLogin } from '../redux/actions'
-import Loading from '../components/Loading'
 import { withRouter, Redirect } from 'react-router-dom'
+
+import Loading from '../components/Loading'
 const ModalWarning = lazy(() => import('../components/ModalWarning'))
 
 class Login extends Component {

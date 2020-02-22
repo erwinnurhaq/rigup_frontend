@@ -20,7 +20,7 @@ class Home extends React.Component {
                 >
                     <div className="title" onMouseOver={this.onMouseOverSide}>
                         <p>Take me to</p>
-                        <a href="#" id="left" >S T O R E</a>
+                        <div className="jumbo" >S T O R E</div>
                     </div>
 
                 </div>
@@ -30,7 +30,7 @@ class Home extends React.Component {
                 >
                     <div className="title" onMouseOver={this.onMouseOverSide}>
                         <p>I'm ready to</p>
-                        <a href="#" id="right" >B U I L D</a>
+                        <div className="jumbo" >B U I L D</div>
                     </div>
 
                 </div>

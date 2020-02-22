@@ -10,7 +10,9 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { userLogout } from '../redux/actions'
 import { connect } from 'react-redux';
 
-class Navbar_RightMenu extends Component {
+
+
+class NavbarRightMenu extends Component {
     state = {
         open: false
     }
@@ -36,7 +38,8 @@ class Navbar_RightMenu extends Component {
 
     renderListMenu = () => {
         const { open } = this.state
-        if (this.props.user.role_id === 1) {
+        console.log(this.props.user)
+        if (this.props.user.roleId === 1) {
             return (
                 <Paper>
                     <ClickAwayListener onClickAway={this.handleClose}>
@@ -110,4 +113,4 @@ class Navbar_RightMenu extends Component {
     }
 }
 
-export default withRouter(connect(null, { userLogout })(Navbar_RightMenu))
+export default withRouter(connect(null, { userLogout })(NavbarRightMenu))

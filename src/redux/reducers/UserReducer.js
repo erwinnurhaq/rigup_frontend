@@ -3,13 +3,10 @@ const initialState = {
     token: null,
     isLogin: false,
     error: null,
-    userTransactions: [],
+    userTransactions: []
 }
 
 export default (state = initialState, action) => {
-    console.log('>>> in user reducer')
-    console.log('last state: ', state)
-    console.log('action content: ', action)
     switch (action.type) {
         case 'USER_ERROR':
             console.log('error: ', action.payload)

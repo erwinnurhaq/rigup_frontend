@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Button } from '@material-ui/core'
 import Loading from './Loading'
 
-const Navbar_RightMenu = lazy(() => import('./Navbar_RightMenu'))
+const NavbarRightMenu = lazy(() => import('./NavbarRightMenu'))
 
 
 class Navbar extends React.Component {
@@ -14,7 +14,11 @@ class Navbar extends React.Component {
     rightContainerRender = () => {
         const { user, isLogin } = this.props.user
         if (isLogin) {
-            return <Navbar_RightMenu user={user} />
+            return (
+                <Suspense fallback={<Loading />}>
+                    <NavbarRightMenu user={user} />
+                </Suspense>
+            )
         } else {
             return <Button className="btnLogin" variant="outlined" onClick={this.toLogin}>LOGIN</Button>
         }
@@ -33,9 +37,7 @@ class Navbar extends React.Component {
                         <p>RIG-Up!</p>
                     </div>
                     <div className="rightContainer">
-                        <Suspense fallback={<Loading />}>
-                            {this.rightContainerRender()}
-                        </Suspense>
+                        {this.rightContainerRender()}
                     </div>
                 </div>
             </div>
