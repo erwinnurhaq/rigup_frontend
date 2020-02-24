@@ -5,7 +5,7 @@ import { Button } from '@material-ui/core'
 import { getMostParent, getProducts } from '../redux/actions'
 import Loading from '../components/Loading'
 const ModalAddProduct = lazy(() => import('../components/ModalAddProduct'))
-const FormAddProduct = lazy(() => import('../components/FormAddProduct'))
+const FormAddProduct = lazy(() => import('../components/forms/FormAddProduct'))
 
 const ManageProduct = () => {
     const dispatch = useDispatch()
@@ -13,7 +13,7 @@ const ManageProduct = () => {
     const products = useSelector(({ products }) => products)
 
     const initialState = {
-        selectedCat: 'Case',
+        selectedCat: 1,
         initialNumber: 0
     }
     const [state, setState] = useState(initialState)
@@ -21,7 +21,7 @@ const ManageProduct = () => {
 
     useEffect(() => {
         dispatch(getMostParent())
-        dispatch(getProducts('category', 'Case'))
+        dispatch(getProducts(state.selectedCat))
     }, [dispatch])
 
     const onCatTabClick = category => {

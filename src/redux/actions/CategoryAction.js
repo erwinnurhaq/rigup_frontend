@@ -1,10 +1,6 @@
 import axios from 'axios'
 import { API_URL } from '../../support/API_URL'
 
-const loading = () => {
-    return { type: 'CATEGORY_LOADING' }
-}
-
 const error = (err) => {
     let error = err.response ? err.response.data.error : 'Cannot connect to API'
     return {
@@ -13,10 +9,10 @@ const error = (err) => {
     }
 }
 
-export const getAllCategories = () => {
+export const getCategories = () => {
     return async dispatch => {
         try {
-            dispatch(loading())
+            dispatch({ type: 'CATEGORY_LOADING' })
             const res = await axios.get(`${API_URL}/categories`)
             console.log(res.data)
             dispatch({
@@ -32,7 +28,7 @@ export const getAllCategories = () => {
 export const getMostParent = () => {
     return async dispatch => {
         try {
-            dispatch(loading())
+            dispatch({ type: 'CATEGORY_LOADING' })
             const res = await axios.get(`${API_URL}/categories/mostparent`)
             console.log(res.data)
             dispatch({
@@ -48,7 +44,7 @@ export const getMostParent = () => {
 export const getMostChild = () => {
     return async dispatch => {
         try {
-            dispatch(loading())
+            dispatch({ type: 'CATEGORY_LOADING' })
             const res = await axios.get(`${API_URL}/categories/mostchild`)
             console.log(res.data)
             dispatch({
@@ -61,11 +57,29 @@ export const getMostChild = () => {
     }
 }
 
-export const addCategory = (body) => {
+export const getChild = parentId => {
     return async dispatch => {
         try {
-            dispatch(loading())
-            const res = await axios.post(`${API_URL}/categories`, body)
+            dispatch({ type: 'CATEGORY_LOADING' })
+            const res = await axios.get(`${API_URL}/categories/child/${parentId}`)
+            console.log(res.data)
+            dispatch({
+                type: 'CHILD_FETCH_SUCCESS',
+                payload: res.data
+            })
+        } catch (err) {
+            dispatch(error(err))
+        }
+    }
+}
+
+export const addCategory = ({ newCategory, newParentId }) => {
+    return async dispatch => {
+        try {
+            dispatch({ type: 'CATEGORY_LOADING' })
+            const res = await axios.post(`${API_URL}/categories`,
+                { category: newCategory, parentId: newParentId }
+            )
             console.log(res.data)
             dispatch(getAllCategories())
         } catch (err) {
@@ -74,11 +88,13 @@ export const addCategory = (body) => {
     }
 }
 
-export const editCategory = (id, body) => {
+export const editCategory = ({ categoryId, newCategory, newParentId }) => {
     return async dispatch => {
         try {
-            dispatch(loading())
-            const res = await axios.put(`${API_URL}/categories/${id}`, body)
+            dispatch({ type: 'CATEGORY_LOADING' })
+            const res = await axios.put(`${API_URL}/categories/${categoryId}`,
+                { category: newCategory, parentId: newParentId }
+            )
             console.log(res.data)
             dispatch(getAllCategories())
         } catch (err) {
@@ -87,11 +103,11 @@ export const editCategory = (id, body) => {
     }
 }
 
-export const deleteCategory = (id) => {
+export const deleteCategory = categoryId => {
     return async dispatch => {
         try {
-            dispatch(loading())
-            const res = await axios.delete(`${API_URL}/categories/${id}`)
+            dispatch({ type: 'CATEGORY_LOADING' })
+            const res = await axios.delete(`${API_URL}/categories/${categoryId}`)
             console.log(res.data)
             dispatch(getAllCategories())
         } catch (err) {

@@ -48,7 +48,8 @@ const Test3 = () => {
         if (productCat) {
             return productCat.map((i, index) => (
                 <tr key={index}>
-                    <td>{index + 1}</td>
+                    <td>{i.id}</td>
+                    <td>{i.brand}</td>
                     <td>{i.name}</td>
                     <td>{i.category}</td>
                     <td>
@@ -68,7 +69,7 @@ const Test3 = () => {
     const renderUncategorized = () => {
         if (uncategorized) {
             return uncategorized.map(i => (
-                <option key={i.id} value={i.id}>{i.name}</option>
+                <option key={i.id} value={i.id}>{i.brand} {i.name}</option>
             ))
         } else {
             return <Loading />
@@ -90,7 +91,8 @@ const Test3 = () => {
             <table>
                 <thead>
                     <tr>
-                        <td>Index</td>
+                        <td>id</td>
+                        <td>Brand</td>
                         <td>Product</td>
                         <td>Category</td>
                         <td>Option</td>
@@ -101,7 +103,7 @@ const Test3 = () => {
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td />
+                        <td colSpan='2' />
                         <td>
                             <select
                                 value={assign.productId}

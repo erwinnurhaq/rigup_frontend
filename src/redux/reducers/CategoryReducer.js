@@ -2,21 +2,25 @@ const initialState = {
     categories: null,
     mostParent: null,
     mostChild: null,
+    child: null,
     loading: true,
     error: null
 }
 
 export default (state = initialState, action) => {
     switch (action.type) {
+        case 'CATEGORY_LOADING':
+            return {
+                ...state,
+                loading: true
+            }
         case 'CATEGORY_ERROR':
-            console.log('error')
             return {
                 ...state,
                 error: action.payload,
                 loading: false
             }
         case 'CATEGORY_FETCH_SUCCESS':
-            console.log('category fetch success')
             return {
                 ...state,
                 categories: action.payload,
@@ -24,7 +28,6 @@ export default (state = initialState, action) => {
                 error: null
             }
         case 'MOSTPARENT_FETCH_SUCCESS':
-            console.log('most parent fetch success')
             return {
                 ...state,
                 mostParent: action.payload,
@@ -32,17 +35,18 @@ export default (state = initialState, action) => {
                 error: null
             }
         case 'MOSTCHILD_FETCH_SUCCESS':
-            console.log('most child fetch success')
             return {
                 ...state,
                 mostChild: action.payload,
                 loading: false,
                 error: null
             }
-        case 'CATEGORY_LOADING':
+        case 'CHILD_FETCH_SUCCESS':
             return {
                 ...state,
-                loading: true
+                child: action.payload,
+                loading: false,
+                error: null
             }
         default:
             return state

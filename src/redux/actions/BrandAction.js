@@ -9,13 +9,14 @@ const error = (err) => {
     }
 }
 
-export const getAllBrands = () => {
+export const getBrands = () => {
     return async dispatch => {
         try {
+            dispatch({ type: 'BRAND_LOADING' })
             const res = await axios.get(`${API_URL}/brands`)
             console.log(res.data)
             dispatch({
-                type: 'BRAND_FETCH_SUCCESS',
+                type: 'BRANDLIST_FETCH_SUCCESS',
                 payload: res.data
             })
         } catch (err) {
@@ -24,12 +25,11 @@ export const getAllBrands = () => {
     }
 }
 
-export const getBrandByCategory = categoryId => {
+export const getBrandByCategoryId = categoryId => {
     return async dispatch => {
         try {
-            const res = await axios.post(`${API_URL}/brands/brandcat`, null, {
-                params: { categoryId }
-            })
+            dispatch({ type: 'BRAND_LOADING' })
+            const res = await axios.get(`${API_URL}/brands/${categoryId}`)
             console.log(res.data)
             dispatch({
                 type: 'BRANDBYCATEGORY_FETCH_SUCCESS',
@@ -41,29 +41,46 @@ export const getBrandByCategory = categoryId => {
     }
 }
 
-export const getBrandCat = () => {
+export const addBrand = ({ newBrand }) => {
     return async dispatch => {
         try {
-            const res = await axios.get(`${API_URL}/brands/brandcat`)
+            dispatch({ type: 'BRAND_LOADING' })
+            const res = await axios.post(`${API_URL}/brands`,
+                { brand: newBrand }
+            )
             console.log(res.data)
-            dispatch({
-                type: 'BRANDCAT_FETCH_SUCCESS',
-                payload: res.data
-            })
+            dispatch(getBrands())
         } catch (err) {
             dispatch(error(err))
         }
     }
 }
 
-export const assignBrandCat = (body) => {
+export const editBrandById = ({ brandId, newBrand }) => {
     return async dispatch => {
         try {
-            const res = await axios.post(`${API_URL}/brands/assignbrandcat`, body)
+            dispatch({ type: 'BRAND_LOADING' })
+            const res = await axios.put(`${API_URL}/brands/${brandId}`,
+                { brand: newBrand }
+            )
             console.log(res.data)
-            dispatch(getBrandCat())
+            dispatch(getBrands())
         } catch (err) {
             dispatch(error(err))
         }
     }
 }
+
+export const deleteBrandById = ({ brandId }) => {
+    return async dispatch => {
+        try {
+            dispatch({ type: 'BRAND_LOADING' })
+            const res = await axios.delete(`${API_URL}/brands/${brandId}`)
+            console.log(res.data)
+            dispatch(getBrands())
+        } catch (err) {
+            dispatch(error(err))
+        }
+    }
+}
+

@@ -1,34 +1,25 @@
 const initialState = {
-    brandList: null,
-    brandByCategory: null,
+    brandCats: null,
     loading: false,
     error: null
 }
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case 'BRAND_LOADING':
+        case 'BRANDCAT_LOADING':
             return {
                 ...state,
                 loading: true
             }
-        case 'BRAND_ERROR':
+        case 'BRANDCAT_ERROR':
             return {
                 ...state,
                 loading: false,
                 error: action.payload
             }
-        case 'BRANDLIST_FETCH_SUCCESS':
+        case 'BRANDCAT_FETCH_SUCCESS':
             return {
-                ...state,
-                brandList: action.payload,
-                loading: false,
-                error: null
-            }
-        case 'BRANDBYCATEGORY_FETCH_SUCCESS':
-            return {
-                ...state,
-                brandByCategory: action.payload,
+                brandCats: action.payload,
                 loading: false,
                 error: null
             }
