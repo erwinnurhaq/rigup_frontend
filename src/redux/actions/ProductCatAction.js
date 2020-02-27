@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { API_URL } from '../../support/API_URL'
-import { getUncategorizedProducts } from '../actions'
+import { getUncategorizedProduct } from '../actions'
 
 const error = (err) => {
     let error = err.response ? err.response.data.error : 'Cannot connect to API'
@@ -35,7 +35,7 @@ export const assignProductCat = ({ productId, categoryId }) => {
             )
             console.log(res.data)
             dispatch(getProductCat())
-            dispatch(getUncategorizedProducts())
+            dispatch(getUncategorizedProduct())
         } catch (err) {
             dispatch(error(err))
         }
@@ -49,7 +49,7 @@ export const deleteAssignedProductCat = productId => {
             const res = await axios.delete(`${API_URL}/productcats/${productId}`)
             console.log(res.data)
             dispatch(getProductCat())
-            dispatch(getUncategorizedProducts())
+            dispatch(getUncategorizedProduct())
         } catch (err) {
             dispatch(error(err))
         }

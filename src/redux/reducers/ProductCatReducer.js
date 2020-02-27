@@ -1,5 +1,5 @@
 const initialState = {
-    productCat: null,
+    productCats: null,
     loading: true,
     error: null
 }
@@ -20,7 +20,7 @@ export default (state = initialState, action) => {
         case 'PRODUCTCAT_FETCH_SUCCESS':
             return {
                 ...state,
-                productCat: action.payload,
+                productCats: action.payload,
                 loading: false,
                 error: null
             }

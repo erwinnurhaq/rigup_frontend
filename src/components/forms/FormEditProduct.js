@@ -1,19 +1,20 @@
-import React, { useState, lazy, Suspense } from 'react'
+import React, { useState, lazy, Suspense, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 import { API_URL } from '../../support/API_URL'
 import { Select, MenuItem, DialogActions, Button, DialogContent } from '@material-ui/core'
 
+import FormProductData from './FormProductData'
 import Loading from '../Loading'
-import { getBrandByCategoryId, addProduct, getProductByCategoryId, selectCat } from '../../redux/actions'
+import { getBrandByCategoryId, editProductById, getProductByCategoryId, selectCat } from '../../redux/actions'
 
-const FormProductData = lazy(() => import('./FormProductData'))
 const ModalWarning = lazy(() => import('../ModalWarning'))
 
-function FormAddProduct({ limit, offset, mostParent, show, setShow }) {
+function FormEditProduct({ limit, offset, mostParent, show, setShow }) {
 
     const dispatch = useDispatch()
     const brandByCategory = useSelector(({ brands }) => brands.brandByCategory)
+    const productDetail = useSelector(({ products }) => products.productDetail)
 
     const initialState = {
         catList: [mostParent],
@@ -22,6 +23,34 @@ function FormAddProduct({ limit, offset, mostParent, show, setShow }) {
     }
     const [state, setState] = useState(initialState)
     const [showModal, setShowModal] = useState(false)
+
+    useEffect(() => {
+        setData()
+    }, [productDetail])
+
+    const setData = async () => {
+        if (productDetail) {
+            let categories = productDetail.categories.map(i => i.categoryId)
+            const catListAdd = await axios.get(`${API_URL}/categories/childtree`, {
+                params: { parentId: categories }
+            })
+            console.log('catlistadd', catListAdd)
+            await dispatch(getBrandByCategoryId(categories[0]))
+            setState({
+                catList: [mostParent, ...catListAdd.data],
+                newCategories: categories,
+                newProduct: {
+                    brandId: productDetail.brandId,
+                    name: productDetail.name,
+                    description: productDetail.description,
+                    weight: productDetail.weight,
+                    wattage: productDetail.wattage,
+                    price: productDetail.price,
+                    stock: productDetail.stock
+                }
+            })
+        }
+    }
 
     let { catList, newCategories, newProduct } = state
 
@@ -34,7 +63,7 @@ function FormAddProduct({ limit, offset, mostParent, show, setShow }) {
             if (catChild.data.length !== 0 || catList.length === 1) {
                 catList.splice(index + 1, catList.length - index - 1, catChild.data)
             }
-            newCategories.splice(index, newCategories.length - index - 1, val)
+            newCategories.splice(index, newCategories.length - index, val)
             setState({
                 ...state, catList, newCategories,
                 newProduct: { ...state.newProduct, brandId: 0 }
@@ -77,20 +106,17 @@ function FormAddProduct({ limit, offset, mostParent, show, setShow }) {
                 return setShowModal(!showModal)
             }
         }
-        let data = {
-            newProduct,
-            newCategories: newCategories.slice(0, newCategories.length - 1)
-        }
+        let data = { productId: productDetail.id, newProduct, newCategories }
         console.log(data)
-        await dispatch(addProduct(data))
+        await dispatch(editProductById(data))
         await dispatch(getProductByCategoryId(data.newCategories[0], limit, offset))
         await dispatch(selectCat(data.newCategories[0]))
         setState(initialState)
         setShow(!show)
     }
 
-    const renderSelectCategory = () => (
-        catList.map((category, index) => (
+    const renderSelectCategory = () =>
+        catList.length > 1 ? catList.map((category, index) => (
             <Select
                 key={index}
                 value={newCategories[index] ? newCategories[index] : 0}
@@ -101,30 +127,30 @@ function FormAddProduct({ limit, offset, mostParent, show, setShow }) {
                     <MenuItem key={i.id} value={i.id}>{i.category}</MenuItem>
                 ))}
             </Select>
-        ))
-    )
+        )) : null
+
+
+    console.log(state)
     return (
         <div>
             <DialogContent>
                 {renderSelectCategory()}
-                {newCategories[0] !== 0 ? (
+                {newCategories[0] !== 0 && productDetail ? (
                     <div>
                         <br />
-                        <Suspense fallback={<Loading />}>
-                            <FormProductData
-                                product={newProduct}
-                                brand={brandByCategory}
-                                onSelectBrand={onSelectBrand}
-                                onInputChange={onInputChange}
-                                onInputDescChange={onInputDescChange}
-                            />
-                        </Suspense>
+                        <FormProductData
+                            product={newProduct}
+                            brand={brandByCategory}
+                            onSelectBrand={onSelectBrand}
+                            onInputChange={onInputChange}
+                            onInputDescChange={onInputDescChange}
+                        />
                     </div>
-                ) : null}
+                ) : (<Loading />)}
             </DialogContent>
             <DialogActions>
                 <Button variant='text' onClick={() => setShow(!show)} >CANCEL</Button>
-                <Button color="secondary" onClick={onSaveProductClick} >SAVE</Button>
+                <Button color="secondary" onClick={onSaveProductClick} >EDIT &amp; SAVE</Button>
             </DialogActions>
             {showModal ? (
                 <Suspense fallback={<Loading />}>
@@ -139,5 +165,5 @@ function FormAddProduct({ limit, offset, mostParent, show, setShow }) {
     )
 }
 
-export default FormAddProduct
+export default FormEditProduct
 

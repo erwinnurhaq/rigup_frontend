@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import CKEditor from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 import {
-    getUncategorizedProducts,
     getMostChild,
-    assignProductCat,
+    getUncategorizedProduct,
     getProductCat,
+    assignProductCat,
     deleteAssignedProductCat
 } from '../redux/actions'
 import Loading from '../components/Loading'
@@ -20,13 +23,15 @@ const Test3 = () => {
     }
 
     const [assign, setAssign] = useState(initialAssign)
-    const productCat = useSelector(({ products }) => products.productCat)
+    const productCat = useSelector(({ productCats }) => productCats.productCats)
     const uncategorized = useSelector(({ products }) => products.uncategorizedProductList)
     const mostChild = useSelector(({ categories }) => categories.mostChild)
 
+    const [desc, setDesc] = useState(``)
+
     useEffect(() => {
         dispatch(getProductCat())
-        dispatch(getUncategorizedProducts())
+        dispatch(getUncategorizedProduct())
         dispatch(getMostChild())
     }, [dispatch])
 
@@ -138,6 +143,32 @@ const Test3 = () => {
                     </tr>
                 </tfoot>
             </table>
+
+
+            <div>
+                <h2>Using CKEditor 5 build in React</h2>
+                <CKEditor
+                    editor={ClassicEditor}
+                    data={desc}
+                    onInit={editor => {
+                        // You can store the "editor" and use when it is needed.
+                        console.log('Editor is ready to use!', editor);
+                    }}
+                    onChange={(event, editor) => {
+                        const data = editor.getData();
+                        setDesc(data)
+                        console.log({ event, editor, data });
+                    }}
+                    onBlur={(event, editor) => {
+                        console.log('Blur.', editor);
+                    }}
+                    onFocus={(event, editor) => {
+                        console.log('Focus.', editor);
+                    }}
+                />
+            </div>
+
+
         </div>
     )
 }

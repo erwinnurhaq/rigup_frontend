@@ -9,6 +9,13 @@ const error = (err) => {
     }
 }
 
+export const selectCat = categoryId => {
+    return {
+        type: 'SELECT_CAT',
+        payload: categoryId
+    }
+}
+
 export const getCategories = () => {
     return async dispatch => {
         try {
@@ -81,7 +88,7 @@ export const addCategory = ({ newCategory, newParentId }) => {
                 { category: newCategory, parentId: newParentId }
             )
             console.log(res.data)
-            dispatch(getAllCategories())
+            dispatch(getCategories())
         } catch (err) {
             dispatch(error(err))
         }
@@ -96,7 +103,7 @@ export const editCategory = ({ categoryId, newCategory, newParentId }) => {
                 { category: newCategory, parentId: newParentId }
             )
             console.log(res.data)
-            dispatch(getAllCategories())
+            dispatch(getCategories())
         } catch (err) {
             dispatch(error(err))
         }
@@ -109,7 +116,7 @@ export const deleteCategory = categoryId => {
             dispatch({ type: 'CATEGORY_LOADING' })
             const res = await axios.delete(`${API_URL}/categories/${categoryId}`)
             console.log(res.data)
-            dispatch(getAllCategories())
+            dispatch(getCategories())
         } catch (err) {
             dispatch(error(err))
         }

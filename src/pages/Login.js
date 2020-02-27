@@ -2,7 +2,7 @@ import React, { Component, lazy, Suspense } from 'react'
 import { connect } from 'react-redux'
 
 import { userLogin } from '../redux/actions'
-import { withRouter, Redirect } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
 import Loading from '../components/Loading'
 const ModalWarning = lazy(() => import('../components/ModalWarning'))
@@ -69,9 +69,7 @@ class Login extends Component {
                             </Suspense>
                         ) : null}
                         {this.props.user.error ? (
-                            <Suspense >
-                                <h2 style={{ color: 'lightcoral' }}>{this.props.user.error}</h2>
-                            </Suspense>
+                            <h2 style={{ color: 'lightcoral' }}>{this.props.user.error}</h2>
                         ) : null}
                     </div>
                 </div>
@@ -86,4 +84,4 @@ const stateToProps = ({ user }) => {
     }
 }
 
-export default withRouter(connect(stateToProps, { userLogin })(Login))
+export default connect(stateToProps, { userLogin })(Login)

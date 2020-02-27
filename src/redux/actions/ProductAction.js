@@ -41,11 +41,13 @@ export const getUncategorizedProduct = () => {
     }
 }
 
-export const getProductByCategoryId = categoryId => {
+export const getProductByCategoryId = (categoryId, limit, offset) => {
     return async dispatch => {
         try {
             dispatch({ type: 'PRODUCT_LOADING' })
-            const res = await axios.get(`${API_URL}/products/${categoryId}`)
+            const res = await axios.get(`${API_URL}/products/${categoryId}`, {
+                params: { limit, offset }
+            })
             console.log(res.data)
             dispatch({
                 type: 'PRODUCTLISTBYCATEGORY_FETCH_SUCCESS',
@@ -57,15 +59,14 @@ export const getProductByCategoryId = categoryId => {
     }
 }
 
-export const getProductDetailById = productId => {
+export const getCountProductByCategoryId = categoryId => {
     return async dispatch => {
         try {
-            dispatch({ type: 'PRODUCT_LOADING' })
-            const res = await axios.get(`${API_URL}/products/detail/${productId}`)
-            console.log(res.data)
+            const count = await axios.get(`${API_URL}/products/${categoryId}/count`)
+            console.log(count.data)
             dispatch({
-                type: 'PRODUCTDETAIL_FETCH_SUCCESS',
-                payload: res.data
+                type: 'PRODUCTLISTBYCATEGORYCOUNT_FETCH_SUCCESS',
+                payload: count.data.count
             })
         } catch (err) {
             dispatch(error(err))
@@ -77,12 +78,14 @@ export const getProductDetailById = productId => {
 export const addProduct = ({ newProduct, newCategories }) => {
     return async dispatch => {
         try {
+            const token = localStorage.getItem('riguptoken')
             dispatch({ type: 'PRODUCT_LOADING' })
             const res = await axios.post(`${API_URL}/products`,
-                { product: newProduct, categories: newCategories }
+                { product: newProduct, categories: newCategories },
+                { headers: { Authorization: `Bearer ${token}` } }
             )
             console.log(res.data)
-            dispatch(getProductByCategoryId(newCategories[0]))
+            // dispatch(getProductByCategoryId(newCategories[0], 10, 0))
         } catch (err) {
             dispatch(error(err))
         }
@@ -92,25 +95,28 @@ export const addProduct = ({ newProduct, newCategories }) => {
 export const editProductById = ({ productId, newProduct, newCategories }) => {
     return async dispatch => {
         try {
+            const token = localStorage.getItem('riguptoken')
             dispatch({ type: 'PRODUCT_LOADING' })
             const res = await axios.put(`${API_URL}/products/${productId}`,
-                { product: newProduct, categories: newCategories }
+                { product: newProduct, categories: newCategories },
+                { headers: { Authorization: `Bearer ${token}` } }
             )
             console.log(res.data)
-            dispatch(getProductByCategoryId(newCategories[0]))
+            // dispatch(getProductByCategoryId(newCategories[0]))
         } catch (err) {
             dispatch(error(err))
         }
     }
 }
 
-export const deleteProductById = ({ productId, newCategories }) => {
+export const deleteProductById = (productId) => {
     return async dispatch => {
         try {
-            dispatch({ type: 'PRODUCT_LOADING' })
-            const res = await axios.delete(`${API_URL}/products/${productId}`)
+            const token = localStorage.getItem('riguptoken')
+            const res = await axios.delete(`${API_URL}/products/${productId}`,
+                { headers: { Authorization: `Bearer ${token}` } }
+            )
             console.log(res.data)
-            dispatch(getProductByCategoryId(newCategories[0]))
         } catch (err) {
             dispatch(error(err))
         }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import {
-    getAllCategories,
+    getCategories,
     addCategory,
     editCategory,
     deleteCategory
@@ -16,57 +16,58 @@ const Test2 = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(getAllCategories())
+        dispatch(getCategories())
     }, [dispatch])
 
     const initialState = {
-        inputCategoryName: "",
-        addParentId: 0,
+        newCategory: "",
+        newParentId: 0,
         editedId: 0,
         editCategoryName: "",
         editParentId: 0
     }
 
     const [state, setState] = useState(initialState)
-    const listCategory = useSelector(({ categories }) => categories.categories)
+    const categories = useSelector(({ categories }) => categories.categories)
 
     const onChangeSelectParentId = e => {
-        setState({ ...state, addParentId: parseInt(e.target.value) })
+        setState({ ...state, newParentId: parseInt(e.target.value) })
     }
 
     const onAddClick = () => {
-        if (state.inputCategoryName === '') {
+        if (state.newCategory === '') {
             return alert('Must fill category name')
         }
-        let find = listCategory.filter(a => a.category === state.inputCategoryName)
+        let find = categories.filter(a => a.category === state.newCategory)
         if (find.length > 0) {
             return alert('Category exist!')
         }
         dispatch(addCategory({
-            category: state.inputCategoryName,
-            parentId: state.addParentId === 0 ? null : state.addParentId
+            newCategory: state.newCategory,
+            newParentId: state.newParentId === 0 ? null : state.newParentId
         }))
     }
 
-    const onDeleteClick = id => {
+    const onDeleteClick = categoryId => {
         if (window.confirm('Are you sure to delete')) {
-            dispatch(deleteCategory(id))
+            dispatch(deleteCategory(categoryId))
         }
     }
 
     const onSaveClick = () => {
         if (window.confirm('Are you sure to update?')) {
-            dispatch(editCategory(state.editedId, {
-                category: state.editCategoryName,
-                parentId: state.editParentId === 0 ? null : state.editParentId
+            dispatch(editCategory({
+                categoryId: state.editedId,
+                newCategory: state.editCategoryName,
+                newParentId: state.editParentId === 0 ? null : state.editParentId
             }))
             setState({ ...state, editedId: null })
         }
     }
 
     const renderCat = () => {
-        if (listCategory) {
-            return listCategory.map(i => {
+        if (categories) {
+            return categories.map(i => {
                 if (state.editedId === i.id) {
                     return (
                         <tr key={i.id}>
@@ -120,8 +121,8 @@ const Test2 = () => {
     }
 
     const renderSelect = () => {
-        if (listCategory) {
-            return listCategory.map(i => (
+        if (categories) {
+            return categories.map(i => (
                 <option value={i.id} key={i.id}>
                     {i.category}
                 </option>
@@ -151,14 +152,14 @@ const Test2 = () => {
                         <td>
                             <input
                                 type="text"
-                                value={state.inputCategoryName}
-                                onChange={e => setState({ ...state, inputCategoryName: e.target.value })}
+                                value={state.newCategory}
+                                onChange={e => setState({ ...state, newCategory: e.target.value })}
                                 placeholder="Category Name"
                             />
                         </td>
                         <td>
                             <select
-                                value={state.addParentId}
+                                value={state.newParentId}
                                 onChange={onChangeSelectParentId}
                             >
                                 <option value={0}>Choose Category:</option>

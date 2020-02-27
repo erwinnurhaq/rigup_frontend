@@ -2,22 +2,21 @@ import axios from 'axios'
 import { API_URL } from '../../support/API_URL'
 
 export const userLogin = data => {
-    return dispatch => {
-        axios.post(`${API_URL}/users/login`, data)
-            .then(res => {
-                console.log(res.data)
-                localStorage.setItem('token', res.data.token)
-                dispatch({
-                    type: 'USER_LOGIN',
-                    payload: res.data
-                })
+    return async dispatch => {
+        try {
+            const res = await axios.post(`${API_URL}/users/login`, data)
+            console.log(res.data)
+            localStorage.setItem('riguptoken', res.data.token)
+            dispatch({
+                type: 'USER_LOGIN',
+                payload: res.data
             })
-            .catch(err => {
-                dispatch({
-                    type: 'USER_ERROR',
-                    payload: err
-                })
+        } catch (err) {
+            dispatch({
+                type: 'USER_ERROR',
+                payload: err
             })
+        }
     }
 }
 
@@ -30,7 +29,7 @@ export const userLogout = () => {
 
 export const userKeepLogin = () => {
     return async dispatch => {
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem('riguptoken')
         if (token) {
             try {
                 const res = await axios.post(`${API_URL}/users/keeplogin`, {}, {
@@ -57,7 +56,7 @@ export const register = (user) => {
         try {
             const res = await axios.post(`${API_URL}/users`, user)
             console.log(res.data)
-            localStorage.setItem('token', res.data.token)
+            localStorage.setItem('riguptoken', res.data.token)
             dispatch({
                 type: 'USER_LOGIN',
                 payload: res.data

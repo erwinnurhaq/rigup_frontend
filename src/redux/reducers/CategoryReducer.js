@@ -1,4 +1,5 @@
 const initialState = {
+    selectedCat: 1,
     categories: null,
     mostParent: null,
     mostChild: null,
@@ -47,6 +48,11 @@ export default (state = initialState, action) => {
                 child: action.payload,
                 loading: false,
                 error: null
+            }
+        case 'SELECT_CAT':
+            return {
+                ...state,
+                selectedCat: action.payload,
             }
         default:
             return state

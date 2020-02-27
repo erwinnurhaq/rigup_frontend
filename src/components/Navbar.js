@@ -37,7 +37,9 @@ class Navbar extends React.Component {
                         <p>RIG-Up!</p>
                     </div>
                     <div className="rightContainer">
-                        {this.rightContainerRender()}
+                        <div className="rightWrapper">
+                            {this.rightContainerRender()}
+                        </div>
                     </div>
                 </div>
             </div>

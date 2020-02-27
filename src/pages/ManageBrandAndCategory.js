@@ -5,7 +5,7 @@ import { FormControl, FormGroup, FormControlLabel, Checkbox, Button } from '@mat
 import Loading from '../components/Loading'
 import { getBrands, getBrandCat, assignBrandCat, getMostParent } from '../redux/actions'
 
-class Test extends Component {
+class ManageBrandAndCategory extends Component {
 
     state = {
         selectedBrand: null,
@@ -153,4 +153,4 @@ const stateToProps = ({ categories, brands, brandCats }) => {
     }
 }
 
-export default connect(stateToProps, { getBrands, getBrandCat, assignBrandCat, getMostParent })(Test)
+export default connect(stateToProps, { getBrands, getBrandCat, assignBrandCat, getMostParent })(ManageBrandAndCategory)

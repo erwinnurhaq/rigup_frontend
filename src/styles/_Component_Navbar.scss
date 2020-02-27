@@ -50,44 +50,47 @@
             height: 100%;
             @include flex(row, flex-end, center);
             padding-right: 10%;
-            .btnLogin{
-                font-weight: 600;
-                color: white;
-                border: 1px solid rgba(255, 255, 255, 0.4);
-                font-size: 16px;
-                margin-top: 2vh;
-                padding: 5px 15px;
-            }
-            .dropdownMenu{
-                button{
-                    @include flex(row, center, center);
-                    height: 36px;
+            .rightWrapper{
+                position: relative;
+                .btnLogin{
+                    font-weight: 600;
                     color: white;
-                    margin-left: 15px;
-                    .username{
-                        font-size: 0.9rem;
-                        font-weight: 300;
-                        padding-right: 10px;
-                    }
+                    border: 1px solid rgba(255, 255, 255, 0.4);
+                    font-size: 16px;
+                    margin-top: 2vh;
+                    padding: 5px 15px;
                 }
-                div{
-                    border-radius: 0px;
-                    ul{
-                        @include flex(column, center, flex-start);
-                        background-color: #222;
-                        padding: 0;
-                        li{
-                            width: 100%;
-                            color: white;
-                            font-size: 0.8rem;
+                .dropdownMenu{
+                    button{
+                        @include flex(row, center, center);
+                        height: 36px;
+                        color: white;
+                        margin-left: 15px;
+                        .username{
+                            font-size: 0.9rem;
                             font-weight: 300;
-                            padding: 15px 30px 15px 15px;
-                            &:hover{
-                                color: #222;
-                                background-color: white;
-                            }
-                            svg{
-                                margin-right: 15px;
+                            padding-right: 10px;
+                        }
+                    }
+                    div{
+                        border-radius: 0px;
+                        ul{
+                            @include flex(column, center, flex-start);
+                            background-color: #222;
+                            padding: 0;
+                            li{
+                                width: 100%;
+                                color: white;
+                                font-size: 0.8rem;
+                                font-weight: 300;
+                                padding: 15px 30px 15px 15px;
+                                &:hover{
+                                    color: #222;
+                                    background-color: white;
+                                }
+                                svg{
+                                    margin-right: 15px;
+                                }
                             }
                         }
                     }

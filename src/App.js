@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react'
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import './styles/App.scss'
 import { userKeepLogin } from './redux/actions'
@@ -8,6 +8,8 @@ import { userKeepLogin } from './redux/actions'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Loading from './components/Loading'
+
+//public
 const Test = lazy(() => import('./pages/Test'))
 const Test2 = lazy(() => import('./pages/Test2'))
 const Test3 = lazy(() => import('./pages/Test3'))
@@ -17,7 +19,7 @@ const Home = lazy(() => import('./pages/Home'))
 const Login = lazy(() => import('./pages/Login'))
 
 //admin area
-const ManageProduct = lazy(() => import('./pages/ManageProduct'))
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'))
 
 
 class App extends React.Component {
@@ -26,10 +28,23 @@ class App extends React.Component {
     this.props.userKeepLogin()
   }
 
+  renderNav = () => {
+    if (!this.props.location.pathname.includes('/admindashboard')) {
+      return <Navbar />
+    }
+  }
+
+  renderFoot = () => {
+    if (!this.props.location.pathname.includes('/admindashboard')) {
+      return <Footer />
+    }
+  }
+
   render() {
+    console.log(this.props.location)
     return (
       <div className="main">
-        <Navbar />
+        {this.renderNav()}
         <Switch>
           <Suspense fallback={<Loading />}>
             <Route exact path="/" component={Home} />
@@ -47,15 +62,13 @@ class App extends React.Component {
             <Route path="/test3" component={Test3} />
 
             {/* admin area */}
-            <Route path="/admindashboard" component={OnDevelopment} />
-            <Route path="/productmanagement" component={ManageProduct} />
-
+            <Route path="/admindashboard" component={AdminDashboard} />
           </Suspense>
         </Switch>
-        <Footer />
+        {this.renderFoot()}
       </div>
     )
   }
 }
 
-export default connect(null, { userKeepLogin })(App)
+export default withRouter(connect(null, { userKeepLogin })(App))

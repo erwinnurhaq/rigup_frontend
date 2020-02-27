@@ -38,7 +38,6 @@ class NavbarRightMenu extends Component {
 
     renderListMenu = () => {
         const { open } = this.state
-        console.log(this.props.user)
         if (this.props.user.roleId === 1) {
             return (
                 <Paper>
