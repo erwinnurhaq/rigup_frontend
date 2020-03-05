@@ -1,10 +1,24 @@
-@mixin flex($direction,$justifyContent,$alignItems) {
-    display: flex;
-    flex-direction: $direction;
-    justify-content: $justifyContent;
-    align-items: $alignItems;
-};
+@import './Variables';
+@import './Component_Loading';
+@import './Component_Navbar';
+@import './Component_Footer';
+@import './Page_ManageProduct';
+@import './Page_ManageBrandAndCategory';
+@import './Page_ManageUser';
+@import './Page_Test';
+@import './Page_Home';
+@import './Page_Login';
+@import './Page_Register';
 
+*, ::before, ::after {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+a{
+    text-decoration: none;
+}
 
 .main{
     width: 100%;
@@ -12,11 +26,11 @@
     position: relative;
 }
 
-@import './Component_Loading';
-@import './Component_Navbar';
-@import './Component_Footer';
-@import './Component_ManageProduct';
-@import './Page_Test';
-@import './Page_Home';
-@import './Page_Login';
-@import './Page_Register';
+tbody tr{
+    transition: all 0.15s ease-in-out;
+    border: 1px solid transparent;
+    &:hover{
+        background-color: $tableBackgroundHover;
+        border: 1px solid $tableBorderHover;
+    }
+}

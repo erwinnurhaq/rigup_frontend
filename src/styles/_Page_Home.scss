@@ -12,15 +12,15 @@
         padding: 12.5vh 0;
         p{
             width: 45%;
-            font-size: 32px;
+            font-size: 3.2rem;
             padding-left: 15%;
-            color: white;
+            color: $light;
         }
         .jumbo{
             position: absolute;
             right: 0;
             writing-mode: vertical-lr;
-            color: white;
+            color: $light;
             font-size: 17vh;
             // -webkit-background-clip: text;
             // -webkit-text-fill-color: transparent;

@@ -21,7 +21,7 @@
                 height: 100%;
                 @include flex(row, flex-start, center);
                 a{
-                    color: white;
+                    color: $light;
                     font-size: 16px;
                     text-transform: uppercase;
                     font-weight: 400;
@@ -36,11 +36,11 @@
             p{
                 font-family: mistral;
                 font-size: 42px;
-                color: white;
+                color: $light;
             }
             &::after{
                 content: '';
-                border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+                border-bottom: 1px solid $lightgrey;
                 width: 150%;
                 position: absolute;
                 bottom: 0;
@@ -52,41 +52,42 @@
             padding-right: 10%;
             .rightWrapper{
                 position: relative;
+                height: 100%;
+                @include flex(row, center, center);
                 .btnLogin{
                     font-weight: 600;
-                    color: white;
-                    border: 1px solid rgba(255, 255, 255, 0.4);
-                    font-size: 16px;
+                    color: $light;
+                    border: 1px solid $lightgrey;
+                    font-size: 1.4rem;
                     margin-top: 2vh;
-                    padding: 5px 15px;
                 }
                 .dropdownMenu{
                     button{
                         @include flex(row, center, center);
-                        height: 36px;
-                        color: white;
+                        margin-top: 2px;
+                        color: $light;
                         margin-left: 15px;
                         .username{
-                            font-size: 0.9rem;
+                            font-size: 1.4rem;
                             font-weight: 300;
-                            padding-right: 10px;
+                            padding: 2px 10px 0 0;
                         }
                     }
                     div{
                         border-radius: 0px;
                         ul{
                             @include flex(column, center, flex-start);
-                            background-color: #222;
+                            background-color: $dark;
                             padding: 0;
                             li{
                                 width: 100%;
-                                color: white;
-                                font-size: 0.8rem;
+                                color: $light;
+                                font-size: 1.4rem;
                                 font-weight: 300;
                                 padding: 15px 30px 15px 15px;
                                 &:hover{
-                                    color: #222;
-                                    background-color: white;
+                                    color: $dark;
+                                    background-color: $light;
                                 }
                                 svg{
                                     margin-right: 15px;

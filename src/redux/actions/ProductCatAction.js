@@ -15,7 +15,7 @@ export const getProductCat = () => {
         try {
             dispatch({ type: 'PRODUCTCAT_LOADING' })
             const res = await axios.get(`${API_URL}/productcats`)
-            console.log(res.data)
+            console.log('productCat: ', res.data)
             dispatch({
                 type: 'PRODUCTCAT_FETCH_SUCCESS',
                 payload: res.data
@@ -30,10 +30,12 @@ export const assignProductCat = ({ productId, categoryId }) => {
     return async dispatch => {
         try {
             dispatch({ type: 'PRODUCTCAT_LOADING' })
+            const token = localStorage.getItem('riguptoken')
             const res = await axios.post(`${API_URL}/productcats`,
-                { productId, categoryId }
+                { productId, categoryId },
+                { headers: { Authorization: `Bearer ${token}` } }
             )
-            console.log(res.data)
+            console.log('assignProductCat: ', res.data)
             dispatch(getProductCat())
             dispatch(getUncategorizedProduct())
         } catch (err) {
@@ -46,8 +48,11 @@ export const deleteAssignedProductCat = productId => {
     return async dispatch => {
         try {
             dispatch({ type: 'PRODUCTCAT_LOADING' })
-            const res = await axios.delete(`${API_URL}/productcats/${productId}`)
-            console.log(res.data)
+            const token = localStorage.getItem('riguptoken')
+            const res = await axios.delete(`${API_URL}/productcats/${productId}`,
+                { headers: { Authorization: `Bearer ${token}` } }
+            )
+            console.log('delete assigned productCat: ', res.data)
             dispatch(getProductCat())
             dispatch(getUncategorizedProduct())
         } catch (err) {

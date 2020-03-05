@@ -7,6 +7,10 @@ class Home extends React.Component {
         clicked: true
     }
 
+    componentDidMount() {
+        document.title = 'Home - RIGUP!'
+    }
+
     onMouseOverSide = (e) => {
         this.setState({ clicked: !this.state.clicked })
     }

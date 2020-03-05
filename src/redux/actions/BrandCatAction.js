@@ -14,7 +14,7 @@ export const getBrandCat = () => {
         try {
             dispatch({ type: 'BRANDCAT_LOADING' })
             const res = await axios.get(`${API_URL}/brandcats`)
-            console.log(res.data)
+            console.log('brand categories: ', res.data)
             dispatch({
                 type: 'BRANDCAT_FETCH_SUCCESS',
                 payload: res.data
@@ -30,10 +30,12 @@ export const assignBrandCat = ({ brandId, categoryId }) => {
     return async dispatch => {
         try {
             dispatch({ type: 'BRANDCAT_LOADING' })
+            const token = localStorage.getItem('riguptoken')
             const res = await axios.post(`${API_URL}/brandcats`,
-                { brandId, categoryId }
+                { brandId, categoryId },
+                { headers: { Authorization: `Bearer ${token}` } }
             )
-            console.log(res.data)
+            console.log('assign brandCat: ', res.data)
             dispatch(getBrandCat())
         } catch (err) {
             dispatch(error(err))

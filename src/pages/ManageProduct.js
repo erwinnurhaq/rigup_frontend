@@ -1,283 +1,270 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { Button, TableRow, TableCell, Table, TableHead, TableBody, TableFooter, IconButton } from '@material-ui/core'
-import EditIcon from '@material-ui/icons/Edit'
-import DeleteIcon from '@material-ui/icons/Delete'
+import React, { useEffect, useState, lazy, Suspense } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Button, TableRow, TableCell, Table, TableHead, TableBody, TableFooter, IconButton } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import { API_URL } from '../support/API_URL';
 
 import {
-    selectCat,
-    getMostParent,
-    getProductDetailById,
-    getProductByCategoryId,
-    getCountProductByCategoryId,
-    deleteProductById
-} from '../redux/actions'
+	selectCat,
+	getMostParent,
+	getProductDetailById,
+	getProductByCategoryId,
+	getCountProductByCategoryId,
+	deleteProductById,
+	addProduct,
+	setInitialFormProduct,
+	getBrandByCategoryId,
+	editProductById,
+	setInitialProductDetail
+} from '../redux/actions';
 
-import Loading from '../components/Loading'
-import TableHeadRow from '../components/TableHeadRow'
-import Pagination from '../components/Pagination'
-const ModalDefault = lazy(() => import('../components/ModalDefault'))
-const ModalConfirm = lazy(() => import('../components/ModalConfirm'))
-const FormAddProduct = lazy(() => import('../components/forms/FormAddProduct'))
-const FormEditProduct = lazy(() => import('../components/forms/FormEditProduct'))
+import Loading from '../components/Loading';
+import TableHeadRow from '../components/TableHeadRow';
+import Pagination from '../components/Pagination';
+const ModalDefault = lazy(() => import('../components/ModalDefault'));
+const ModalWarning = lazy(() => import('../components/ModalWarning'));
+const ModalConfirm = lazy(() => import('../components/ModalConfirm'));
+const FormAddProduct = lazy(() => import('../components/forms/FormAddProduct'));
 
 const ManageProduct = () => {
+	const dispatch = useDispatch();
+	const categories = useSelector(({ categories }) => categories);
+	const productDetail = useSelector(({ productDetail }) => productDetail);
+	const products = useSelector(({ products }) => products);
+	const { newCategories, newProduct, newImage, deleteImage } = useSelector(({ formProduct }) => formProduct);
 
-    const dispatch = useDispatch()
-    const categories = useSelector(({ categories }) => categories)
-    const products = useSelector(({ products }) => products)
+	const initialState = {
+		page: 1,
+		totalPage: 1,
+		limit: 10,
+		offset: 0
+	};
+	const [state, setState] = useState(initialState);
+	const [selectedProduct, setSelectedProduct] = useState(0);
+	const [showModalForm, setShowModalForm] = useState(false);
+	const [showModalWarning, setShowModalWarning] = useState(false);
+	const [showModalConfirm, setShowModalConfirm] = useState(false);
 
-    const initialState = {
-        page: 1,
-        totalPage: 1,
-        limit: 10,
-        offset: 0
-    }
-    const [state, setState] = useState(initialState)
-    const [selectedProduct, setSelectedProduct] = useState(0)
-    const [showModalAdd, setShowModalAdd] = useState(false)
-    const [showModalEdit, setShowModalEdit] = useState(false)
-    const [showModalConfirm, setShowModalConfirm] = useState(false)
+	//------------------------------useeffect
+	useEffect(() => {
+		dispatch(getMostParent());
+	}, [dispatch]);
 
-    useEffect(() => { dispatch(getMostParent()) }, [dispatch])
+	useEffect(() => {
+		dispatch(getCountProductByCategoryId(categories.selectedCat));
+		dispatch(getProductByCategoryId(categories.selectedCat, state.limit, state.offset));
+	}, [dispatch, categories.selectedCat, state.limit, state.offset]);
 
-    useEffect(() => {
-        dispatch(getCountProductByCategoryId(categories.selectedCat))
-    }, [dispatch, categories.selectedCat])
+	useEffect(() => {
+		setState((prev) => {
+			return { ...prev, totalPage: Math.ceil(products.productListByCatCount / state.limit) };
+		});
+	}, [products.productListByCatCount, state.limit]);
+	//------------------------------useeffect
 
-    useEffect(() => {
-        dispatch(getProductByCategoryId(categories.selectedCat, state.limit, state.offset))
-    }, [dispatch, categories.selectedCat, state.limit, state.offset])
+	const onCatTabClick = async (categoryId) => {
+		setState(initialState);
+		await dispatch(selectCat(categoryId));
+	};
 
-    useEffect(() => {
-        setState(prev => {
-            return { ...prev, totalPage: Math.ceil(products.productListByCatCount / state.limit) }
-        })
-    }, [products.productListByCatCount, state.limit])
+	const onAddProductClick = () => {
+		setShowModalForm(!showModalForm);
+	};
 
-    const onCatTabClick = async categoryId => {
-        setState(initialState)
-        await dispatch(selectCat(categoryId))
-    }
+	const onDetailsClick = async (product) => {
+		await dispatch(setInitialFormProduct());
+		await dispatch(getProductDetailById(product.id, categories.mostParent));
+		await dispatch(getBrandByCategoryId(product.categories[0].categoryId));
+		setShowModalForm(!showModalForm);
+	};
 
-    const onAddProductClick = () => {
-        setShowModalAdd(!showModalAdd)
-    }
+	const onDeleteClick = async (productId) => {
+		await dispatch(deleteProductById(productId));
+		setShowModalConfirm(!showModalConfirm);
+		await dispatch(getCountProductByCategoryId(categories.selectedCat));
+		await dispatch(getProductByCategoryId(categories.selectedCat, state.limit, state.offset));
+		dispatch(setInitialFormProduct());
+		dispatch(setInitialProductDetail());
+	};
 
-    const onDetailsClick = async productId => {
-        await dispatch(getProductDetailById(productId))
-        setShowModalEdit(!showModalEdit)
-    }
+	const deleteConfirmation = (productId) => {
+		setSelectedProduct(productId);
+		setShowModalConfirm(!showModalConfirm);
+	};
 
-    const onDeleteClick = async productId => {
-        await dispatch(deleteProductById(productId))
-        setShowModalConfirm(!showModalConfirm)
-        await dispatch(getCountProductByCategoryId(categories.selectedCat))
-        await dispatch(getProductByCategoryId(categories.selectedCat, state.limit, state.offset))
-    }
+	const onSaveProductClick = async () => {
+		if (newProduct.brandId === 0 ||
+			newProduct.name === '' ||
+			newProduct.description === '' ||
+			newProduct.weight === 0 ||
+			newProduct.price === 0 ||
+			newCategories[0] === 0
+		) {
+			return setShowModalWarning(!showModalWarning);
+		}
 
-    const deleteConfirmation = productId => {
-        setSelectedProduct(productId)
-        setShowModalConfirm(!showModalConfirm)
-    }
+		let formData = new FormData();
+		newImage.forEach((i) => {
+			formData.append('image', i);
+		})
 
-    const onSetLimit = e => {
-        setState({ ...state, limit: e.target.value })
-    }
+		if (productDetail.id) {
+			//for edit form
+			formData.append('data', JSON.stringify({ newProduct, newCategories }));
+			formData.append('deleteImage', JSON.stringify(deleteImage))
+			await dispatch(editProductById(productDetail.id, formData))
+		} else {
+			//for add form
+			let data = {
+				newProduct,
+				newCategories: newCategories.slice(0, newCategories.length - 1)
+			}
+			formData.append('data', JSON.stringify(data));
+			await dispatch(addProduct(formData));
+		}
+		await dispatch(selectCat(newCategories[0]))
+		await dispatch(getCountProductByCategoryId(newCategories[0]));
+		await dispatch(getProductByCategoryId(newCategories[0], state.limit, state.offset));
+		setShowModalForm(!showModalForm);
+	};
 
-    const onFirstPageClick = () => {
-        setState({ ...state, page: 1, offset: 0 })
-    }
+	const renderCatTab = () => !categories.mostParent ? (<li><Loading /></li>) : (
+		categories.mostParent.map((i) => (
+			<li key={i.id} onClick={() => onCatTabClick(i.id)}
+				style={{
+					padding: '0 15px',
+					listStyle: 'none',
+					cursor: 'pointer',
+					borderBottom: `${categories.selectedCat === i.id ? '1px solid darkviolet' : 'none'}`,
+					fontWeight: `${categories.selectedCat === i.id ? 'bold' : 'normal'}`
+				}}
+			>{i.category}</li>
+		))
+	);
 
-    const onNextPageClick = () => {
-        setState({
-            ...state,
-            page: state.page += 1,
-            offset: state.offset += state.limit
-        })
-    }
+	//table material
+	const columns = [
+		{ id: 'id', label: '#', minWidth: 50, align: 'center' },
+		{ id: 'mainImage', label: 'Image', minWidth: 50, align: 'center' },
+		{ id: 'categories', label: 'Categories', minWidth: 150, align: 'center' },
+		{ id: 'brand', label: 'Brand', minWidth: 100, align: 'center' },
+		{ id: 'name', label: 'Product Name', minWidth: 150, align: 'center' },
+		{ id: 'price', label: 'Price', minWidth: 100, align: 'center' },
+		{ id: 'stock', label: 'Stock', minWidth: 50, align: 'center' },
+		{ id: 'options', label: 'Options', minWidth: 100, align: 'center' }
+	];
+	//end table material
 
-    const onPrevPageClick = () => {
-        setState({
-            ...state,
-            page: state.page -= 1,
-            offset: state.offset -= state.limit
-        })
-    }
+	const renderProductList = () => {
+		if (products.loading) {
+			let rows = products.productListByCatCount < state.limit ? products.productListByCatCount : state.limit;
+			return new Array(rows).fill(0).map((i, index) => (
+				<TableRow key={index}>
+					{new Array(8).fill(0).map((j, index) => (
+						<TableCell key={index} style={{ position: 'relative', height: '50px' }}>
+							<Loading type="bar" />
+						</TableCell>
+					))}
+				</TableRow>
+			));
+		} else if (products && products.productListByCat) {
+			return products.productListByCat.map((i, index) => (
+				<TableRow key={index}>
+					<TableCell align="center">{state.offset + (index + 1)}</TableCell>
+					<TableCell>
+						<img src={`${API_URL}${i.image}`} alt={i.name} style={{ width: '50px' }} />
+					</TableCell>
+					<TableCell>{i.categories.map((c) => c.category).join(' > ')}</TableCell>
+					<TableCell>{i.brand}</TableCell>
+					<TableCell>{i.name}</TableCell>
+					{/* <TableCell dangerouslySetInnerHTML={{ __html: i.description }} /> */}
+					<TableCell>{i.price}</TableCell>
+					<TableCell>{i.stock}</TableCell>
+					<TableCell>
+						<div style={{ display: 'flex', justifyContent: 'center' }}>
+							<IconButton aria-label="Detail Edit" onClick={() => onDetailsClick(i)}>
+								<EditIcon />
+							</IconButton>
+							<IconButton aria-label="Delete" onClick={() => deleteConfirmation(i.id)}>
+								<DeleteIcon />
+							</IconButton>
+						</div>
+					</TableCell>
+				</TableRow>
+			));
+		}
+	};
 
-    const onLastPageClick = () => {
-        setState({
-            ...state,
-            page: state.totalPage,
-            offset: (state.totalPage - 1) * state.limit
-        })
-    }
+	const renderForm = () =>
+		showModalForm ? (
+			<Suspense fallback={<Loading />}>
+				<ModalDefault show={showModalForm} title="Product Detail">
+					<Suspense fallback={<Loading />}>
+						<FormAddProduct
+							onSaveProductClick={onSaveProductClick}
+							show={showModalForm}
+							setShow={setShowModalForm}
+						/>
+					</Suspense>
+				</ModalDefault>
+			</Suspense>
+		) : null;
 
-    const renderCatTab = () => !categories.mostParent ? (<Loading />) : (
-        categories.mostParent.map(i => (
-            <li key={i.id} style={{
-                padding: '0 15px', listStyle: 'none', cursor: 'pointer',
-                borderBottom: `${categories.selectedCat === i.id ? '1px solid darkviolet' : 'none'}`,
-                fontWeight: `${categories.selectedCat === i.id ? 'bold' : 'normal'}`
-            }} onClick={() => onCatTabClick(i.id)}
-            >{i.category}</li>
-        ))
-    )
+	const renderModalConfim = () =>
+		showModalConfirm ? (
+			<Suspense fallback={<Loading />}>
+				<ModalConfirm
+					show={showModalConfirm}
+					setShow={setShowModalConfirm}
+					title="Are you sure?"
+					cb={() => onDeleteClick(selectedProduct)}
+				/>
+			</Suspense>
+		) : null;
 
-    //table material
-    const columns = [
-        { id: 'id', label: '#', minWidth: 50, align: 'center' },
-        { id: 'categories', label: 'Categories', minWidth: 150, align: 'center' },
-        { id: 'brand', label: 'Brand', minWidth: 100, align: 'center' },
-        { id: 'name', label: 'Product Name', minWidth: 150, align: 'center' },
-        { id: 'price', label: 'Price', minWidth: 100, align: 'center' },
-        { id: 'stock', label: 'Stock', minWidth: 50, align: 'center' },
-        { id: 'options', label: 'Options', minWidth: 100, align: 'center' }
-    ];
-    //end table material
+	const renderModalWarning = () =>
+		showModalWarning ? (
+			<Suspense fallback={<Loading />}>
+				<ModalWarning title="Warning" show={showModalWarning} setShow={setShowModalWarning}>
+					Please select category and fill the form correctly!
+				</ModalWarning>
+			</Suspense>
+		) : null;
 
-    const renderProductList = () => {
-        if (products.loading) {
-            return new Array(state.limit).fill(0).map((i, index) => (
-                <TableRow key={index}>
-                    {new Array(7).fill(0).map((j, index) => (
-                        <TableCell key={index} style={{ position: 'relative', height: '50px' }}>
-                            <Loading type='bar' />
-                        </TableCell>
-                    ))}
-                </TableRow>
-            ))
-        } else if (products && products.productListByCat) {
-            return products.productListByCat.map((i, index) => (
-                <TableRow key={index}>
-                    <TableCell>{state.offset + (index + 1)}</TableCell>
-                    <TableCell>{i.categories.map(c => c.category).join(' > ')}</TableCell>
-                    <TableCell>{i.brand}</TableCell>
-                    <TableCell>{i.name}</TableCell>
-                    {/* <TableCell dangerouslySetInnerHTML={{ __html: i.description }} /> */}
-                    <TableCell>{i.price}</TableCell>
-                    <TableCell>{i.stock}</TableCell>
-                    <TableCell>
-                        <div style={{ display: 'flex', justifyContent: 'center' }}>
-                            <IconButton aria-label="Detail Edit"
-                                onClick={() => onDetailsClick(i.id)}
-                            >
-                                <EditIcon />
-                            </IconButton>
-                            <IconButton aria-label="Delete"
-                                onClick={() => deleteConfirmation(i.id)}
-                            >
-                                <DeleteIcon />
-                            </IconButton>
-                        </div>
-                    </TableCell>
-                </TableRow>
-            ))
-        }
-    }
+	return (
+		<div className="manageProductContainer">
+			<div className="manageProductWrapper">
+				<div className="productHeader">
+					<ul>{renderCatTab()}</ul>
+					<Button onClick={onAddProductClick} variant="outlined">
+						<p style={{ padding: '0 5px' }}>ADD PRODUCT</p>
+						<AddCircleOutlineIcon />
+					</Button>
+				</div>
+				<Table style={{ width: '80%', margin: 'auto' }}>
+					<TableHead>
+						<TableHeadRow columns={columns} />
+					</TableHead>
+					<TableBody>{renderProductList()}</TableBody>
+					<TableFooter>
+						<TableRow>
+							<TableCell colSpan={7} align="right">
+								<Pagination
+									totalProduct={products.productListByCatCount}
+									state={state}
+									setState={setState} />
+							</TableCell>
+						</TableRow>
+					</TableFooter>
+				</Table>
+			</div>
+			{renderForm()}
+			{renderModalWarning()}
+			{renderModalConfim()}
+		</div>
+	);
+};
 
-    const renderPagination = () => (
-        <TableRow>
-            <TableCell colSpan={7} align='right'>
-                <Pagination
-                    totalProduct={products.productListByCatCount}
-                    limit={state.limit}
-                    page={state.page}
-                    totalPage={state.totalPage}
-                    onSetLimit={onSetLimit}
-                    onFirstPageClick={onFirstPageClick}
-                    onPrevPageClick={onPrevPageClick}
-                    onNextPageClick={onNextPageClick}
-                    onLastPageClick={onLastPageClick}
-                />
-            </TableCell>
-        </TableRow>
-    )
-
-    const renderFormAdd = () => showModalAdd ? (
-        <Suspense fallback={<Loading />}>
-            <ModalDefault
-                show={showModalAdd}
-                setShow={setShowModalAdd}
-                title='Add New Product'
-            >
-                <Suspense fallback={<Loading />}>
-                    <FormAddProduct
-                        limit={state.limit}
-                        offset={state.offset}
-                        mostParent={categories.mostParent}
-                        show={showModalAdd}
-                        setShow={setShowModalAdd}
-                    />
-                </Suspense>
-            </ModalDefault>
-        </Suspense>
-    ) : null
-
-    const renderFormEdit = () => showModalEdit ? (
-        <Suspense fallback={<Loading />}>
-            <ModalDefault
-                show={showModalEdit}
-                setShow={setShowModalEdit}
-                title='Detail Product'
-            >
-                <Suspense fallback={<Loading />}>
-                    <FormEditProduct
-                        limit={state.limit}
-                        offset={state.offset}
-                        selectedProduct={state.selectedProduct}
-                        mostParent={categories.mostParent}
-                        show={showModalEdit}
-                        setShow={setShowModalEdit}
-                    />
-                </Suspense>
-            </ModalDefault>
-        </Suspense>
-    ) : null
-
-    const renderModalConfim = () => (
-        <Suspense fallback={<Loading />}>
-            <ModalConfirm
-                show={showModalConfirm}
-                setShow={setShowModalConfirm}
-                title='Are you sure?'
-                cb={() => onDeleteClick(selectedProduct)}
-            />
-        </Suspense>
-    )
-
-    return (
-        <div className="manageProductContainer">
-            <div style={{ width: '100%' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-around', paddingBottom: '25px' }}>
-                    <ul style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        {renderCatTab()}
-                    </ul>
-                    <Button onClick={onAddProductClick} variant='outlined'>
-                        <p style={{ padding: '0 5px' }}>ADD PRODUCT</p>
-                        <AddCircleOutlineIcon />
-                    </Button>
-                </div>
-                <div>
-                    <Table style={{ width: '80%', margin: 'auto' }}>
-                        <TableHead>
-                            <TableHeadRow columns={columns} />
-                        </TableHead>
-                        <TableBody>
-                            {renderProductList()}
-                        </TableBody>
-                        <TableFooter>
-                            {renderPagination()}
-                        </TableFooter>
-                    </Table>
-                </div>
-            </div>
-            {renderFormAdd()}
-            {renderFormEdit()}
-            {renderModalConfim()}
-        </div>
-    )
-}
-
-export default ManageProduct
+export default ManageProduct;

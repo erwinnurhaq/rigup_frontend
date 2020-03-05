@@ -1,13 +1,67 @@
 .loginContainer{
-    background-color: #222;
+    background-color: $dark;
     width: 100%;
     min-height: 100vh;
-    padding-top: 70px;
-    padding-bottom: 150px;
+    // padding-top: 70px;
+    // padding-bottom: 150px;
     @include flex(row, center, center);
+    .title{
+        position: absolute;
+        right: 0;
+        writing-mode: vertical-lr;
+        text-align: center;
+        color: $accent1;
+        font-size: 16vh;
+        height: 100%;
+    }
     .formWrapper{
-        h3{
-            color: white;
+        height: 100vh;
+        @include flex(column, center, center);
+        position: relative;
+        form{
+            div{
+                label{
+                    color: $lightgrey;
+                    font-weight: 300;
+                    font-size: 1.4rem;
+                }
+                div{
+                    &::before{
+                        border-color:$accent1;
+                    }
+                    &::after{
+                        border-color: $accent1;
+                    }
+                    input{
+                        color: $light;
+                    }
+                }
+            }
+            .btnLoginContainer{
+                margin-top: 15px;
+                @include flex(row, space-between, center);
+                button{
+                    border-color: $accent1;
+                    color: $accent1;
+                    font-weight: 300;
+                    font-size: 1.4rem;
+                    width: 120px;
+                    height: 40px;
+                    &:hover{
+                        background-color: $accent1;
+                        color: $light;
+                      }
+                }
+            }
+        }
+        .notAMember{
+            position: absolute;
+            bottom: 20%;
+            color: $light;
+            a{
+                color: $accent1;
+                font-weight: bold;
+            }
         }
     }
 }

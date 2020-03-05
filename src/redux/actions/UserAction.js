@@ -1,27 +1,34 @@
 import axios from 'axios'
 import { API_URL } from '../../support/API_URL'
 
-export const userLogin = data => {
+const error = (err) => {
+    let error = err.response ? err.response.data.message : 'Cannot connect to API'
+    return {
+        type: 'USER_ERROR',
+        payload: error
+    }
+}
+
+export const userLogin = ({ userOrEmail, password, keepLogin }) => {
     return async dispatch => {
         try {
-            const res = await axios.post(`${API_URL}/users/login`, data)
-            console.log(res.data)
+            const res = await axios.post(`${API_URL}/users/login`,
+                { userOrEmail, password, keepLogin }
+            )
+            console.log('user login: ', res.data)
             localStorage.setItem('riguptoken', res.data.token)
             dispatch({
                 type: 'USER_LOGIN',
-                payload: res.data
+                payload: res.data.user
             })
         } catch (err) {
-            dispatch({
-                type: 'USER_ERROR',
-                payload: err
-            })
+            dispatch(error(err))
         }
     }
 }
 
 export const userLogout = () => {
-    localStorage.removeItem('token')
+    localStorage.removeItem('riguptoken')
     return {
         type: 'USER_LOGOUT'
     }
@@ -35,37 +42,42 @@ export const userKeepLogin = () => {
                 const res = await axios.post(`${API_URL}/users/keeplogin`, {}, {
                     headers: { Authorization: `Bearer ${token}` }
                 })
-                res.data.token = token
-                console.log(res.data)
+                console.log('user login: ', res.data)
                 dispatch({
                     type: 'USER_LOGIN',
-                    payload: res.data
+                    payload: res.data.user
                 })
             } catch (err) {
-                dispatch({
-                    type: 'USER_ERROR',
-                    payload: err
-                })
+                dispatch(userLogout())
+                dispatch(error(err))
             }
         }
     }
 }
 
-export const register = (user) => {
+export const register = user => {
     return async dispatch => {
         try {
-            const res = await axios.post(`${API_URL}/users`, user)
+            const res = await axios.post(`${API_URL}/users`,
+                {
+                    fullname: user.fullname,
+                    genderId: user.genderId,
+                    address: user.address,
+                    cityId: user.cityId,
+                    phone: user.phone,
+                    email: user.email,
+                    username: user.username,
+                    password: user.password
+                }
+            )
             console.log(res.data)
             localStorage.setItem('riguptoken', res.data.token)
             dispatch({
                 type: 'USER_LOGIN',
-                payload: res.data
+                payload: res.data.user
             })
         } catch (err) {
-            dispatch({
-                type: 'USER_ERROR',
-                payload: err
-            })
+            dispatch(error(err))
         }
     }
 }

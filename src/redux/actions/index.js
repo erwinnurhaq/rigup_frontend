@@ -5,3 +5,5 @@ export * from './CategoryAction';
 export * from './ProductAction';
 export * from './ProductCatAction';
 export * from './ProductDetailAction';
+export * from './ManageUserAction';
+export * from './FormProductAction';

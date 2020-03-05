@@ -53,6 +53,8 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 selectedCat: action.payload,
+                loading: false,
+                error: null
             }
         default:
             return state

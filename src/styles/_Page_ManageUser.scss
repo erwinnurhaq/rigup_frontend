@@ -1,0 +1,17 @@
+.manageUserContainer{
+    width: 100%;
+    height: 100%;
+    padding-bottom: 50px;
+    @include flex(row, center, flex-start);
+    flex-wrap: wrap;
+    .manageUserWrapper{
+        padding: 25px;
+        .manageUserHeader{
+            @include flex(row, space-between, center);
+            height: 70px;
+        }
+        table, tr, td{
+            padding: 5px;
+        }
+    }
+}

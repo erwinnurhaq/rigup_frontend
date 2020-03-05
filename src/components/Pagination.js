@@ -6,7 +6,33 @@ import FirstPageIcon from '@material-ui/icons/FirstPage'
 import LastPageIcon from '@material-ui/icons/LastPage'
 
 function Pagination(props) {
-    const { totalProduct, limit, page, totalPage, onFirstPageClick, onPrevPageClick, onNextPageClick, onLastPageClick, onSetLimit } = props
+    const { totalProduct, state, setState } = props
+
+    const onSetLimit = e => setState({
+        ...state,
+        limit: e.target.value
+    })
+    const onFirstPageClick = () => setState({
+        ...state,
+        page: 1,
+        offset: 0
+    })
+    const onPrevPageClick = () => setState({
+        ...state,
+        page: state.page -= 1,
+        offset: state.offset -= state.limit
+    })
+    const onNextPageClick = () => setState({
+        ...state,
+        page: state.page += 1,
+        offset: state.offset += state.limit
+    })
+    const onLastPageClick = () => setState({
+        ...state,
+        page: state.totalPage,
+        offset: (state.totalPage - 1) * state.limit
+    })
+
     return (
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
             <div style={{ fontSize: '14px', padding: '0 15px' }}>
@@ -16,7 +42,7 @@ function Pagination(props) {
                 Limit Row:
                     </div>
             <Select
-                value={limit}
+                value={state.limit}
                 onChange={onSetLimit}
             >
                 <MenuItem value={0} disabled>Limit:</MenuItem>
@@ -26,31 +52,31 @@ function Pagination(props) {
             </Select>
             <IconButton
                 onClick={onFirstPageClick}
-                disabled={page === 1}
+                disabled={state.page === 1}
                 aria-label="first page"
             >
                 <FirstPageIcon />
             </IconButton>
             <IconButton
                 onClick={onPrevPageClick}
-                disabled={page === 1}
+                disabled={state.page === 1}
                 aria-label="previous page"
             >
                 <KeyboardArrowLeft />
             </IconButton>
             <div style={{ fontSize: '14px', padding: '0 15px' }}>
-                Page {page} of {totalPage}
+                Page {state.page} of {state.totalPage}
             </div>
             <IconButton
                 onClick={onNextPageClick}
-                disabled={page === totalPage}
+                disabled={state.page === state.totalPage}
                 aria-label="next page"
             >
                 <KeyboardArrowRight />
             </IconButton>
             <IconButton
                 onClick={onLastPageClick}
-                disabled={page === totalPage}
+                disabled={state.page === state.totalPage}
                 aria-label="last page"
             >
                 <LastPageIcon />

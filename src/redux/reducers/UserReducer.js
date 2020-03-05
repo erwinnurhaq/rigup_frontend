@@ -1,10 +1,8 @@
 const initialState = {
     user: null,
-    token: null,
-    isLogin: false,
     error: null,
-    userTransactions: [],
-    loading: false
+    loading: false,
+    userTransactions: []
 }
 
 export default (state = initialState, action) => {
@@ -16,16 +14,14 @@ export default (state = initialState, action) => {
             }
         case 'USER_ERROR':
             return {
-                ...state,
+                ...initialState,
                 error: action.payload,
                 loading: false
             }
         case 'USER_LOGIN':
             return {
                 ...state,
-                user: action.payload.user,
-                token: action.payload.token,
-                isLogin: true,
+                user: action.payload,
                 error: null,
                 loading: false
             }

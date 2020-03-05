@@ -1,156 +1,58 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { FormControl, FormGroup, FormControlLabel, Checkbox, Button } from '@material-ui/core'
+import React, { useState, useEffect, lazy, Suspense } from 'react'
+import { useDispatch } from 'react-redux'
+import { getBrands, getBrandCat, getMostParent } from '../redux/actions'
 
 import Loading from '../components/Loading'
-import { getBrands, getBrandCat, assignBrandCat, getMostParent } from '../redux/actions'
+const ManageBrand = lazy(() => import('../components/ManageBrand'))
+const ManageBrandCat = lazy(() => import('../components/ManageBrandCat'))
+const ManageCategory = lazy(() => import('../components/ManageCategory'))
+const ModalWarning = lazy(() => import('../components/ModalWarning'))
 
-class ManageBrandAndCategory extends Component {
 
-    state = {
-        selectedBrand: null,
-        selectedCategory: []
-    }
+const ManageBrandAndCategory = () => {
 
-    componentDidMount() {
-        this.props.getMostParent()
-        this.props.getBrands()
-        this.props.getBrandCat()
-    }
+    const dispatch = useDispatch()
 
-    onClickCategory = brandId => e => {
-        let arr = []
-        this.props.brandCats.forEach(i => {
-            if (i.brandId === brandId) {
-                arr.push(i.categoryId)
-            }
-        })
-        this.setState({
-            selectedBrand: brandId,
-            selectedCategory: arr
-        })
-    }
+    useEffect(() => {
+        dispatch(getMostParent())
+        dispatch(getBrands())
+        dispatch(getBrandCat())
+    }, [dispatch])
 
-    onCheckBoxChange = (e) => {
-        let arr = this.state.selectedCategory
-        let index = arr.indexOf(parseInt(e.target.value))
-        console.log(index)
-        if (index >= 0) {
-            arr.splice(index, 1)
-            this.setState({
-                selectedCategory: arr
-            })
-        } else {
-            this.setState({
-                selectedCategory: arr.concat([parseInt(e.target.value)])
-            })
-        }
-    }
+    const [showModalWarning, setShowModalWarning] = useState(false)
 
-    onSaveClick = () => {
-        this.props.assignBrandCat({
-            brandId: this.state.selectedBrand,
-            categoryId: this.state.selectedCategory
-        })
-        this.props.getBrandCat()
-    }
 
-    renderAllBrands = () => {
-        if (this.props.brandList) {
-            return this.props.brandList.map(brand => (
-                <ul key={brand.id}>
-                    <li
-                        style={this.state.selectedBrand === brand.id ? { fontWeight: 'bold' } : { cursor: 'pointer' }}
-                        onClick={this.onClickCategory(brand.id)}
-                    >
-                        {brand.brand}
-                    </li>
-                </ul>
-            ))
-        } else {
-            return <Loading />
-        }
-    }
 
-    renderCheckBox = () => {
-        if (this.props.mostParent) {
-            return this.props.mostParent.map(cat => (
-                <FormControlLabel key={cat.id}
-                    control={
-                        <Checkbox
-                            disabled={this.state.selectedBrand ? false : true}
-                            checked={this.state.selectedCategory.indexOf(cat.id) >= 0 ? true : false}
-                            value={cat.id}
-                            onChange={this.onCheckBoxChange}
-                        />
-                    }
-                    label={cat.category}
+    const renderModalWarning = () => showModalWarning ? (
+        <Suspense fallback={<Loading />}>
+            <ModalWarning
+                title='Warning'
+                show={showModalWarning}
+                setShow={setShowModalWarning}
+            >Please select category and fill the form correctly!</ModalWarning>
+        </Suspense>
+    ) : null
+
+    return (
+        <div className="manageBrandCatContainer">
+            <Suspense fallback={<Loading />}>
+                <ManageBrand
+                    showModalWarning={showModalWarning}
+                    setShowModalWarning={setShowModalWarning}
                 />
-            ))
-        } else {
-            return <Loading />
-        }
-    }
-
-    renderAllBrandCats = () => {
-        if (this.props.mostParent && this.props.brandCats) {
-            return this.props.mostParent.map(cat => (
-                <div key={cat.id}>
-                    <h3>{cat.category}</h3>
-                    <ul >
-                        {this.props.brandCats.filter(i => i.categoryId === cat.id).map((i, index) => (
-                            <li key={index}>{i.brand}</li>
-                        ))}
-                    </ul>
-                </div>
-            ))
-        } else {
-            return <Loading />
-        }
-    }
-
-    render() {
-        console.log(this.state)
-        return (
-            <div className="testContainer">
-
-                <div style={{ display: 'flex' }}>
-                    <div style={{ padding: '50px' }}>
-                        <h3>Brands:</h3>
-                        <ul>
-                            {this.renderAllBrands()}
-                        </ul>
-                    </div>
-
-                    <FormControl style={{ padding: '50px', border: "1px solid black" }} >
-                        <h3>Assign Category:</h3>
-                        <FormGroup>
-                            {this.renderCheckBox()}
-                        </FormGroup>
-                        <Button
-                            color="primary"
-                            variant='contained'
-                            onClick={this.onSaveClick}
-                        >
-                            SAVE
-                    </Button>
-                    </FormControl>
-                    <div>
-                        {this.renderAllBrandCats()}
-                    </div>
-                </div>
-
-            </div>
-        )
-    }
+            </Suspense>
+            <Suspense fallback={<Loading />}>
+                <ManageCategory
+                    showModalWarning={showModalWarning}
+                    setShowModalWarning={setShowModalWarning}
+                />
+            </Suspense>
+            <Suspense fallback={<Loading />}>
+                <ManageBrandCat />
+            </Suspense>
+            {renderModalWarning()}
+        </div>
+    )
 }
 
-const stateToProps = ({ categories, brands, brandCats }) => {
-    return {
-        mostParent: categories.mostParent,
-        brandCats: brandCats.brandCats,
-        brandList: brands.brandList
-    }
-}
-
-export default connect(stateToProps, { getBrands, getBrandCat, assignBrandCat, getMostParent })(ManageBrandAndCategory)
+export default ManageBrandAndCategory

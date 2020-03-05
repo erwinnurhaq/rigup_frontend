@@ -12,8 +12,8 @@ class Navbar extends React.Component {
     toLogin = () => this.props.history.push('/login')
 
     rightContainerRender = () => {
-        const { user, isLogin } = this.props.user
-        if (isLogin) {
+        const { user } = this.props.user
+        if (user) {
             return (
                 <Suspense fallback={<Loading />}>
                     <NavbarRightMenu user={user} />
@@ -25,25 +25,28 @@ class Navbar extends React.Component {
     }
 
     render() {
-        return (
-            <div className="navContainer">
-                <div className="wrapper">
-                    <ul>
-                        <li><NavLink to='/'>Home</NavLink></li>
-                        <li><NavLink to='/news'>News</NavLink></li>
-                        <li><NavLink to='/promo'>Special Offers</NavLink></li>
-                    </ul>
-                    <div className="logoContainer">
-                        <p>RIG-Up!</p>
-                    </div>
-                    <div className="rightContainer">
-                        <div className="rightWrapper">
-                            {this.rightContainerRender()}
+        if (!this.props.location.pathname.includes('/admindashboard')) {
+            return (
+                <div className="navContainer">
+                    <div className="wrapper">
+                        <ul>
+                            <li><NavLink to='/'>Home</NavLink></li>
+                            <li><NavLink to='/news'>News</NavLink></li>
+                            <li><NavLink to='/promo'>Special Offers</NavLink></li>
+                        </ul>
+                        <div className="logoContainer">
+                            <p>RIG-Up!</p>
+                        </div>
+                        <div className="rightContainer">
+                            <div className="rightWrapper">
+                                {this.rightContainerRender()}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        )
+            )
+        }
+        return null
     }
 }
 

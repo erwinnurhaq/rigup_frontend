@@ -1,51 +1,75 @@
 .registerContainer{
-    // background-color: #222;
+    background-color: $dark;
     width: 100%;
     min-height: 100vh;
-    padding-top: 70px;
-    padding-bottom: 150px;
     @include flex(row, center, center);
+    .title{
+        position: absolute;
+        right: 0;
+        writing-mode: vertical-lr;
+        text-align: center;
+        color: $accent1;
+        font-size: 16vh;
+        height: 100%;
+    }
     .formWrapper{
-        h3{
-            color: #222;
-        }
-        .formTitle{
-            font-size: 48px;
-            color: #222;
-        }
+        position: relative;
+        @include flex(row, center, center);
         .formInput{
             width: 500px;
+            fieldset{
+                margin-top: 15px;
+                legend{
+                    color: $lightgrey;
+                }
+            }
             div{
                 label{
-                    color: lightgray;
+                    color: $lightgrey;
                     font-weight: 300;
-                    font-size: 14px;
+                    font-size: 1.4rem;
                 }
                 div{
                     &::before{
-                        border-color:#222;
+                        border-color:$accent1;
                     }
                     &::after{
-                        border-color:#222;
+                        border-color: $accent1;
                     }
                     input{
-                        color: #222;
+                        color: $light;
                     }
+                }
+                .MuiFormHelperText-root{
+                    color: $lightgrey;
+                }
+            }
+            .btnContainer{
+                margin-top: 15px;
+                @include flex(row, space-between, center);
+                button{
+                    border-color: $accent1;
+                    color: $accent1;
+                    font-weight: 300;
+                    font-size: 1.4rem;
+                    width: 120px;
+                    height: 40px;
+                    &:hover{
+                        background-color: $accent1;
+                        color: $light;
+                      }
                 }
             }
         }
-        .btnContainer{
-            button{
-                background-color: none;
-                color: #222;
-                font-weight: 300;
-                font-size: 14px;
-                width: 120px;
-                height: 40px;
-                &:hover{
-                    color: white;
-                  }
-            }
+        .textCheckValid{
+            height: 145px;
+            position: absolute;
+            bottom: 60px;
+            left: -40%;
+            color: $lightgrey;
+            font-size: 1.4rem;
+            text-align: right;
+            @include flex(column, space-between, flex-end);
         }
     }
 }

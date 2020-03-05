@@ -43,7 +43,7 @@ class NavbarRightMenu extends Component {
                 <Paper>
                     <ClickAwayListener onClickAway={this.handleClose}>
                         <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={this.handleListKeyDown}>
-                            <MenuItem onClick={() => this.onLinkClick(`/admindashboard`)}>
+                            <MenuItem onClick={() => this.onLinkClick(`/admindashboard/manageproduct`)}>
                                 <AccountCircleIcon />
                                 Admin Dashboard
                             </MenuItem>

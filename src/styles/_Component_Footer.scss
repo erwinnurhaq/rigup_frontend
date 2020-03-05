@@ -13,8 +13,8 @@
                 width: 32px;
                 height: 32px;
                 border-radius: 50%;
-                background-color: #222;
-                color: white;
+                background-color: $dark;
+                color: $light;
                 position: relative;
                 margin: 0 10px;
                 @include flex(row, center,center);
@@ -30,11 +30,11 @@
                 list-style: none;
                 width: 50%;
                 li{
-                    font-size: 12px;
+                    font-size: 1.2rem;
                     margin: 0 5%;
                     @include flex(row, center, center);
                     a{
-                        color: white;
+                        color: $light;
                     }
                 }
             }
@@ -51,7 +51,7 @@
             padding-top: 1vh;
             padding-bottom: 2vh;
             text-align: center;
-            color: white;
+            color: $light;
             // background-color: rgba(255, 255, 255, 0.2);
         }
     }

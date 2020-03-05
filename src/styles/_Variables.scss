@@ -1,0 +1,15 @@
+$dark : #222;
+$lightgrey: lightgrey;
+$light: white;
+$accent1: darkviolet;
+$accent2: lightcoral;
+
+$tableBorderHover: rgb(219, 219, 219);
+$tableBackgroundHover: rgb(240, 240, 240);
+
+@mixin flex($direction,$justifyContent,$alignItems) {
+    display: flex;
+    flex-direction: $direction;
+    justify-content: $justifyContent;
+    align-items: $alignItems;
+};

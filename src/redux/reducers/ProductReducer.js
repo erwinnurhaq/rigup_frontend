@@ -3,7 +3,6 @@ const initialState = {
     uncategorizedProductList: null,
     productListByCat: null,
     productListByCatCount: null,
-    productDetail: null,
     loading: true,
     error: null
 }
@@ -46,12 +45,6 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 productListByCatCount: action.payload,
-                error: null
-            }
-        case 'PRODUCTDETAIL_FETCH_SUCCESS':
-            return {
-                ...state,
-                productDetail: action.payload,
                 loading: false,
                 error: null
             }
