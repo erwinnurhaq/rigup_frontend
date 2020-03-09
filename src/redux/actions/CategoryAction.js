@@ -52,6 +52,7 @@ export const getCategoriesSearchFilter = (search) => {
 				obj.category = i.category
 				return obj
 			})
+			console.log('res.data product list: ', res.data)
 			console.log('all before filtered: ',x)
 			let categoryFilterResult = [x[0]]
 			x.forEach(i => {

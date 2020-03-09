@@ -88,6 +88,7 @@
                 }
             }
             .categoryBox.active{
+                background-color: $darkgrey2;
                 &::before{
                     content: '';
                     position: absolute;
@@ -135,8 +136,9 @@
                 width: 100%;
                 @include flex(row, flex-end, flex-end);
                 .searchWrapper{
-                    width: 15%;
+                    width: 20%;
                     div{
+                        font-size: 1.4rem;
                         label{
                             color: $lightgrey;
                             font-weight: 300;
@@ -152,6 +154,22 @@
                             input{
                                 color: $light;
                             }
+                        }
+                    }
+                }
+                .sortWrapper{
+                    padding: 0 10px 4px 10px;
+                    div{
+                        font-size: 1.4rem;
+                        color: $lightgrey;
+                        &::before{
+                            border-color:$accent1;
+                        }
+                        &::after{
+                            border-color: $accent1;
+                        }
+                        svg{
+                            color: $light;
                         }
                     }
                 }
@@ -260,9 +278,9 @@
                 }
             }
         }
-        .browseProductsWrapper.change{
-            // padding-top: 1vh;
-        }
+        // .browseProductsWrapper.change{
+        //     // padding-top: 1vh;
+        // }
     }
     .browseProducts.hide{
         height: 0;

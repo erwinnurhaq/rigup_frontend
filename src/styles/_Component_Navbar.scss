@@ -3,7 +3,7 @@
     width: 100%;
     position: fixed;
     top: 0;
-    z-index: 1;
+    z-index: 2;
     transition: all 0.4s ease;
     .wrapper{
         width: 100%;
@@ -139,13 +139,15 @@
                         }
                     }
                     div{
-                        ul{
-                            background-color: $light;
-                            li{
-                                color: $dark;
-                                &:hover{
-                                    color: $light;
-                                    background-color: $dark;
+                        div{
+                            ul{
+                                background-color: $light;
+                                li{
+                                    color: $dark;
+                                    &:hover{
+                                        color: $light;
+                                        background-color: $dark;
+                                    }
                                 }
                             }
                         }

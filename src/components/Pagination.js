@@ -10,6 +10,8 @@ function Pagination(props) {
 
     const onSetLimit = e => setState({
         ...state,
+        page: 1,
+        offset: 0,
         limit: e.target.value
     })
     const onFirstPageClick = () => setState({

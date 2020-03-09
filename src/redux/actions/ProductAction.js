@@ -21,7 +21,8 @@ export const getProductList = (search, limit, offset, filter ) => {
 				type: 'PRODUCTLIST_FETCH_SUCCESS',
 				payload: res.data
 			})
-			if(filter){
+			if(filter && offset === 0){
+				console.log('in, produclistcount', filter, offset)
 				dispatch({
 					type: 'PRODUCTLISTCOUNT_FETCH_SUCCESS',
 					payload: res.data.length

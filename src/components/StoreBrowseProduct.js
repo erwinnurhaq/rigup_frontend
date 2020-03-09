@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { TextField, Button, InputAdornment, IconButton } from '@material-ui/core'
+import { TextField, Button, InputAdornment, IconButton, Select, MenuItem } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search'
 import {
     getChildOfMainParent, 
@@ -30,23 +30,15 @@ const StoreBrowseProduct = () => {
 		offset: 0
 	};
     const [state, setState] = useState(initialState);
+    const sortList = [
+        {id: 1, label: 'Last Updated'},
+        {id: 2, label: 'Name A to Z'},
+        {id: 3, label: 'Name Z to A'},
+        {id: 4, label: 'Price Low to High'},
+        {id: 5, label: 'Price High to Low'}
+    ]
+    const [sort, setSort] = useState(1)
     const [search, setSearch] = useState('')
-
-    // useEffect(() => {
-    //     setState((prev) => {
-    //         return { ...prev, page: 1, offset: 0 };
-    //     });
-    // }, [selectedCat]);
-
-    // useEffect(()=>{
-    //     dispatch(getChildOfMainParent(selectedCat))
-    // },[dispatch, selectedCat])
-
-    // useEffect(()=>{
-    //     if(childOfMainParent){
-    //         dispatch(getCountProductByCategoryId(selectedCat))
-    //     }
-    // },[dispatch, selectedCat])
 
     useEffect(()=>{
         if(selectedCat !== 0){
@@ -87,6 +79,10 @@ const StoreBrowseProduct = () => {
         }
     },[dispatch, selectedFilter, state.limit, state.offset])
 
+    const onSortChange = (e) => {
+        setSort(e.target.value)
+    }
+
     const onBtnSearchClick = async () => {
         setState(initialState)
         dispatch(selectCat(0))
@@ -94,11 +90,16 @@ const StoreBrowseProduct = () => {
         await dispatch(getProductList(search, 12, 0))
     }
 
-    const onBtnFilterAll = () => {
+    const onBtnFilterAll = async () => {
+        setState({...state, page: 1, offset: 0})
         if(childOfMainParent){
             dispatch(selectChildCat(0))
+            await dispatch(getCountProductByCategoryId(selectedCat))
+            await dispatch(getProductByCategoryId(selectedCat, 12, 0))
         } else if(searchFilter){
             dispatch(selectFilter(0))
+            await dispatch(getCategoriesSearchFilter(search))
+            await dispatch(getProductList(search, 12, 0))
         }
     }
 
@@ -183,6 +184,16 @@ const StoreBrowseProduct = () => {
                                 </InputAdornment>
                             }}
                         />
+                    </div>
+                    <div className="sortWrapper">
+                        <Select
+                            value={sort}
+                            onChange={onSortChange}
+                        >
+                            {sortList.map(i => (
+                                <MenuItem key={i.id} value={i.id} >{i.label}</MenuItem>
+                            ))}
+                        </Select>
                     </div>
                     <div className="browseProductPagination">
                         <Pagination
