@@ -161,7 +161,7 @@ const StoreBrowseProduct = () => {
             return <Loading />
         }
     }
-    console.log(state)
+    
     return (
         <div className={`browseProducts ${changeBrowseProducts ? '' : 'hide'}`}>
             <div className={`browseProductsWrapper ${changeCategoryBox ? 'change' : ''}`}>
