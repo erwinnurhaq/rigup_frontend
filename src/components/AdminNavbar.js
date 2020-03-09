@@ -19,6 +19,7 @@ const useStyles = makeStyles(theme => ({
         },
     },
     appBar: {
+        height: '7vh',
         backgroundColor: 'white',
         color: '#222',
         [theme.breakpoints.up('sm')]: {
@@ -27,6 +28,7 @@ const useStyles = makeStyles(theme => ({
         },
     },
     appBarContent: {
+        height: '7vh',
         display: 'flex',
         justifyContent: 'space-between'
     },

@@ -33,6 +33,8 @@ export default (state = initialState, action) => {
                 userTransactions: action.payload,
                 loading: false
             }
+        case 'RESEND_VERIFICATION_SUCCESS':
+            return { ...state, loading: false }
         default:
             return state
     }

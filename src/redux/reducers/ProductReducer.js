@@ -1,5 +1,6 @@
 const initialState = {
     productList: null,
+    productListCount: null,
     uncategorizedProductList: null,
     productListByCat: null,
     productListByCatCount: null,
@@ -27,6 +28,15 @@ export default (state = initialState, action) => {
                 loading: false,
                 error: null
             }
+        case 'PRODUCTLISTCOUNT_FETCH_SUCCESS':
+            return {
+                ...state,
+                productListCount: action.payload,
+                productListByCat: null,
+                productListByCatCount: null,
+                loading: false,
+                error: null
+            }
         case 'UNCATEGORIZEDPRODUCTLIST_FETCH_SUCCESS':
             return {
                 ...state,
@@ -37,6 +47,7 @@ export default (state = initialState, action) => {
         case 'PRODUCTLISTBYCATEGORY_FETCH_SUCCESS':
             return {
                 ...state,
+                productList: null,
                 productListByCat: action.payload,
                 loading: false,
                 error: null
@@ -44,6 +55,7 @@ export default (state = initialState, action) => {
         case 'PRODUCTLISTBYCATEGORYCOUNT_FETCH_SUCCESS':
             return {
                 ...state,
+                productListCount: null,
                 productListByCatCount: action.payload,
                 loading: false,
                 error: null

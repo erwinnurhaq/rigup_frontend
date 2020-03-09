@@ -1,0 +1,41 @@
+.verificationContainer{
+    background-color: $dark;
+    width: 100%;
+    min-height: 100vh;
+    @include flex(row, center, center);
+    .title{
+        position: absolute;
+        right: 0;
+        writing-mode: vertical-lr;
+        text-align: center;
+        color: $accent1;
+        font-size: 16vh;
+        height: 100%;
+    }
+    .contentWrapper{
+        height: 40vh;
+        padding: 30px;
+        border-top: 1px solid $accent1;
+        border-bottom: 1px solid $accent1;
+        color: $light;
+        @include flex(column, space-around, center);
+        position: relative;
+        div{
+            @include flex(column, center, center);
+            button{
+                margin-top: 20px;
+                border-color: $accent1;
+                color: $accent1;
+                font-weight: 300;
+                font-size: 1.4rem;
+                width: 180px;
+                height: 40px;
+                &:hover{
+                    background-color: $accent1;
+                    color: $light;
+                  }
+            }
+        }
+
+    }
+}

@@ -3,13 +3,12 @@
 
 html{
     font-size: 62.5%; /* 62.5% of 16px = 10px */
+    scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-  font-family: 'Barlow Semi Condensed', 'Poppins','Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Barlow Semi Condensed', 'Arial Narrow', sans-serif;
   font-size: 1.4rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

@@ -2,7 +2,7 @@ import axios from 'axios'
 import { API_URL } from '../../support/API_URL'
 
 const error = (err) => {
-    let error = err.response ? err.response.data.message : 'Cannot connect to API'
+    let error = err.response && Object.keys(err.response).length >= 0 ? err.response.data.message : 'Cannot connect to API'
     return {
         type: 'USER_ERROR',
         payload: error
@@ -16,7 +16,9 @@ export const userLogin = ({ userOrEmail, password, keepLogin }) => {
                 { userOrEmail, password, keepLogin }
             )
             console.log('user login: ', res.data)
-            localStorage.setItem('riguptoken', res.data.token)
+            if (res.data.user.verified === 1) {
+                localStorage.setItem('riguptoken', res.data.token)
+            }
             dispatch({
                 type: 'USER_LOGIN',
                 payload: res.data.user
@@ -58,6 +60,7 @@ export const userKeepLogin = () => {
 export const register = user => {
     return async dispatch => {
         try {
+            dispatch({ type: 'USER_LOADING' })
             const res = await axios.post(`${API_URL}/users`,
                 {
                     fullname: user.fullname,
@@ -71,11 +74,41 @@ export const register = user => {
                 }
             )
             console.log(res.data)
+            dispatch({
+                type: 'USER_LOGIN',
+                payload: res.data.user
+            })
+        } catch (err) {
+            dispatch(error(err))
+        }
+    }
+}
+
+export const newUserVerification = usertoken => {
+    return async dispatch => {
+        try {
+            dispatch({ type: 'USER_LOADING' })
+            const res = await axios.post(`${API_URL}/users/verify`, {}, {
+                headers: { Authorization: `Bearer ${usertoken}` }
+            })
+            console.log('user login: ', res.data)
             localStorage.setItem('riguptoken', res.data.token)
             dispatch({
                 type: 'USER_LOGIN',
                 payload: res.data.user
             })
+        } catch (err) {
+            dispatch(error(err))
+        }
+    }
+}
+
+export const resendVerification = (id, email) => {
+    return async dispatch => {
+        try {
+            dispatch({ type: 'USER_LOADING' })
+            await axios.post(`${API_URL}/users/resendverify`, { id, email })
+            dispatch({ type: 'RESEND_VERIFICATION_SUCCESS' })
         } catch (err) {
             dispatch(error(err))
         }

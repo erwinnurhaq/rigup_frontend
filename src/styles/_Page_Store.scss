@@ -1,0 +1,330 @@
+.storeContainer{
+    background-color: $dark;
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    padding-top: 7vh;
+    padding-bottom: 150px;
+    @include flex(column, flex-start, center);
+    .title{
+        position: absolute;
+        right: 0;
+        writing-mode: vertical-lr;
+        text-align: center;
+        color: $accent1;
+        font-size: 16vh;
+        height: 100%;
+    }
+    .slick-slider{
+        width: 100%;
+        height: 70vh;
+        .slick-track .slick-slide div.carouselItem{
+            width: 100%;
+            height: 70vh;
+            display: flex !important;
+            flex-direction: column;
+            justify-content: center;
+            transition: all 0.4s ease;
+            position: relative;
+            color: $light;
+            cursor: pointer;
+            .imageContainer{
+                position: absolute;
+                z-index: -1;
+                width: 100%;
+                height: 100%;
+                img{
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    opacity: 0.8;
+                    animation: zoomBg 10s ease alternate infinite;
+                }
+            }
+            .textContainer{
+                padding: 0 10%;
+                h1{
+                    font-size: 7.2rem;
+                    padding-bottom: 16px;
+                }
+                p{
+                    font-size: 3.2rem;
+                }
+            }
+        }
+    }
+    .CategoryBoxContainer{
+        position: relative;
+        width: 100%;
+        .categoryBoxWrapper{
+            width: 100%;
+            @include flex(row, center, center);
+            .categoryBox{
+                position: relative;
+                width: calc(100%/9);
+                background-color: $darkgrey;
+                padding: 3vh 0;
+                cursor: pointer;
+                @include flex(column, center, center);
+                transition: all 0.5s ease;
+                .iconBox{
+                    width: 100%;
+                    height: 8vh;
+                    @include flex(row, center, center); 
+                    transition: all 0.5s ease;
+                }
+                .iconText{
+                    width: 100%;
+                    height: 3vh;
+                    color: $light;
+                    font-size: 1.6rem;
+                    @include flex(row, center, flex-end); 
+                }
+                &:hover{
+                    background-color: $light;
+                    .iconText{
+                        color: $dark
+                    }
+                }
+            }
+            .categoryBox.active{
+                &::before{
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    width: 100%;
+                    height: 5px;
+                    background-color: white;
+                }
+            }
+        }
+    }
+    .CategoryBoxContainer.change{
+        position: fixed;
+        transform: translateY(-2vh);
+        z-index: 1;
+        .categoryBoxWrapper{
+            .categoryBox{
+                padding: 1vh 0;
+                .iconBox{
+                    height: 4vh;
+                }
+                .iconText{
+                    height: 2vh;
+                    font-size: 1.4rem;
+                }
+                &:hover{
+                    background-color: $light;
+                    .iconText{
+                        color: $dark
+                    }
+                }
+            }
+        }
+    }
+    .browseProducts{
+        width: 100%;
+        height: 82vh;
+        position: relative;
+        transition: all 0.5s ease;
+        .browseProductsWrapper{
+            width: 100%;
+            padding: 0 10%;
+            @include flex(column, center, center);
+            .searchContainer{
+                width: 100%;
+                @include flex(row, flex-end, flex-end);
+                .searchWrapper{
+                    width: 15%;
+                    div{
+                        label{
+                            color: $lightgrey;
+                            font-weight: 300;
+                            font-size: 1.4rem;
+                        }
+                        div{
+                            &::before{
+                                border-color:$accent1;
+                            }
+                            &::after{
+                                border-color: $accent1;
+                            }
+                            input{
+                                color: $light;
+                            }
+                        }
+                    }
+                }
+                .browseProductPagination{
+                    transform: translateY(5px);
+                }
+            }
+            .contentContainer{
+                width: 100%;
+                height: 75vh;
+                @include flex(row, center, flex-start);
+                .filterContainer{
+                    width: 15%;
+                    height: 100%;
+                    border-right: 1px solid $accent1;
+                    @include flex(column, flex-start, flex-start);
+                    overflow-y: auto;
+                    h3{
+                        font-size: 1.8rem;
+                        padding-bottom: 15px;
+                        color: $light
+                    }
+                    .childOfMainParent{
+                        width: 100%;
+                        @include flex(column, flex-start, flex-start);
+                        button{
+                            color:$light;
+                            width: 100%;
+                            border-radius: 0 !important;
+                            @include flex(row, flex-start, center);
+                            span{
+                                text-align: left;
+                            }
+                            &:hover{
+                                background-color: $accent1;
+                                color: $light;
+                              }
+                        }
+                    }
+                }
+                .productsContainer{
+                    width: 85%;
+                    height: 100%;
+                    @include flex(column, flex-start, flex-start);
+                    overflow-y: auto;
+                    h3{
+                        padding-left: 20px;
+                        font-size: 1.8rem;
+                        padding-bottom: 15px;
+                        color: $light
+                    }
+                    .productListByCat{
+                        width: 100%;
+                        @include flex(row-reverse, flex-start, flex-start);
+                        flex-wrap: wrap;
+                        .card{
+                            width: 200px;
+                            height: 325px;
+                            margin: 5px;
+                            @include flex(column, flex-end, flex-start);
+                            background-color: $light;
+                            border-radius: 2px;
+                            overflow: hidden;
+                            .top{
+                                width: 100%;
+                                height: 100%;
+                                overflow: hidden;
+                                @include flex(column, flex-end, flex-start);
+                                img{
+                                    width: 100%;
+                                    height: 100%;
+                                    object-fit: cover;
+                                }
+                                .text{
+                                    width: 100%;
+                                    @include flex(column, flex-start, flex-start);
+                                    padding: 10px;
+                                    .productTitle{
+                                        font-size: 1.4rem;
+                                        font-weight: bold;
+                                        color:$dark;
+                                    }
+                                    .productBrand{
+                                        font-size: 1.4rem;
+                                        color: $darkgrey;
+                                    }
+                                    .productPrice{
+                                        padding-top: 10px;
+                                        font-size: 1.4rem;
+                                        color:$dark;
+                                    }
+                                }
+                            }
+                            .bottom{
+                                width: 100%;
+                                height: 50px;
+                                @include flex(row, space-evenly, center);
+                            }
+                            &:hover{
+                                box-shadow: 0px 0px 5px $accent1, 0px 0px 50px $accent1;
+                                transition: transform 0.2s ease;
+                                transform: scale(1.02);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .browseProductsWrapper.change{
+            // padding-top: 1vh;
+        }
+    }
+    .browseProducts.hide{
+        height: 0;
+        pointer-events: none;
+        opacity: 0;
+    }
+    .btnBrowseProducts{
+        background-color: $dark;
+        color: $light;
+        width: 100%;
+        height: 6vh;
+        border-radius: 0 !important;
+        &:hover{
+            background-color: $accent1;
+        }
+    }
+    .sectionBottomA{
+        background-color: $light;
+        width: 100%;
+        height: 40vh;
+        @include flex(row, center, center); 
+        .contentBottomA{
+            width: 15%;
+            margin: 0 25px;
+            @include flex(column, center, center);
+            img{
+                height: 7vh;
+            }
+            h3{
+                font-size: 3.2rem;
+                padding-top: 15px;
+            }
+            p{
+                font-size: 1.6rem;
+                text-align: center;
+                padding: 10px 0;
+            }
+        }
+    }
+    .sectionBottomB{
+        background-color: $darkgrey;
+        width: 100%;
+        height: 60vh;
+        @include flex(column, center, center); 
+        p{
+            color: $light;
+            font-size: 1.8rem;
+            padding-bottom: 5vh;
+        }
+        .logo{
+            @include flex(row, center, center);
+            flex-wrap: wrap; 
+            margin: 0 10%;
+        }
+    }
+}
+
+@keyframes zoomBg {
+    from{
+        width: 100%;
+    }
+    to{
+        width: 108%;
+    }
+}

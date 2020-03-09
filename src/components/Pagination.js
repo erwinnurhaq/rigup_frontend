@@ -6,7 +6,7 @@ import FirstPageIcon from '@material-ui/icons/FirstPage'
 import LastPageIcon from '@material-ui/icons/LastPage'
 
 function Pagination(props) {
-    const { totalProduct, state, setState } = props
+    const { totalProduct, state, setState, rangeLimit, color } = props
 
     const onSetLimit = e => setState({
         ...state,
@@ -34,19 +34,20 @@ function Pagination(props) {
     })
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', color: color || '#222' }}>
             <div style={{ fontSize: '14px', padding: '0 15px' }}>
                 Total Product: {totalProduct}
             </div>
             <div style={{ fontSize: '14px', padding: '0 15px' }}>
-                Limit Row:
+                Limit:
                     </div>
             <Select
                 value={state.limit}
                 onChange={onSetLimit}
+                style={{color: color || '#222'}}
             >
-                <MenuItem value={0} disabled>Limit:</MenuItem>
-                {[5, 10, 15, 20, 25, 50].map(i => (
+                <MenuItem value={0} disabled>Select:</MenuItem>
+                {rangeLimit.map(i => (
                     <MenuItem key={i} value={i} >{i}</MenuItem>
                 ))}
             </Select>
@@ -55,14 +56,14 @@ function Pagination(props) {
                 disabled={state.page === 1}
                 aria-label="first page"
             >
-                <FirstPageIcon />
+                <FirstPageIcon style={{color: color || '#222'}} />
             </IconButton>
             <IconButton
                 onClick={onPrevPageClick}
                 disabled={state.page === 1}
                 aria-label="previous page"
             >
-                <KeyboardArrowLeft />
+                <KeyboardArrowLeft style={{color: color || '#222'}} />
             </IconButton>
             <div style={{ fontSize: '14px', padding: '0 15px' }}>
                 Page {state.page} of {state.totalPage}
@@ -72,14 +73,14 @@ function Pagination(props) {
                 disabled={state.page === state.totalPage}
                 aria-label="next page"
             >
-                <KeyboardArrowRight />
+                <KeyboardArrowRight style={{color: color || '#222'}} />
             </IconButton>
             <IconButton
                 onClick={onLastPageClick}
                 disabled={state.page === state.totalPage}
                 aria-label="last page"
             >
-                <LastPageIcon />
+                <LastPageIcon style={{color: color || '#222'}} />
             </IconButton>
         </div>
     )

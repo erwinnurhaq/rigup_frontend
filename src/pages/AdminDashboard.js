@@ -1,5 +1,6 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react'
-import { withRouter, Route } from 'react-router-dom'
+import { withRouter, Route, Redirect } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import Loading from '../components/Loading'
 import AdminNavbar from '../components/AdminNavbar'
 import { makeStyles } from '@material-ui/core/styles'
@@ -11,8 +12,7 @@ const ManageUser = lazy(() => import('./ManageUser'))
 const useStyles = makeStyles(theme => ({
     root: { display: 'flex' },
     content: {
-        flexGrow: 1,
-        padding: theme.spacing(3)
+        flexGrow: 1
     },
     toolbar: theme.mixins.toolbar,
 }))
@@ -29,6 +29,7 @@ const AdminDashboard = (props) => {
     ]
     const [active, setActive] = useState('')
     const [title, setTitle] = useState('')
+    const user = useSelector(({ user }) => user.user)
 
     useEffect(() => {
         document.title = 'Admin Dashboard - RIGUP!'
@@ -37,6 +38,9 @@ const AdminDashboard = (props) => {
         setTitle(path[0].name)
     }, [pathLists, props.location.pathname])
 
+    if (user && user.roleId !== 1) {
+        return <Redirect to='/' />
+    }
     return (
         <div className={classes.root}>
             <AdminNavbar

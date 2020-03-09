@@ -7,7 +7,7 @@ import RingLoader from 'react-spinners/RingLoader'
 import BarLoader from 'react-spinners/BarLoader'
 
 
-function Loading({ type }) {
+function Loading(props) {
     const style = {
         container: {
             position: 'absolute',
@@ -17,7 +17,7 @@ function Loading({ type }) {
         }
     }
 
-    switch (type) {
+    switch (props.type) {
         case 'bar':
             return (
                 <div style={style.container}>

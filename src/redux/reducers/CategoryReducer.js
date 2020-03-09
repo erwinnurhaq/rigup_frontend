@@ -1,9 +1,13 @@
 const initialState = {
-    selectedCat: 1,
+    selectedCat: 0,
     categories: null,
     mostParent: null,
     mostChild: null,
     child: null,
+    childOfMainParent: null,
+    selectedChildCat: 0,
+    searchFilter: null,
+    selectedFilter: 0,
     loading: true,
     error: null
 }
@@ -49,12 +53,43 @@ export default (state = initialState, action) => {
                 loading: false,
                 error: null
             }
+        case 'CHILDOFMAINPARENT_FETCH_SUCCESS':
+            return {
+                ...state,
+                childOfMainParent: action.payload,
+                searchFilter: null,
+                loading: false,
+                error: null
+            }
         case 'SELECT_CAT':
             return {
                 ...state,
                 selectedCat: action.payload,
                 loading: false,
                 error: null
+            }
+        case 'SELECT_CHILD_CAT':
+            return {
+                ...state,
+                selectedChildCat: action.payload,
+                searchFilter: null,
+                selectedFilter: 0,
+                loading: false,
+                error: null
+            }
+        case 'SELECT_FILTER_CAT':
+            return {
+                ...state,
+                selectedChildCat: 0,
+                selectedFilter: action.payload,
+                loading: false,
+                error: null
+            }
+        case 'CATEGORIES_SEARCH_FILTER':
+            return {
+                ...state,
+                searchFilter: action.payload,
+                childOfMainParent: null
             }
         default:
             return state

@@ -3,6 +3,7 @@ import { withRouter, NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Button } from '@material-ui/core'
 import Loading from './Loading'
+import { setChangeStyle } from '../redux/actions'
 
 const NavbarRightMenu = lazy(() => import('./NavbarRightMenu'))
 
@@ -13,7 +14,7 @@ class Navbar extends React.Component {
 
     rightContainerRender = () => {
         const { user } = this.props.user
-        if (user) {
+        if (user && user.verified === 1) {
             return (
                 <Suspense fallback={<Loading />}>
                     <NavbarRightMenu user={user} />
@@ -24,10 +25,26 @@ class Navbar extends React.Component {
         }
     }
 
+    styleChanger = () => {
+        if (window.scrollY > window.innerHeight / 40) {
+            this.props.setChangeStyle('changeNav', true);
+        } else {
+            this.props.setChangeStyle('changeNav', false)
+        }
+    }
+
+    componentDidMount() {
+        window.addEventListener('scroll', this.styleChanger);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.styleChanger)
+    }
+
     render() {
         if (!this.props.location.pathname.includes('/admindashboard')) {
             return (
-                <div className="navContainer">
+                <div className={`navContainer ${this.props.changeStyle.changeNav ? 'change' : ''}`}>
                     <div className="wrapper">
                         <ul>
                             <li><NavLink to='/'>Home</NavLink></li>
@@ -50,10 +67,10 @@ class Navbar extends React.Component {
     }
 }
 
-const stateToProps = ({ user }) => {
+const stateToProps = ({ user, changeStyle }) => {
     return {
-        user
+        user, changeStyle
     }
 }
 
-export default withRouter(connect(stateToProps)(Navbar))
+export default withRouter(connect(stateToProps, { setChangeStyle, setChangeStyle })(Navbar))

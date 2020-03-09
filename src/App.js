@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import './styles/App.scss'
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
 
 //redux actions
 import { userKeepLogin } from './redux/actions'
@@ -10,16 +11,18 @@ import { userKeepLogin } from './redux/actions'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Loading from './components/Loading'
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
 
 //public
 const Test = lazy(() => import('./pages/Test'))
 const Test2 = lazy(() => import('./pages/Test2'))
 const Test3 = lazy(() => import('./pages/Test3'))
-const Register = lazy(() => import('./pages/Register'))
-const OnDevelopment = lazy(() => import('./pages/OnDevelopment'))
 const Home = lazy(() => import('./pages/Home'))
 const Login = lazy(() => import('./pages/Login'))
+const Register = lazy(() => import('./pages/Register'))
+const Verification = lazy(() => import('./pages/Verification'))
+const Verifying = lazy(() => import('./components/Verifying'))
+const Store = lazy(() => import('./pages/Store'))
+const OnDevelopment = lazy(() => import('./pages/OnDevelopment'))
 
 //admin area
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'))
@@ -49,7 +52,9 @@ class App extends React.Component {
               <Route path="/promo" component={OnDevelopment} />
               <Route path="/login" component={Login} />
               <Route path="/register" component={Register} />
-              <Route path="/store" component={OnDevelopment} />
+              <Route path="/verification" component={Verification} />
+              <Route path="/verifying/:usertoken" component={Verifying} />
+              <Route path="/store" component={Store} />
               <Route path="/build" component={OnDevelopment} />
               <Route path="/userprofile" component={OnDevelopment} />
               <Route path="/usercart" component={OnDevelopment} />

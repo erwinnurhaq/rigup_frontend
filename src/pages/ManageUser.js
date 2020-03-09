@@ -110,6 +110,7 @@ function ManageUser() {
                     totalProduct={userCount}
                     state={state}
                     setState={setState}
+                    rangeLimit={[5, 10, 15, 20, 25, 50]}
                 />
             </TableCell>
         </TableRow>

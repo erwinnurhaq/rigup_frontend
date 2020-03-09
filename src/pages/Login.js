@@ -1,6 +1,8 @@
 import React, { Component, lazy, Suspense } from 'react'
 import { connect } from 'react-redux'
-import { TextField, Button, FormControlLabel, Checkbox } from '@material-ui/core'
+import { TextField, Button, FormControlLabel, Checkbox, InputAdornment, IconButton } from '@material-ui/core'
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 import { userLogin } from '../redux/actions'
 import { Redirect, Link } from 'react-router-dom'
@@ -14,6 +16,7 @@ class Login extends Component {
         userOrEmail: '',
         password: '',
         keepLogin: false,
+        showPassword: false
     }
 
     componentDidMount() {
@@ -38,10 +41,10 @@ class Login extends Component {
     }
 
     render() {
-        if (this.props.user.user) {
-            return (
-                <Redirect to='/' />
-            )
+        if (this.props.user.user && this.props.user.user.verified === 1) {
+            return <Redirect to='/' />
+        } else if (this.props.user.user && this.props.user.user.verified === 0) {
+            return <Redirect to='/verification' />
         } else {
             return (
                 <div className="loginContainer">
@@ -55,10 +58,21 @@ class Login extends Component {
                                 fullWidth required
                             />
                             <TextField
-                                margin="dense" label="Password" id="password" type="password"
+                                margin="dense" label="Password" id="password" type={this.state.showPassword ? 'text' : 'password'}
                                 value={this.state.password}
                                 onChange={this.onInputChange}
                                 fullWidth required
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={() => this.setState({ showPassword: !this.state.showPassword })}
+                                            onMouseDown={e => e.preventDefault()}
+                                        >
+                                            {this.state.showPassword ? <Visibility style={{ color: 'whitesmoke' }} /> : <VisibilityOff style={{ color: 'grey' }} />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                }}
                             />
                             <div className="btnLoginContainer">
                                 <FormControlLabel

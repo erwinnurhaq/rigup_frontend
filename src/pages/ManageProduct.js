@@ -20,6 +20,7 @@ import {
 	setInitialProductDetail
 } from '../redux/actions';
 
+import Formatter from '../support/FormatterRupiah'
 import Loading from '../components/Loading';
 import TableHeadRow from '../components/TableHeadRow';
 import Pagination from '../components/Pagination';
@@ -49,6 +50,7 @@ const ManageProduct = () => {
 
 	//------------------------------useeffect
 	useEffect(() => {
+		dispatch(selectCat(1))
 		dispatch(getMostParent());
 	}, [dispatch]);
 
@@ -180,7 +182,7 @@ const ManageProduct = () => {
 					<TableCell>{i.brand}</TableCell>
 					<TableCell>{i.name}</TableCell>
 					{/* <TableCell dangerouslySetInnerHTML={{ __html: i.description }} /> */}
-					<TableCell>{i.price}</TableCell>
+					<TableCell>{Formatter.format(i.price)}</TableCell>
 					<TableCell>{i.stock}</TableCell>
 					<TableCell>
 						<div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -253,8 +255,10 @@ const ManageProduct = () => {
 							<TableCell colSpan={7} align="right">
 								<Pagination
 									totalProduct={products.productListByCatCount}
+									rangeLimit={[5, 10, 15, 20, 25, 50]}
 									state={state}
-									setState={setState} />
+									setState={setState}
+									/>
 							</TableCell>
 						</TableRow>
 					</TableFooter>

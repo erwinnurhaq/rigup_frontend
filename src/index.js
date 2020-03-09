@@ -11,6 +11,10 @@ import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProductio
 import thunk from 'redux-thunk'
 import reducers from './redux/reducers'
 
+// slick carousel css
+import "slick-carousel/slick/slick.css"
+import "slick-carousel/slick/slick-theme.css"
+
 const middlewares = [thunk]
 
 ReactDOM.render(

@@ -1,3 +1,4 @@
+export * from './ChangeStyleAction';
 export * from './UserAction';
 export * from './BrandAction';
 export * from './BrandCatAction';
@@ -7,3 +8,5 @@ export * from './ProductCatAction';
 export * from './ProductDetailAction';
 export * from './ManageUserAction';
 export * from './FormProductAction';
+export * from './FormRegisterAction';
+export * from './CarouselAction';

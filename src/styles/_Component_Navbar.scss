@@ -4,14 +4,16 @@
     position: fixed;
     top: 0;
     z-index: 1;
+    transition: all 0.4s ease;
     .wrapper{
         width: 100%;
         max-width: 1920px;
         height: 7vh;
-        max-height: 68px;
+        // max-height: 68px;
         display: grid;
         grid-template-columns: 2fr 1fr 2fr;
         // background-color: rgba(255, 255, 255, 0.2);
+        transition: all 0.4s ease;
         ul{
             @include flex(row, flex-start, center);
             list-style: none;
@@ -21,8 +23,9 @@
                 height: 100%;
                 @include flex(row, flex-start, center);
                 a{
+                    transition: all 0.4s ease;
                     color: $light;
-                    font-size: 16px;
+                    font-size: 1.6rem;
                     text-transform: uppercase;
                     font-weight: 400;
                 }
@@ -34,8 +37,9 @@
             @include flex(row, center, center);
             position: relative;
             p{
+                transition: all 0.4s ease;
                 font-family: mistral;
-                font-size: 42px;
+                font-size: 4.2rem;
                 color: $light;
             }
             &::after{
@@ -59,7 +63,8 @@
                     color: $light;
                     border: 1px solid $lightgrey;
                     font-size: 1.4rem;
-                    margin-top: 2vh;
+                    padding: 8px 30px;
+                    // margin-top: 1vh;
                 }
                 .dropdownMenu{
                     button{
@@ -99,5 +104,54 @@
             }
         }
     }
-    
+}
+.navContainer.change{
+    background-color: rgba(255, 255, 255, 0.7);
+    .wrapper{
+        height: 5vh;
+        ul{
+            li{
+                a{
+                    color: $dark;
+                    padding-bottom: 1px;
+                }
+            }
+        }
+        .logoContainer{
+            p{
+                color: $dark;
+                font-size: 3.6rem;
+            }
+        }
+        .rightContainer{
+            .rightWrapper{
+                .btnLogin{
+                    color: $dark;
+                    border: 1px solid $darkgrey;
+                    padding: 5px 30px;
+                }
+                .dropdownMenu{
+                    button{
+                        margin-top: 0;
+                        color: $dark;
+                        .username{
+                            padding: 0 10px 0 0;
+                        }
+                    }
+                    div{
+                        ul{
+                            background-color: $light;
+                            li{
+                                color: $dark;
+                                &:hover{
+                                    color: $light;
+                                    background-color: $dark;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

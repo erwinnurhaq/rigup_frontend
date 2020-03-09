@@ -1,35 +1,25 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react'
-import Axios from 'axios'
 import { Redirect } from 'react-router-dom'
-import { Button, TextField, FormControl, InputLabel, Select, MenuItem, FormHelperText, RadioGroup, Radio, FormControlLabel } from '@material-ui/core';
+import { Button, TextField, FormControl, InputLabel, Select, MenuItem, FormHelperText, RadioGroup, Radio, FormControlLabel, DialogActions, InputAdornment, IconButton } from '@material-ui/core';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { useSelector, useDispatch } from 'react-redux'
-import { API_URL } from '../support/API_URL'
-import { register } from '../redux/actions'
+import { register, fetchCityList, setRegisterInitial, setRegisterInput } from '../redux/actions'
 
 import Loading from '../components/Loading'
 const ModalWarning = lazy(() => import('../components/ModalWarning'))
+const ModalDefault = lazy(() => import('../components/ModalDefault'))
 
 const Register = () => {
 
-    let initialState = {
-        user: {
-            fullname: '',
-            genderId: '',
-            address: '',
-            cityId: '',
-            phone: '',
-            email: '',
-            username: '',
-            password: '',
-            confirmPass: ''
-        },
-        cityList: []
-    }
     const dispatch = useDispatch()
-    const [state, setState] = useState(initialState)
+    const [showPassword, setShowPassword] = useState(false)
+    const [modalShowLoading, setModalShowLoading] = useState(false)
     const [modalShow, setModalShow] = useState(false)
     const [warningMessage, setWarningMessage] = useState('')
     const currentUser = useSelector(({ user }) => user)
+    const formRegister = useSelector(({ formRegister }) => formRegister.user)
+    const cityList = useSelector(({ formRegister }) => formRegister.cityList)
 
     // RegEx variable
     const minChar = new RegExp(/^(?=.{8,})/)
@@ -38,33 +28,22 @@ const Register = () => {
     const minUpCase = new RegExp(/^(?=.*[A-Z])/)
 
     //check form for appropriate characters
-    const nameChecked = minChar.test(state.user.username);
-    const passCharChecked = minChar.test(state.user.password);
-    const passNumChecked = minNum.test(state.user.password);
-    const passLowCaseChecked = minLowCase.test(state.user.password);
-    const passUpCaseChecked = minUpCase.test(state.user.password);
+    const nameChecked = minChar.test(formRegister.username);
+    const passCharChecked = minChar.test(formRegister.password);
+    const passNumChecked = minNum.test(formRegister.password);
+    const passLowCaseChecked = minLowCase.test(formRegister.password);
+    const passUpCaseChecked = minUpCase.test(formRegister.password);
 
     useEffect(() => {
         document.title = 'Register - RIGUP!'
-        Axios.get(`${API_URL}/ro/city`)
-            .then(res => {
-                console.log(res.data)
-                setState({ ...state, cityList: res.data })
-            })
-            .catch(err => console.log(err))
-    }, [])
+        dispatch(fetchCityList())
+    }, [dispatch])
 
     const onInputChange = e => {
-        setState({
-            ...state,
-            user: { ...state.user, [e.target.id]: e.target.value }
-        })
+        dispatch(setRegisterInput(e.target.id, e.target.value))
     }
     const onInputNumChange = e => {
-        setState({
-            ...state,
-            user: { ...state.user, [e.target.name]: parseInt(e.target.value) }
-        })
+        dispatch(setRegisterInput(e.target.name, parseInt(e.target.value)))
     }
 
     const warning = message => {
@@ -75,8 +54,8 @@ const Register = () => {
     //-----------------------------------------------------------------
     const onRegClick = async () => {
         //check form not blank
-        for (const key in state.user) {
-            if (state.user[key] === '') {
+        for (const key in formRegister) {
+            if (formRegister[key] === '') {
                 return warning('Please fill the form correctly!')
             }
         }
@@ -89,16 +68,17 @@ const Register = () => {
             return warning('Username or Password is incorrect!')
         }
         //check confirm pass
-        if (state.user.password !== state.user.confirmPass) {
+        if (formRegister.password !== formRegister.confirmPass) {
             return warning('Password and Confirm Password is incorrect!')
         }
         // //do register
-        await dispatch(register(state.user))
-        setState(initialState)
+        setModalShowLoading(!modalShowLoading)
+        await dispatch(register(formRegister))
+        dispatch(setRegisterInitial())
     }
     //-----------------------------------------------------------------
 
-    const renderCityList = () => state.cityList.map(i => (
+    const renderCityList = () => cityList.map(i => (
         <MenuItem key={i.city_id} value={i.city_id}>{i.type} {i.city_name}</MenuItem>
     ))
 
@@ -112,11 +92,28 @@ const Register = () => {
         </Suspense>
     ) : null
 
+    const renderModalLoading = () => modalShowLoading ? (
+        <Suspense fallback={<Loading />}>
+            <ModalDefault
+                show={modalShowLoading}
+                title='Registering'
+            >
+                <div>{currentUser.error ? currentUser.error : <Loading />}</div>
+                <DialogActions>
+                    <Button
+                        variant='text'
+                        onClick={() => setModalShowLoading(!modalShowLoading)}
+                    >Close</Button>
+                </DialogActions>
+            </ModalDefault>
+        </Suspense>
+    ) : null
 
-    if (currentUser.user) {
-        return (
-            <Redirect to='/' />
-        )
+
+    if (currentUser.user && currentUser.user.verified === 1) {
+        return <Redirect to='/' />
+    } else if (currentUser.user && currentUser.user.verified === 0) {
+        return <Redirect to='/verification' />
     } else {
         return (
             <div className="registerContainer">
@@ -129,7 +126,7 @@ const Register = () => {
                             id="fullname"
                             type="text"
                             fullWidth
-                            value={state.fullname}
+                            value={formRegister.fullname}
                             onChange={onInputChange}
                             required
                         />
@@ -138,19 +135,19 @@ const Register = () => {
                                 aria-label="gender"
                                 name="genderId"
                                 id="genderId"
-                                value={state.user.genderId}
+                                value={formRegister.genderId}
                                 onChange={onInputNumChange}
                             >
                                 <div style={{ display: 'flex' }}>
                                     <FormControlLabel
                                         value="1"
-                                        checked={state.user.genderId === 1}
+                                        checked={formRegister.genderId === 1}
                                         style={{ fontSize: '12px' }}
                                         control={<Radio />}
                                         label="Male" />
                                     <FormControlLabel
                                         value="2"
-                                        checked={state.user.genderId === 2}
+                                        checked={formRegister.genderId === 2}
                                         style={{ fontSize: '12px' }}
                                         control={<Radio />}
                                         label="Female" />
@@ -163,7 +160,7 @@ const Register = () => {
                             id="address"
                             type="text"
                             fullWidth
-                            value={state.address}
+                            value={formRegister.address}
                             onChange={onInputChange}
                             required
                         />
@@ -173,7 +170,7 @@ const Register = () => {
                                 labelId="cityId"
                                 id="cityId"
                                 name="cityId"
-                                value={state.user.cityId}
+                                value={formRegister.cityId}
                                 onChange={onInputNumChange}
                                 style={{ color: 'white' }}
                             >
@@ -188,7 +185,7 @@ const Register = () => {
                             id="phone"
                             type="number"
                             fullWidth
-                            value={state.phone}
+                            value={formRegister.phone}
                             onChange={onInputChange}
                             required
                         />
@@ -198,7 +195,7 @@ const Register = () => {
                             id="email"
                             type="email"
                             fullWidth
-                            value={state.email}
+                            value={formRegister.email}
                             onChange={onInputChange}
                             required
                         />
@@ -208,7 +205,7 @@ const Register = () => {
                             id="username"
                             type="text"
                             fullWidth
-                            value={state.username}
+                            value={formRegister.username}
                             onChange={onInputChange}
                             required
                         />
@@ -216,19 +213,30 @@ const Register = () => {
                             margin="dense"
                             label="Your password"
                             id="password"
-                            type="password"
+                            type={showPassword ? 'text' : 'password'}
                             fullWidth
-                            value={state.password}
+                            value={formRegister.password}
                             onChange={onInputChange}
                             required
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        onMouseDown={e => e.preventDefault()}
+                                    >
+                                        {showPassword ? <Visibility style={{ color: 'whitesmoke' }} /> : <VisibilityOff style={{ color: 'grey' }} />}
+                                    </IconButton>
+                                </InputAdornment>
+                            }}
                         />
                         <TextField
                             margin="dense"
                             label="Confirm password"
                             id="confirmPass"
-                            type="password"
+                            type={showPassword ? 'text' : 'password'}
                             fullWidth
-                            value={state.confirmPass}
+                            value={formRegister.confirmPass}
                             onChange={onInputChange}
                             required
                         />
@@ -251,6 +259,7 @@ const Register = () => {
                     </div>
                 </form>
                 {renderModalWarning()}
+                {renderModalLoading()}
             </div>
         )
     }

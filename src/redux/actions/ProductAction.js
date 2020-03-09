@@ -2,23 +2,31 @@ import axios from 'axios';
 import { API_URL } from '../../support/API_URL';
 
 const error = (err) => {
-	let error = err.response ? err.response.data.error : 'Cannot connect to API';
+	let error = err.response ? err.response.data.message : 'Cannot connect to API';
 	return {
 		type: 'PRODUCT_ERROR',
 		payload: error
 	};
 };
 
-export const getProducts = () => {
+export const getProductList = (search, limit, offset, filter ) => {
 	return async (dispatch) => {
 		try {
 			dispatch({ type: 'PRODUCT_LOADING' });
-			const res = await axios.get(`${API_URL}/products`);
+			const res = await axios.get(`${API_URL}/products`,{
+				params: {search, limit, offset, filter}
+			});
 			console.log('all products: ', res.data);
 			dispatch({
 				type: 'PRODUCTLIST_FETCH_SUCCESS',
 				payload: res.data
-			});
+			})
+			if(filter){
+				dispatch({
+					type: 'PRODUCTLISTCOUNT_FETCH_SUCCESS',
+					payload: res.data.length
+				})
+			}
 		} catch (err) {
 			dispatch(error(err));
 		}
