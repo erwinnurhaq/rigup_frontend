@@ -23,6 +23,7 @@ const Verification = lazy(() => import('./pages/Verification'))
 const Verifying = lazy(() => import('./components/Verifying'))
 const Store = lazy(() => import('./pages/Store'))
 const OnDevelopment = lazy(() => import('./pages/OnDevelopment'))
+const UserDashboard = lazy(() => import('./pages/UserDashboard'))
 
 //admin area
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'))
@@ -56,9 +57,7 @@ class App extends React.Component {
               <Route path="/verifying/:usertoken" component={Verifying} />
               <Route path="/store" component={Store} />
               <Route path="/build" component={OnDevelopment} />
-              <Route path="/userprofile" component={OnDevelopment} />
-              <Route path="/usercart" component={OnDevelopment} />
-              <Route path="/usertransactions" component={OnDevelopment} />
+              <Route path="/userdashboard" component={UserDashboard} />
 
               <Route path="/test" component={Test} />
               <Route path="/test2" component={Test2} />

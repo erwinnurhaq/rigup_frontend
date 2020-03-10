@@ -10,7 +10,10 @@ const NavbarRightMenu = lazy(() => import('./NavbarRightMenu'))
 
 class Navbar extends React.Component {
 
-    toLogin = () => this.props.history.push('/login')
+    toLogin = () => {
+        localStorage.setItem('rigupprevpath', this.props.location.pathname)
+        this.props.history.push('/login')
+    }
 
     rightContainerRender = () => {
         const { user } = this.props.user

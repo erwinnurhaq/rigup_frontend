@@ -1,8 +1,7 @@
 const initialState = {
     user: null,
     error: null,
-    loading: false,
-    userTransactions: []
+    loading: false
 }
 
 export default (state = initialState, action) => {
@@ -27,12 +26,6 @@ export default (state = initialState, action) => {
             }
         case 'USER_LOGOUT':
             return initialState
-        case 'USER_TRANSACTIONS':
-            return {
-                ...state,
-                userTransactions: action.payload,
-                loading: false
-            }
         case 'RESEND_VERIFICATION_SUCCESS':
             return { ...state, loading: false }
         default:

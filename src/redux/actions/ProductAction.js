@@ -21,13 +21,24 @@ export const getProductList = (search, limit, offset, filter ) => {
 				type: 'PRODUCTLIST_FETCH_SUCCESS',
 				payload: res.data
 			})
-			if(filter && offset === 0){
-				console.log('in, produclistcount', filter, offset)
-				dispatch({
-					type: 'PRODUCTLISTCOUNT_FETCH_SUCCESS',
-					payload: res.data.length
-				})
-			}
+		} catch (err) {
+			dispatch(error(err));
+		}
+	};
+};
+
+export const getCountProductList = (search, filter) => {
+	return async (dispatch) => {
+		try {
+			dispatch({ type: 'PRODUCT_LOADING' });
+			const res = await axios.get(`${API_URL}/products`,{
+				params: {search, filter}
+			});
+			console.log('in, produclistcount', filter)
+			dispatch({
+				type: 'PRODUCTLISTCOUNT_FETCH_SUCCESS',
+				payload: res.data.length
+			})
 		} catch (err) {
 			dispatch(error(err));
 		}

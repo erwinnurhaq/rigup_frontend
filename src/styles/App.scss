@@ -2,6 +2,7 @@
 @import './Component_Loading';
 @import './Component_Navbar';
 @import './Component_Footer';
+@import './Component_ModalProductDetail';
 @import './Page_ManageProduct';
 @import './Page_ManageBrandAndCategory';
 @import './Page_ManageUser';
@@ -11,6 +12,7 @@
 @import './Page_Register';
 @import './Page_Verification';
 @import './Page_Store';
+@import './Page_UserDashboard';
 
 *, ::before, ::after {
     padding: 0;

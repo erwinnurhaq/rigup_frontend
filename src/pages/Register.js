@@ -78,6 +78,12 @@ const Register = () => {
     }
     //-----------------------------------------------------------------
 
+    const onKeyUp = e => {
+        if (e.key === "Enter") {
+            onRegClick()
+        }
+    }
+
     const renderCityList = () => cityList.map(i => (
         <MenuItem key={i.city_id} value={i.city_id}>{i.type} {i.city_name}</MenuItem>
     ))
@@ -238,6 +244,7 @@ const Register = () => {
                             fullWidth
                             value={formRegister.confirmPass}
                             onChange={onInputChange}
+                            onKeyUp={onKeyUp}
                             required
                         />
                         <div className="btnContainer">

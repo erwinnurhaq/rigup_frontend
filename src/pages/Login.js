@@ -40,9 +40,15 @@ class Login extends Component {
         this.props.userLogin({ userOrEmail, password, keepLogin })
     }
 
+    onKeyUp = e => {
+        if (e.key === "Enter") {
+            this.onLoginClick()
+        }
+    }
+
     render() {
         if (this.props.user.user && this.props.user.user.verified === 1) {
-            return <Redirect to='/' />
+            return <Redirect to={localStorage.getItem('rigupprevpath') || '/'} />
         } else if (this.props.user.user && this.props.user.user.verified === 0) {
             return <Redirect to='/verification' />
         } else {
@@ -61,6 +67,7 @@ class Login extends Component {
                                 margin="dense" label="Password" id="password" type={this.state.showPassword ? 'text' : 'password'}
                                 value={this.state.password}
                                 onChange={this.onInputChange}
+                                onKeyUp={this.onKeyUp}
                                 fullWidth required
                                 InputProps={{
                                     endAdornment: <InputAdornment position="end">

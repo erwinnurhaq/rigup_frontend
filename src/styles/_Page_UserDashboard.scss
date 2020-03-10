@@ -1,0 +1,125 @@
+.userDashboardContainer{
+    width: 100%;
+    padding: 10vh 10% 0 10%;
+    @include flex(row, center, flex-start);
+    .title{
+        position: absolute;
+        top: 0;
+        right: 0;
+        writing-mode: vertical-rl;
+        text-align: center;
+        color: $accent1;
+        font-size: 16vh;
+        height: 100%;
+    }
+    .sideBarContainer{
+        width: 15%;
+        min-height: 80vh;
+        border-right: 1px solid $accent1;
+        align-self: center;
+        @include flex(column, flex-start, flex-start);
+        h3{
+            font-size: 1.8rem;
+            padding-bottom: 15px;
+            color: $light
+        }
+        .sideBarWrapper{
+            width: 100%;
+            @include flex(column, flex-start, flex-start);
+            button{
+                color:$light;
+                width: 100%;
+                border-radius: 0 !important;
+                @include flex(row, flex-start, center);
+                span{
+                    text-align: left;
+                }
+                &:hover{
+                    background-color: $accent1;
+                    color: $light;
+                  }
+            }
+        }
+    }
+    .userDashboardContentContainer{
+        width: 85%;
+        height: 100%;
+        @include flex(column, flex-start, flex-start);
+        overflow-y: auto;
+        &::-webkit-scrollbar-track{
+            -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0);
+            background-color: rgba(245, 245, 245, 0);
+        }
+        &::-webkit-scrollbar{
+            width: 6px;
+            background-color: rgba(245, 245, 245, 0);
+        }
+        &::-webkit-scrollbar-thumb{
+            background-color: $accent1;
+            // border: 2px solid #55555541;
+            border-radius: 3px;
+        }
+        h3{
+            padding-left: 20px;
+            font-size: 1.8rem;
+            padding-bottom: 15px;
+            color: $light
+        }
+        .userDashboardContentWrapper{
+            width: 100%;
+            .userCartContainer{
+                width: 100%;
+                @include flex(row, space-between, flex-start);
+                .userCartWrapper{
+                    width: 60%;
+                    padding: 0 50px;
+                    table{
+                        background-color: $darkgrey;
+                        tr{
+                            th{
+                                padding: 5px;
+                                background-color: $dark;
+                                color: $light;
+                                border-bottom: 1px solid $dimgrey;
+                            }
+                            td{
+                                padding: 5px;
+                                text-align: center;
+                                color: $light;
+                                border-bottom: 1px solid $dimgrey;
+                            }
+                            &:hover{
+                                background-color: $dark;
+                                border: none;
+                                transform: scale(1.02);
+                            }
+                        }
+                    }
+                    table tr td:nth-child(4){
+                        div{
+                            label{
+                                color: $lightgrey;
+                                font-weight: 300;
+                                font-size: 1.4rem;
+                            }
+                            div{
+                                &::before{
+                                    border-color:$accent1;
+                                }
+                                &::after{
+                                    border-color: $accent1;
+                                }
+                                input{
+                                    color: $light;
+                                }
+                            }
+                        }
+                    }
+                }
+                .userDataWrapper{
+                    width: 40%;
+                }
+            }
+        }
+    }
+}

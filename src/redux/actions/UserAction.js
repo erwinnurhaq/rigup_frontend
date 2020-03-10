@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { API_URL } from '../../support/API_URL'
+import {getUserCart} from './UserCartAction'
 
 const error = (err) => {
     let error = err.response && Object.keys(err.response).length >= 0 ? err.response.data.message : 'Cannot connect to API'
@@ -16,13 +17,14 @@ export const userLogin = ({ userOrEmail, password, keepLogin }) => {
                 { userOrEmail, password, keepLogin }
             )
             console.log('user login: ', res.data)
-            if (res.data.user.verified === 1) {
-                localStorage.setItem('riguptoken', res.data.token)
-            }
             dispatch({
                 type: 'USER_LOGIN',
                 payload: res.data.user
             })
+            if (res.data.user.verified === 1) {
+                localStorage.setItem('riguptoken', res.data.token)
+                dispatch(getUserCart(res.data.user.id))
+            }
         } catch (err) {
             dispatch(error(err))
         }
@@ -49,6 +51,9 @@ export const userKeepLogin = () => {
                     type: 'USER_LOGIN',
                     payload: res.data.user
                 })
+                if (res.data.user.verified === 1) {
+                    dispatch(getUserCart(res.data.user.id))
+                }
             } catch (err) {
                 dispatch(userLogout())
                 dispatch(error(err))

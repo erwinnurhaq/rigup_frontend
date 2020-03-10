@@ -50,16 +50,23 @@ export const getCategoriesSearchFilter = (search) => {
 				let obj = {}
 				obj.categoryId = i.categoryId
 				obj.category = i.category
+				obj.count = 1
 				return obj
-			})
+			}).sort((a,b)=> a.categoryId - b.categoryId)
 			console.log('res.data product list: ', res.data)
 			console.log('all before filtered: ',x)
-			let categoryFilterResult = [x[0]]
-			x.forEach(i => {
-				if(categoryFilterResult.findIndex(j=> j.categoryId===i.categoryId)<0){
-					categoryFilterResult.push(i)
+			let categoryFilterResult = []
+			let count = 1
+			for(let i = 0; i< x.length; i++){
+				if(categoryFilterResult.findIndex(j=> j.categoryId===x[i].categoryId)<0){
+					categoryFilterResult.push(x[i])
+					count = 1
+				} else {
+					categoryFilterResult[categoryFilterResult.length-1].count = count
 				}
-			});
+				count ++
+			}
+			console.log('after filtered: ', categoryFilterResult)
 			dispatch({
 				type: 'CATEGORIES_SEARCH_FILTER',
 				payload: categoryFilterResult

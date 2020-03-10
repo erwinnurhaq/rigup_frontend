@@ -60,15 +60,15 @@ class NavbarRightMenu extends Component {
                 <Paper>
                     <ClickAwayListener onClickAway={this.handleClose}>
                         <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={this.handleListKeyDown}>
-                            <MenuItem onClick={() => this.onLinkClick(`/userprofile`)}>
+                            <MenuItem onClick={() => this.onLinkClick(`/userdashboard/profile`)}>
                                 <AccountCircleIcon />
                                 Profile
                             </MenuItem>
-                            <MenuItem onClick={() => this.onLinkClick(`/usercart`)}>
+                            <MenuItem onClick={() => this.onLinkClick(`/userdashboard/cart`)}>
                                 <ShoppingCartIcon />
                                 My Cart
                             </MenuItem>
-                            <MenuItem onClick={() => this.onLinkClick(`/usertransactions`)}>
+                            <MenuItem onClick={() => this.onLinkClick(`/userdashboard/transaction`)}>
                                 <TheatersIcon />
                                 My Transactions
                             </MenuItem>

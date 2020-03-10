@@ -22,18 +22,20 @@ const Store = () => {
         'kingston.png', 'klevv.png', 'logitech.png', 'samsung.png', 'sandisk.png', 'seasonic.png', 'zotac.png'
     ]
 
-    const onBrowseProductsClick = async() => {
+    const onBrowseProductsClick = () => {
         if (selectedCat === 0 && !changeBrowseProducts) {
             window.scrollTo(0, 0.725 * window.innerHeight)
-            dispatch(selectCat(1))
-            await dispatch(getChildOfMainParent(1))
-            await dispatch(getCountProductByCategoryId(1))
-            await dispatch(getProductByCategoryId(1, 12, 0))
             dispatch(setChangeStyle('changeBrowseProducts', true))
+            dispatch(selectCat(1))
+            setTimeout(async()=>{
+                await dispatch(getChildOfMainParent(1))
+                await dispatch(getCountProductByCategoryId(1))
+                await dispatch(getProductByCategoryId(1, 12, 0))
+            }, 400)
         } else {
             window.scrollTo(0, 0)
-            dispatch(selectCat(0))
             dispatch(setChangeStyle('changeBrowseProducts', false))
+            dispatch(selectCat(0))
         }
     }
 

@@ -39,21 +39,24 @@ const CategoryBox = () => {
         }
     }
 
-    const onCategoryClick = async(id) => {
+    const onCategoryClick = (id) => {
         if (selectedCat === id) {
+            window.scrollTo(0, 0)
+            dispatch(setChangeStyle('changeBrowseProducts', false))
             dispatch(selectFilter(0))
             dispatch(selectCat(0))
             dispatch(selectChildCat(0))
-            dispatch(setChangeStyle('changeBrowseProducts', false))
         } else {
             window.scrollTo(0, 0.725 * window.innerHeight)
+            dispatch(setChangeStyle('changeBrowseProducts', true))
             dispatch(selectFilter(0))
             dispatch(selectCat(id))
-            await dispatch(getChildOfMainParent(id))
-            await dispatch(getCountProductByCategoryId(id))
-            await dispatch(getProductByCategoryId(id, 12, 0))
+            setTimeout(async() => {
+                await dispatch(getChildOfMainParent(id))
+                await dispatch(getCountProductByCategoryId(id))
+                await dispatch(getProductByCategoryId(id, 12, 0))
+            }, 400);
             dispatch(selectChildCat(0))
-            dispatch(setChangeStyle('changeBrowseProducts', true))
         }
     }
 
