@@ -66,6 +66,11 @@
                     padding: 8px 30px;
                     // margin-top: 1vh;
                 }
+                .navIconContainer{
+                    height: 100%;
+                    @include flex(row, center, center);
+                    transform: translateY(2px);
+                }
                 .dropdownMenu{
                     button{
                         @include flex(row, center, center);

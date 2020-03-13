@@ -22,14 +22,27 @@ const StoreProductCard = (props) => {
     const onBtnAddCartClick = async() => {
         if(!user){
             setShowModalWarning(!showModalWarning)
+        } else if(quantity<1){
+            alert('Minimum purchase 1pcs')
         } else {
-            let find = userCart.filter(i=> i.productId === product.id)
-            if(find.length===0){
-                await dispatch(addCart({productId: product.id, quantity}))
+            let weight = 0
+            if(userCart){
+                userCart.forEach(i=> weight+=(i.weight*i.quantity))
+                if(weight>=30000){
+                    alert('Over weight! Maximum courier weight 30kg. Please split to another transaction.')
+                } else {
+                    let find = userCart.filter(i=> i.productId === product.id)
+                    if(find.length===0){
+                        await dispatch(addCart({productId: product.id, quantity}))
+                    } else {
+                        await dispatch(editCart(find[0].id, find[0].quantity+quantity))
+                    }
+                    setShowModalSuccess(!showModalSuccess)
+                }
             } else {
-                await dispatch(editCart(find[0].id, find[0].quantity+quantity))
+                await dispatch(addCart({productId: product.id, quantity}))
+                setShowModalSuccess(!showModalSuccess)
             }
-            setShowModalSuccess(!showModalSuccess)
         }
     }
     

@@ -97,11 +97,14 @@ export const newUserVerification = usertoken => {
                 headers: { Authorization: `Bearer ${usertoken}` }
             })
             console.log('user login: ', res.data)
-            localStorage.setItem('riguptoken', res.data.token)
             dispatch({
                 type: 'USER_LOGIN',
                 payload: res.data.user
             })
+            if (res.data.user.verified === 1) {
+                localStorage.setItem('riguptoken', res.data.token)
+                dispatch(getUserCart(res.data.user.id))
+            }
         } catch (err) {
             dispatch(error(err))
         }

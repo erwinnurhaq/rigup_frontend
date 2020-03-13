@@ -38,7 +38,7 @@ const UserDashboard = (props) => {
         </Button>
     ))
 
-    if (user && user.verified !== 1) {
+    if (!user || user.verified !== 1) {
         return <Redirect to='/' />
     }
     return (

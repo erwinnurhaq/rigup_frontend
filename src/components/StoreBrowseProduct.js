@@ -45,20 +45,14 @@ const StoreBrowseProduct = () => {
     ]
     const [sort, setSort] = useState(1)
     const [search, setSearch] = useState('')
-
-    // useEffect(()=>{
-    //     if(selectedCat !== 0){
-    //         dispatch(getProductByCategoryId(selectedCat, state.limit, state.offset))
-    //     }
-    // },[dispatch, selectedCat, state.limit, state.offset])
     
     useEffect(()=>{
         if(productListByCatCount){
             let id = selectedChildCat!==0? selectedChildCat : selectedCat
             dispatch(getCountProductByCategoryId(id))
-            dispatch(getProductByCategoryId(id, state.limit, state.offset))
+            dispatch(getProductByCategoryId(id, sort, state.limit, state.offset))
         }
-    },[dispatch, state.limit, state.offset])
+    },[dispatch, sort, state.limit, state.offset])
 
     useEffect(() => {
         if(productListByCatCount){
@@ -79,16 +73,12 @@ const StoreBrowseProduct = () => {
     useEffect(()=>{
         if(productListCount){
             if(selectedFilter!==0){
-                dispatch(getProductList(search, state.limit, state.offset, selectedFilter))
+                dispatch(getProductList(search, sort, state.limit, state.offset, selectedFilter))
             } else {
-                dispatch(getProductList(search, state.limit, state.offset))
+                dispatch(getProductList(search, sort, state.limit, state.offset))
             }
         }
-    },[dispatch, state.limit, state.offset])
-
-    const onSortChange = (e) => {
-        setSort(e.target.value)
-    }
+    },[dispatch, sort, state.limit, state.offset])
 
     const onBtnSearchClick = async () => {
         setState(initialState)
@@ -240,7 +230,7 @@ const StoreBrowseProduct = () => {
                     <div className="sortWrapper">
                         <Select
                             value={sort}
-                            onChange={onSortChange}
+                            onChange={e=>setSort(e.target.value)}
                         >
                             {sortList.map(i => (
                                 <MenuItem key={i.id} value={i.id} >{i.label}</MenuItem>

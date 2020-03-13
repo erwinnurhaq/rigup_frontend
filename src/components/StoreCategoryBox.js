@@ -54,7 +54,7 @@ const CategoryBox = () => {
             setTimeout(async() => {
                 await dispatch(getChildOfMainParent(id))
                 await dispatch(getCountProductByCategoryId(id))
-                await dispatch(getProductByCategoryId(id, 12, 0))
+                await dispatch(getProductByCategoryId(id, 1, 12, 0))
             }, 400);
             dispatch(selectChildCat(0))
         }

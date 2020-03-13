@@ -30,7 +30,7 @@ const Store = () => {
             setTimeout(async()=>{
                 await dispatch(getChildOfMainParent(1))
                 await dispatch(getCountProductByCategoryId(1))
-                await dispatch(getProductByCategoryId(1, 12, 0))
+                await dispatch(getProductByCategoryId(1, 1, 12, 0))
             }, 400)
         } else {
             window.scrollTo(0, 0)

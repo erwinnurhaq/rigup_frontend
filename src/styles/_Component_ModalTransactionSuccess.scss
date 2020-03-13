@@ -1,0 +1,21 @@
+.transactionSuccessContainer{
+    width: 100%;
+    padding: 50px;
+    @include flex(column, center, center);
+    .transactionSuccessWrapper{
+        width: 60%;
+        padding-top: 50px;
+        @include flex(column, center, center);
+        .bankContainer{
+            width: 100%;
+            padding: 10px 0;
+            @include flex(row, space-between, center);
+            img{
+                height: 50px;
+            }
+            div{
+                @include flex(column, center, flex-end);
+            }
+        }
+    }
+}

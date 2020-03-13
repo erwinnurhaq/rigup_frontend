@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 
-import { Button, ClickAwayListener, Grow, Paper, Popper, MenuItem, MenuList } from '@material-ui/core';
+import { Button, ClickAwayListener, Grow, Paper, Popper, MenuItem, MenuList, IconButton, Badge } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import TheatersIcon from '@material-ui/icons/Theaters';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -86,30 +86,43 @@ class NavbarRightMenu extends Component {
     render() {
         const { open } = this.state
         return (
-            <div className="dropdownMenu">
-                <Button
-                    ref="anchorRef"
-                    aria-controls={open ? 'menu-list-grow' : undefined}
-                    aria-haspopup="true"
-                    variant='text'
-                    onClick={this.handleToggle}
-                >
-                    <div className="username">{this.props.user.fullname}</div>
-                    <AccountCircleIcon />
-                </Button>
-                <Popper open={open} anchorEl={this.refs.anchorRef} role={undefined} transition disablePortal>
-                    {({ TransitionProps, placement }) => (
-                        <Grow
-                            {...TransitionProps}
-                            style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-                        >
-                            {this.renderListMenu()}
-                        </Grow>
-                    )}
-                </Popper>
-            </div>
+            <>
+                <div className="navIconContainer">
+                    <IconButton aria-label="cart" onClick={()=> this.props.history.push('/userdashboard/cart')}>
+                        <Badge badgeContent={this.props.userCart ? this.props.userCart.length : 0} color="secondary">
+                            <ShoppingCartIcon style={{color: 'darkviolet'}} />
+                        </Badge>
+                    </IconButton>
+                </div>
+                <div className="dropdownMenu">
+                    <Button
+                        ref="anchorRef"
+                        aria-controls={open ? 'menu-list-grow' : undefined}
+                        aria-haspopup="true"
+                        variant='text'
+                        onClick={this.handleToggle}
+                    >
+                        <div className="username">{this.props.user.fullname}</div>
+                        <AccountCircleIcon />
+                    </Button>
+                    <Popper open={open} anchorEl={this.refs.anchorRef} role={undefined} transition disablePortal>
+                        {({ TransitionProps, placement }) => (
+                            <Grow
+                                {...TransitionProps}
+                                style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+                            >
+                                {this.renderListMenu()}
+                            </Grow>
+                        )}
+                    </Popper>
+                </div>
+            </>
         )
     }
 }
 
-export default withRouter(connect(null, { userLogout })(NavbarRightMenu))
+const stateToProps = ({userCart}) => {
+    return {userCart: userCart.cart}
+}
+
+export default withRouter(connect(stateToProps, { userLogout })(NavbarRightMenu))

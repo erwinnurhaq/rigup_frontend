@@ -2,9 +2,9 @@ import React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 
 function ModalWarning(props) {
-    const { show, setShow, title } = props
+    const { show, setShow, title, size } = props
     return (
-        <Dialog open={show} onClose={() => setShow(!show)} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth="sm">
+        <Dialog open={show} onClose={() => setShow(!show)} aria-labelledby="form-dialog-title" fullWidth={true} maxWidth={size || "sm"}>
             <DialogTitle id="form-dialog-title">{title}</DialogTitle>
             <DialogContent>
                 <DialogContentText>{props.children}</DialogContentText>

@@ -83,3 +83,7 @@ export const deleteCart = (cartId) => {
         }
     }
 }
+
+export const emptyCart = () => {
+    return {type: 'USER_CART_EMPTY'}
+}

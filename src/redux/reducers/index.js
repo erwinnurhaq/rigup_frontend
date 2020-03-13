@@ -2,6 +2,8 @@ import { combineReducers } from 'redux';
 import ChangeStyleReducer from './ChangeStyleReducer';
 import UserReducer from './UserReducer';
 import UserCartReducer from './UserCartReducer';
+import UserTransactionReducer from './UserTransactionReducer';
+import CourierReducer from './CourierReducer';
 import BrandReducer from './BrandReducer';
 import BrandCatReducer from './BrandCatReducer';
 import CategoryReducer from './CategoryReducer';
@@ -17,6 +19,8 @@ export default combineReducers({
 	changeStyle: ChangeStyleReducer,
 	user: UserReducer,
 	userCart: UserCartReducer,
+	userTransaction: UserTransactionReducer,
+	courier: CourierReducer,
 	brands: BrandReducer,
 	brandCats: BrandCatReducer,
 	categories: CategoryReducer,

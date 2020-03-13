@@ -1,6 +1,6 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, TableRow, TableCell, Table, TableHead, TableBody, TableFooter, IconButton } from '@material-ui/core';
+import { Button, TableRow, TableCell, Table, TableHead, TableBody, TableFooter, IconButton, Select, MenuItem } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
@@ -43,6 +43,14 @@ const ManageProduct = () => {
 		offset: 0
 	};
 	const [state, setState] = useState(initialState);
+	const sortList = [
+        {id: 1, label: 'Last Updated'},
+        {id: 2, label: 'Name A to Z'},
+        {id: 3, label: 'Name Z to A'},
+        {id: 4, label: 'Price Low to High'},
+        {id: 5, label: 'Price High to Low'}
+    ]
+    const [sort, setSort] = useState(1)
 	const [selectedProduct, setSelectedProduct] = useState(0);
 	const [showModalForm, setShowModalForm] = useState(false);
 	const [showModalWarning, setShowModalWarning] = useState(false);
@@ -50,14 +58,13 @@ const ManageProduct = () => {
 
 	//------------------------------useeffect
 	useEffect(() => {
-		dispatch(selectCat(1))
 		dispatch(getMostParent());
 	}, [dispatch]);
 
 	useEffect(() => {
 		dispatch(getCountProductByCategoryId(categories.selectedCat));
-		dispatch(getProductByCategoryId(categories.selectedCat, state.limit, state.offset));
-	}, [dispatch, categories.selectedCat, state.limit, state.offset]);
+		dispatch(getProductByCategoryId(categories.selectedCat, sort, state.limit, state.offset));
+	}, [dispatch, categories.selectedCat, sort, state.limit, state.offset]);
 
 	useEffect(() => {
 		setState((prev) => {
@@ -86,7 +93,7 @@ const ManageProduct = () => {
 		await dispatch(deleteProductById(productId));
 		setShowModalConfirm(!showModalConfirm);
 		await dispatch(getCountProductByCategoryId(categories.selectedCat));
-		await dispatch(getProductByCategoryId(categories.selectedCat, state.limit, state.offset));
+		await dispatch(getProductByCategoryId(categories.selectedCat, sort, state.limit, state.offset));
 		dispatch(setInitialFormProduct());
 		dispatch(setInitialProductDetail());
 	};
@@ -128,7 +135,7 @@ const ManageProduct = () => {
 		}
 		await dispatch(selectCat(newCategories[0]))
 		await dispatch(getCountProductByCategoryId(newCategories[0]));
-		await dispatch(getProductByCategoryId(newCategories[0], state.limit, state.offset));
+		await dispatch(getProductByCategoryId(newCategories[0], sort, state.limit, state.offset));
 		setShowModalForm(!showModalForm);
 	};
 
@@ -252,13 +259,23 @@ const ManageProduct = () => {
 					<TableBody>{renderProductList()}</TableBody>
 					<TableFooter>
 						<TableRow>
-							<TableCell colSpan={7} align="right">
-								<Pagination
-									totalProduct={products.productListByCatCount}
-									rangeLimit={[5, 10, 15, 20, 25, 50]}
-									state={state}
-									setState={setState}
-									/>
+							<TableCell colSpan={7}>
+								<div style={{display: 'flex', justifyContent: 'flex-end'}}>
+									<Select
+										value={sort}
+										onChange={e=>setSort(e.target.value)}
+									>
+										{sortList.map(i => (
+											<MenuItem key={i.id} value={i.id} >{i.label}</MenuItem>
+										))}
+									</Select>
+									<Pagination
+										totalProduct={products.productListByCatCount}
+										rangeLimit={[5, 10, 15, 20, 25, 50]}
+										state={state}
+										setState={setState}
+										/>
+								</div>
 							</TableCell>
 						</TableRow>
 					</TableFooter>

@@ -9,12 +9,12 @@ const error = (err) => {
 	};
 };
 
-export const getProductList = (search, limit, offset, filter ) => {
+export const getProductList = (search, sort, limit, offset, filter ) => {
 	return async (dispatch) => {
 		try {
 			dispatch({ type: 'PRODUCT_LOADING' });
 			const res = await axios.get(`${API_URL}/products`,{
-				params: {search, limit, offset, filter}
+				params: {search, sort, limit, offset, filter}
 			});
 			console.log('all products: ', res.data);
 			dispatch({
@@ -61,12 +61,12 @@ export const getUncategorizedProduct = () => {
 	};
 };
 
-export const getProductByCategoryId = (categoryId, limit, offset) => {
+export const getProductByCategoryId = (categoryId, sort, limit, offset) => {
 	return async (dispatch) => {
 		try {
 			dispatch({ type: 'PRODUCT_LOADING' });
 			const res = await axios.get(`${API_URL}/products/${categoryId}`, {
-				params: { limit, offset }
+				params: { sort, limit, offset }
 			});
 			console.log('product by category id: ', res.data);
 			dispatch({
@@ -109,7 +109,6 @@ export const addProduct = (formData) => {
 			console.log('add product: ', res.data);
 			dispatch({ type: 'INITIALFORMPRODUCT' })
 			dispatch({ type: 'INITIALPRODUCTDETAIL' })
-			// dispatch(getProductByCategoryId(newCategories[0], 10, 0))
 		} catch (err) {
 			dispatch(error(err));
 		}
@@ -129,7 +128,6 @@ export const editProductById = (productId, formData) => {
 			console.log('edit product: ', res.data);
 			dispatch({ type: 'INITIALFORMPRODUCT' })
 			dispatch({ type: 'INITIALPRODUCTDETAIL' })
-			// dispatch(getProductByCategoryId(newCategories[0]))
 		} catch (err) {
 			dispatch(error(err));
 		}
