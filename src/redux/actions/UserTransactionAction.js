@@ -32,11 +32,11 @@ export const setImageReceiptError = (message) => {
 
 export const getUserTransactionList = () => {
     return async dispatch => {
-        try{
-            dispatch({type: 'USER_TRANSACTION_LOADING'})
+        try {
+            dispatch({ type: 'USER_TRANSACTION_LOADING' })
             const token = localStorage.getItem('riguptoken')
-            const res = await axios.get(`${API_URL}/transactions/user`,{
-                headers: {Authorization: `Bearer ${token}`}
+            const res = await axios.get(`${API_URL}/transactions/user`, {
+                headers: { Authorization: `Bearer ${token}` }
             })
             dispatch({
                 type: 'USER_TRANSACTION_LIST',
@@ -50,12 +50,12 @@ export const getUserTransactionList = () => {
 
 export const getUserTransactionDetailList = (transactionId) => {
     return async dispatch => {
-        try{
-            dispatch({type: 'USER_TRANSACTION_LOADING'})
+        try {
+            dispatch({ type: 'USER_TRANSACTION_LOADING' })
             const token = localStorage.getItem('riguptoken')
-            const res = await axios.get(`${API_URL}/transactions/detail`,{
-                params: {transactionId},
-                headers: {Authorization: `Bearer ${token}`}
+            const res = await axios.get(`${API_URL}/transactions/detail`, {
+                params: { transactionId },
+                headers: { Authorization: `Bearer ${token}` }
             })
             dispatch({
                 type: 'USER_TRANSACTION_DETAIL',
@@ -69,11 +69,11 @@ export const getUserTransactionDetailList = (transactionId) => {
 
 export const checkOut = (data) => {
     return async dispatch => {
-        try{
-            dispatch({type: 'USER_TRANSACTION_LOADING'})
+        try {
+            dispatch({ type: 'USER_TRANSACTION_LOADING' })
             const token = localStorage.getItem('riguptoken')
-            const res = await axios.post(`${API_URL}/transactions/user`, data,{
-                headers: {Authorization: `Bearer ${token}`}
+            const res = await axios.post(`${API_URL}/transactions/user`, data, {
+                headers: { Authorization: `Bearer ${token}` }
             })
             dispatch({
                 type: 'USER_TRANSACTION_LIST',
@@ -88,13 +88,13 @@ export const checkOut = (data) => {
 
 export const uploadReceipt = (transactionCode, formData) => {
     return async dispatch => {
-        try{
+        try {
             console.log(formData)
-            dispatch({type: 'USER_TRANSACTION_LOADING'})
+            dispatch({ type: 'USER_TRANSACTION_LOADING' })
             const token = localStorage.getItem('riguptoken')
-            const res = await axios.put(`${API_URL}/transactions/receipt`, formData,{
-                params: {transactionCode},
-                headers: {Authorization: `Bearer ${token}`}
+            const res = await axios.put(`${API_URL}/transactions/receipt`, formData, {
+                params: { transactionCode },
+                headers: { Authorization: `Bearer ${token}` }
             })
             console.log(res.data)
             dispatch({
@@ -108,14 +108,17 @@ export const uploadReceipt = (transactionCode, formData) => {
 }
 
 //-----------------ADMIN
-export const getAllTransactionList = (sort, limit, offset) => {
+export const getAllTransactionList = (sort, limit, offset, search) => {
     return async dispatch => {
-        try{
-            dispatch({type: 'USER_TRANSACTION_LOADING'})
+        try {
+            if (search === '') {
+                search = null
+            }
+            dispatch({ type: 'USER_TRANSACTION_LOADING' })
             const token = localStorage.getItem('riguptoken')
-            const res = await axios.get(`${API_URL}/transactions`,{
-                params: { sort, limit, offset },
-                headers: {Authorization: `Bearer ${token}`}
+            const res = await axios.get(`${API_URL}/transactions`, {
+                params: { sort, limit, offset, search },
+                headers: { Authorization: `Bearer ${token}` }
             })
             dispatch({
                 type: 'USER_TRANSACTION_LISTALLCOUNT',
@@ -133,14 +136,14 @@ export const getAllTransactionList = (sort, limit, offset) => {
 
 export const editTransaction = (id, email, paidStatus, deliveredStatus) => {
     return async dispatch => {
-        try{
-            dispatch({type: 'USER_TRANSACTION_LOADING'})
+        try {
+            dispatch({ type: 'USER_TRANSACTION_LOADING' })
             const token = localStorage.getItem('riguptoken')
             await axios.put(`${API_URL}/transactions`,
                 { email, paidStatus, deliveredStatus },
-                { params: {id}, headers: {Authorization: `Bearer ${token}`} }
+                { params: { id }, headers: { Authorization: `Bearer ${token}` } }
             )
-            dispatch({type: 'USER_TRANSACTION_EDIT_SUCCESS'})
+            dispatch({ type: 'USER_TRANSACTION_EDIT_SUCCESS' })
         } catch (err) {
             dispatch(error(err))
         }

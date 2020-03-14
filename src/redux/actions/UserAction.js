@@ -13,6 +13,7 @@ const error = (err) => {
 export const userLogin = ({ userOrEmail, password, keepLogin }) => {
     return async dispatch => {
         try {
+            dispatch({ type: 'USER_LOADING' })
             const res = await axios.post(`${API_URL}/users/login`,
                 { userOrEmail, password, keepLogin }
             )
@@ -43,6 +44,7 @@ export const userKeepLogin = () => {
         const token = localStorage.getItem('riguptoken')
         if (token) {
             try {
+                dispatch({ type: 'USER_LOADING' })
                 const res = await axios.post(`${API_URL}/users/keeplogin`, {}, {
                     headers: { Authorization: `Bearer ${token}` }
                 })

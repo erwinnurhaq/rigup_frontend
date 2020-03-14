@@ -1,5 +1,5 @@
-import React, {useState, useEffect, lazy, Suspense} from 'react'
-import {useSelector, useDispatch} from 'react-redux'
+import React, { useState, useEffect, lazy, Suspense } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 import { API_URL } from '../support/API_URL';
 import {
@@ -39,23 +39,24 @@ import {
     uploadReceipt
 } from '../redux/actions'
 
-const ModalWarning = lazy(()=>import('./ModalWarning'))
-const ModalConfirm = lazy(()=>import('./ModalConfirm'))
-const ModalDefault = lazy(()=>import('./ModalDefault'))
-const ModalTransactionSuccess = lazy(()=>import('./ModalTransactionSuccess'))
+const ModalWarning = lazy(() => import('./ModalWarning'))
+const ModalConfirm = lazy(() => import('./ModalConfirm'))
+const ModalDefault = lazy(() => import('./ModalDefault'))
+const ModalTransactionSuccess = lazy(() => import('./ModalTransactionSuccess'))
 
 const UserCart = (props) => {
     const dispatch = useDispatch()
-    const userCart = useSelector(({userCart})=>userCart.cart)
-    const user = useSelector(({user})=>user.user)
-    const cityList = useSelector(({formRegister})=>formRegister.cityList)
-    const {courierList, selectedCourier} = useSelector(({courier})=>courier)
-    const {list, selected, receiptImg} = useSelector(({userTransaction})=>userTransaction)
-    const transactionLoading = useSelector(({userTransaction})=>userTransaction.loading)
+    const userCart = useSelector(({ userCart }) => userCart.cart)
+    const user = useSelector(({ user }) => user.user)
+    const cityList = useSelector(({ formRegister }) => formRegister.cityList)
+    const { courierList, selectedCourier } = useSelector(({ courier }) => courier)
+    const { list, selected, receiptImg } = useSelector(({ userTransaction }) => userTransaction)
+    const transactionLoading = useSelector(({ userTransaction }) => userTransaction.loading)
     const [showModalWarning, setShowModalWarning] = useState(false)
     const [showModalConfirm, setShowModalConfirm] = useState(false)
     const [showModalSuccess, setShowModalSuccess] = useState(false)
     const [selectedCart, setSelectedCart] = useState(0)
+    const [willDeleteCart, setWillDeleteCart] = useState(0)
     const [quantity, setQuantity] = useState(0)
     const [destination, setDestination] = useState(user.address)
     const [cityId, setCityId] = useState(user.cityId)
@@ -65,12 +66,12 @@ const UserCart = (props) => {
     const [totalPrice, setTotalPrice] = useState(0)
 
     const columns = [
-		{ id: 'id', label: '#', minWidth: 50, align: 'center' },
-		{ id: 'mainImage', label: 'Image', minWidth: 50, align: 'center' },
-		{ id: 'productName', label: 'Product', minWidth: 150, align: 'center' },
-		{ id: 'quantity', label: 'Quantity', minWidth: 100, align: 'center' },
-		{ id: 'price', label: 'Price', minWidth: 100, align: 'center' },
-		{ id: 'options', label: 'Options', minWidth: 100, align: 'center' }
+        { id: 'id', label: '#', minWidth: 50, align: 'center' },
+        { id: 'mainImage', label: 'Image', minWidth: 50, align: 'center' },
+        { id: 'productName', label: 'Product', minWidth: 150, align: 'center' },
+        { id: 'quantity', label: 'Quantity', minWidth: 100, align: 'center' },
+        { id: 'price', label: 'Price', minWidth: 100, align: 'center' },
+        { id: 'options', label: 'Options', minWidth: 100, align: 'center' }
     ];
 
     const onEditCartClick = item => {
@@ -78,8 +79,8 @@ const UserCart = (props) => {
         setQuantity(item.quantity)
     }
 
-    const saveEditItemCart = async() => {
-        if(quantity<1){
+    const saveEditItemCart = async () => {
+        if (quantity < 1) {
             alert('Minimum purchase 1 pcs')
         } else {
             await dispatch(editCart(selectedCart, quantity))
@@ -87,21 +88,23 @@ const UserCart = (props) => {
             setQuantity(0)
         }
     }
-    
-    const deleteItemCart = async() => {
-        await dispatch(deleteCart(selectedCart))
-        setSelectedCart(0)
+
+    const deleteItemCart = async () => {
+        await dispatch(deleteCart(willDeleteCart))
+        setWillDeleteCart(0)
         setShowModalConfirm(false)
     }
 
     const onDeleteCartClick = item => {
-        setSelectedCart(item.id)
+        setWillDeleteCart(item.id)
         setShowModalConfirm(true)
     }
 
-    const onBuyNowClick = async ()=> {
-        if(!userCart || userCart.length === 0){
+    const onBuyNowClick = async () => {
+        if (!userCart || userCart.length === 0) {
             setShowModalWarning(true)
+        } else if (userCart && userCart.findIndex(i => i.stock === 0) >= 0) {
+            alert('One of products in your cart is out of stock, please remove it to continue!')
         } else {
             let data = {
                 deliveryAddress: destination,
@@ -109,9 +112,9 @@ const UserCart = (props) => {
                 totalQuantity,
                 totalWeight,
                 totalPrice,
-                shippingCourier: `JNE ${courierList.costs[selectedCourier-1].service}`,
-                shippingCost: courierList.costs[selectedCourier-1].cost[0].value,
-                totalCost: courierList.costs[selectedCourier-1].cost[0].value + totalPrice
+                shippingCourier: `JNE ${courierList.costs[selectedCourier - 1].service}`,
+                shippingCost: courierList.costs[selectedCourier - 1].cost[0].value,
+                totalCost: courierList.costs[selectedCourier - 1].cost[0].value + totalPrice
             }
             console.log(data)
             setShowModalSuccess(true)
@@ -120,18 +123,18 @@ const UserCart = (props) => {
     }
 
     const imgFileHandler = (e) => {
-		const files = e.target.files
+        const files = e.target.files
         const fileType = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
         if (files.length > 0 && fileType.findIndex(a => files[0].type === a) >= 0 && files[0].size <= (1024 * 1024 * 5)) {
             dispatch(setImageReceipt(files[0]));
         } else {
             dispatch(setImageReceiptError('file type jpeg/ jpg/ png/ gif only and file size max 5mb'))
         }
-	};
+    };
 
-    const upload = async() => {
-        if(receiptImg){
-            let transactionCode = list.filter(i=> i.id===selected)[0].transactionCode
+    const upload = async () => {
+        if (receiptImg) {
+            let transactionCode = list.filter(i => i.id === selected)[0].transactionCode
             let formData = new FormData();
             formData.append('image', receiptImg)
             await dispatch(uploadReceipt(transactionCode, formData))
@@ -144,50 +147,50 @@ const UserCart = (props) => {
 
     const fnTotalQuantity = () => {
         let qty = 0
-        userCart.forEach(i=> qty+=i.quantity)
+        userCart.forEach(i => qty += i.quantity)
         setTotalQuantity(qty)
     }
 
     const fnTotalWeight = () => {
         let weight = 0
-        userCart.forEach(i=> weight+=(i.weight*i.quantity))
+        userCart.forEach(i => weight += (i.weight * i.quantity))
         setTotalWeight(weight)
     }
 
     const fnTotalPrice = () => {
         let price = 0
-        userCart.forEach(i=> price+=(i.price*i.quantity))
+        userCart.forEach(i => price += (i.price * i.quantity))
         setTotalPrice(price)
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(fetchCityList())
-    },[dispatch])
+    }, [dispatch])
 
-    useEffect(()=>{
-        if(userCart){
+    useEffect(() => {
+        if (userCart) {
             fnTotalQuantity()
             fnTotalWeight()
             fnTotalPrice()
         }
-    },[userCart])
+    }, [userCart])
 
-    useEffect(()=>{
-        if(totalWeight!==0){
+    useEffect(() => {
+        if (totalWeight !== 0) {
             dispatch(fetchCourier(cityId, totalWeight))
         } else {
             dispatch(emptyCourier())
         }
-    },[dispatch, cityId, totalWeight])
+    }, [dispatch, cityId, totalWeight])
 
-    const renderCityList = () => cityList.length>0 ? cityList.map(i => (
+    const renderCityList = () => cityList.length > 0 ? cityList.map(i => (
         <MenuItem key={i.city_id} value={i.city_id}>{i.type} {i.city_name}</MenuItem>
-    )): null
+    )) : null
 
-    const renderCourierList = () => courierList ? courierList.costs.map((i,index)=> (
+    const renderCourierList = () => courierList ? courierList.costs.map((i, index) => (
         <div key={index}
-            className={`listCourierContainer ${selectedCourier===index+1? 'active':''}`} 
-            onClick={()=>dispatch(selectCourier(index+1))}
+            className={`listCourierContainer ${selectedCourier === index + 1 ? 'active' : ''}`}
+            onClick={() => dispatch(selectCourier(index + 1))}
         >
             <h3>{i.service}</h3>
             <div className="serviceLabel">
@@ -205,50 +208,50 @@ const UserCart = (props) => {
             <TextField margin="dense" label="Qty" id="itemCartQuantity"
                 type="number" fullWidth required
                 value={quantity}
-                onChange={e=> setQuantity(parseInt(e.target.value))}
+                onChange={e => setQuantity(parseInt(e.target.value))}
             />
         </div>
     )
-    
-    const renderCartList = () => userCart && userCart.length>0 ? userCart.map((i,index)=>(
+
+    const renderCartList = () => userCart && userCart.length > 0 ? userCart.map((i, index) => (
         <TableRow key={index}>
-            <TableCell>{index+1}</TableCell>
+            <TableCell>{index + 1}</TableCell>
             <TableCell>
                 <img src={`${API_URL}${i.image}`} alt={i.name} style={{ width: '50px' }} />
             </TableCell>
             <TableCell>{i.name}</TableCell>
             <TableCell>{selectedCart === i.id ? renderTextBox() : i.quantity}</TableCell>
-            <TableCell>{formatter.format(i.price*i.quantity)}</TableCell>
+            <TableCell>{i.stock > 0 ? formatter.format(i.price * i.quantity) : 'Out of Stock'}</TableCell>
             <TableCell>
                 {selectedCart === i.id ? (
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
                         <IconButton aria-label="Save" onClick={saveEditItemCart}>
-                            <SaveIcon style={{color: 'white'}} />
+                            <SaveIcon style={{ color: 'white' }} />
                         </IconButton>
                         <IconButton aria-label="Cancel" onClick={() => setSelectedCart(0)}>
-                            <CancelIcon style={{color: 'white'}} />
+                            <CancelIcon style={{ color: 'white' }} />
                         </IconButton>
                     </div>
-                ):(
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
-                        <IconButton aria-label="Edit" onClick={() => onEditCartClick(i)}>
-                            <EditIcon style={{color: 'white'}} />
-                        </IconButton>
-                        <IconButton aria-label="Delete" onClick={() => onDeleteCartClick(i)}>
-                            <DeleteIcon style={{color: 'white'}} />
-                        </IconButton>
-                    </div>
-                )}
+                ) : (
+                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <IconButton aria-label="Edit" onClick={() => onEditCartClick(i)}>
+                                <EditIcon style={{ color: 'white' }} />
+                            </IconButton>
+                            <IconButton aria-label="Delete" onClick={() => onDeleteCartClick(i)}>
+                                <DeleteIcon style={{ color: 'white' }} />
+                            </IconButton>
+                        </div>
+                    )}
             </TableCell>
         </TableRow>
     )) : (
-        <TableRow>
-            <TableCell colSpan={6}>Cart Empty</TableCell>
-        </TableRow>
-    )
+            <TableRow>
+                <TableCell colSpan={6}>Cart Empty</TableCell>
+            </TableRow>
+        )
 
     const renderModalWarningWeight = () => showModalWarning ? (
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
             <ModalWarning
                 show={showModalWarning}
                 setShow={setShowModalWarning}
@@ -260,7 +263,7 @@ const UserCart = (props) => {
     ) : null
 
     const renderModalWarning = () => showModalWarning ? (
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
             <ModalWarning
                 show={showModalWarning}
                 setShow={setShowModalWarning}
@@ -272,7 +275,7 @@ const UserCart = (props) => {
     ) : null
 
     const renderModalConfirmDelete = () => showModalConfirm ? (
-        <Suspense fallback={<Loading/>}>
+        <Suspense fallback={<Loading />}>
             <ModalConfirm
                 show={showModalConfirm}
                 setShow={setShowModalConfirm}
@@ -285,25 +288,25 @@ const UserCart = (props) => {
     ) : null
 
     const renderModalSuccess = () => {
-        if(showModalSuccess && transactionLoading){
+        if (showModalSuccess && transactionLoading) {
             return (
-                <Suspense fallback={<Loading/>}>
+                <Suspense fallback={<Loading />}>
                     <ModalDefault
                         show={showModalSuccess}
                         title='Please Wait'
                     >
-                        <Loading/>
+                        <Loading />
                     </ModalDefault>
                 </Suspense>
             )
-        } else if(showModalSuccess && !transactionLoading){
+        } else if (showModalSuccess && !transactionLoading) {
             return (
-                <Suspense fallback={<Loading/>}>
+                <Suspense fallback={<Loading />}>
                     <ModalTransactionSuccess
                         show={showModalSuccess}
                         title='Transaction Success'
                         btnNo='Go to My Transactions'
-                        cbNo={()=>{
+                        cbNo={() => {
                             dispatch(selectTransaction(0))
                             dispatch(emptyCart());
                             props.history.push('/userdashboard/transaction');
@@ -324,7 +327,7 @@ const UserCart = (props) => {
             <div className="userCartWrapper">
                 <Table>
                     <TableHead>
-                        <TableHeadRow columns={columns}/>
+                        <TableHeadRow columns={columns} />
                     </TableHead>
                     <TableBody>{renderCartList()}</TableBody>
                 </Table>
@@ -346,7 +349,7 @@ const UserCart = (props) => {
                             </div>
                             <div>
                                 <p>Total Weight</p>
-                                <h3>{totalWeight/1000} Kg</h3>
+                                <h3>{totalWeight / 1000} Kg</h3>
                             </div>
                             <div>
                                 <p>Total Price</p>
@@ -354,11 +357,11 @@ const UserCart = (props) => {
                             </div>
                             <div>
                                 <p>Shipping Cost</p>
-                                <h3>{courierList? formatter.format(courierList.costs[selectedCourier-1].cost[0].value) : '0'}</h3>
+                                <h3>{courierList ? formatter.format(courierList.costs[selectedCourier - 1].cost[0].value) : '0'}</h3>
                             </div>
                             <div>
                                 <p>Total Cost</p>
-                                <h3>{courierList? formatter.format(courierList.costs[selectedCourier-1].cost[0].value + totalPrice) : '0'}</h3>
+                                <h3>{courierList ? formatter.format(courierList.costs[selectedCourier - 1].cost[0].value + totalPrice) : '0'}</h3>
                             </div>
                         </div>
                     </div>
@@ -368,16 +371,16 @@ const UserCart = (props) => {
                             <TextField margin="dense" label="Address" id="itemCartQuantity"
                                 type="text" fullWidth multiline
                                 value={destination}
-                                onChange={e=> setDestination(e.target.value)}
+                                onChange={e => setDestination(e.target.value)}
                             />
-                            <FormControl required style={{width: '50%', marginLeft: '20px'}}>
+                            <FormControl required style={{ width: '50%', marginLeft: '20px' }}>
                                 <InputLabel id="selectCity">City</InputLabel>
                                 <Select
                                     labelId="cityId"
                                     id="cityId"
                                     name="cityId"
                                     value={cityId}
-                                    onChange={e=>setCityId(parseInt(e.target.value))}
+                                    onChange={e => setCityId(parseInt(e.target.value))}
                                     style={{ color: 'white' }}
                                 >
                                     <MenuItem value="0"><em>Please select one:</em></MenuItem>

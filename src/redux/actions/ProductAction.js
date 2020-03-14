@@ -9,12 +9,12 @@ const error = (err) => {
 	};
 };
 
-export const getProductList = (search, sort, limit, offset, filter ) => {
+export const getProductList = (search, sort, limit, offset, filter) => {
 	return async (dispatch) => {
 		try {
 			dispatch({ type: 'PRODUCT_LOADING' });
-			const res = await axios.get(`${API_URL}/products`,{
-				params: {search, sort, limit, offset, filter}
+			const res = await axios.get(`${API_URL}/products`, {
+				params: { search, sort, limit, offset, filter }
 			});
 			console.log('all products: ', res.data);
 			dispatch({
@@ -31,10 +31,9 @@ export const getCountProductList = (search, filter) => {
 	return async (dispatch) => {
 		try {
 			dispatch({ type: 'PRODUCT_LOADING' });
-			const res = await axios.get(`${API_URL}/products`,{
-				params: {search, filter}
+			const res = await axios.get(`${API_URL}/products`, {
+				params: { search, filter }
 			});
-			console.log('in, produclistcount', filter)
 			dispatch({
 				type: 'PRODUCTLISTCOUNT_FETCH_SUCCESS',
 				payload: res.data.length
@@ -83,11 +82,11 @@ export const getCountProductByCategoryId = (categoryId) => {
 	return async (dispatch) => {
 		try {
 			dispatch({ type: 'PRODUCT_LOADING' });
-			const count = await axios.get(`${API_URL}/products/${categoryId}/count`);
-			console.log('count product by categoryId: ', count.data);
+			const res = await axios.get(`${API_URL}/products/${categoryId}/count`);
+			console.log('count product by categoryId: ', res.data);
 			dispatch({
 				type: 'PRODUCTLISTBYCATEGORYCOUNT_FETCH_SUCCESS',
-				payload: count.data.count
+				payload: res.data.count
 			});
 		} catch (err) {
 			dispatch(error(err));

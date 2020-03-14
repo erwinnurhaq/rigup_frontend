@@ -4,13 +4,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import Loading from '../components/Loading'
 import AdminNavbar from '../components/AdminNavbar'
 import { makeStyles } from '@material-ui/core/styles'
-import {selectCat} from '../redux/actions';
+import { selectCat } from '../redux/actions';
 
 const ManageProduct = lazy(() => import('./ManageProduct'))
 const ManageBrandAndCategory = lazy(() => import('./ManageBrandAndCategory'))
 const ManageUser = lazy(() => import('./ManageUser'))
 const ManageTransaction = lazy(() => import('./ManageTransaction'))
-const OnDevelopment = lazy(()=> import('./OnDevelopment'))
+const OnDevelopment = lazy(() => import('./OnDevelopment'))
 
 const useStyles = makeStyles(theme => ({
     root: { display: 'flex' },
@@ -32,13 +32,14 @@ const AdminDashboard = (props) => {
         { id: 2, path: '/admindashboard/managebrandcategory', name: 'Manage Brand & Category', comp: ManageBrandAndCategory },
         { id: 3, path: '/admindashboard/manageuser', name: 'Manage User', comp: ManageUser },
         { id: 4, path: '/admindashboard/manageusersavedbuild', name: 'Manage User Saved Build', comp: OnDevelopment },
-        { id: 5, path: '/admindashboard/managetransactions', name: 'User Transaction', comp: ManageTransaction },
+        { id: 5, path: '/admindashboard/managetransactions', name: 'Active Transaction', comp: ManageTransaction },
         { id: 6, path: '/admindashboard/managehistory', name: 'History', comp: OnDevelopment }
     ]
     const [active, setActive] = useState('')
     const [title, setTitle] = useState('')
     const user = useSelector(({ user }) => user.user)
     const userLoading = useSelector(({ user }) => user.loading)
+    const userError = useSelector(({ user }) => user.error)
 
     useEffect(() => {
         document.title = 'Admin Dashboard - RIGUP!'
@@ -48,8 +49,8 @@ const AdminDashboard = (props) => {
         dispatch(selectCat(1))
     }, [pathLists, props.location.pathname])
 
-    if(userLoading){
-        return (<Loading/>)
+    if (!user && userLoading) {
+        return (<Loading />)
     } else {
         if (user && user.roleId === 1) {
             return (
@@ -73,10 +74,8 @@ const AdminDashboard = (props) => {
                     </main>
                 </div>
             )
-        } else if(user && user.roleId !==1){
-            return <Redirect to='/' />
         } else {
-            return <Redirect to='/login' />
+            return (<Redirect to='/' />)
         }
     }
 }

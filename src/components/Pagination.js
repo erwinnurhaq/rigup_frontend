@@ -38,7 +38,7 @@ function Pagination(props) {
     return (
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', color: color || '#222' }}>
             <div style={{ fontSize: '14px', padding: '0 15px' }}>
-                Total Product: {totalProduct}
+                Total: {totalProduct}
             </div>
             <div style={{ fontSize: '14px', padding: '0 15px' }}>
                 Limit:
@@ -46,7 +46,7 @@ function Pagination(props) {
             <Select
                 value={state.limit}
                 onChange={onSetLimit}
-                style={{color: color || '#222'}}
+                style={{ color: color || '#222' }}
             >
                 <MenuItem value={0} disabled>Select:</MenuItem>
                 {rangeLimit.map(i => (
@@ -58,14 +58,14 @@ function Pagination(props) {
                 disabled={state.page === 1}
                 aria-label="first page"
             >
-                <FirstPageIcon style={{color: color || '#222'}} />
+                <FirstPageIcon style={{ color: color || '#222' }} />
             </IconButton>
             <IconButton
                 onClick={onPrevPageClick}
                 disabled={state.page === 1}
                 aria-label="previous page"
             >
-                <KeyboardArrowLeft style={{color: color || '#222'}} />
+                <KeyboardArrowLeft style={{ color: color || '#222' }} />
             </IconButton>
             <div style={{ fontSize: '14px', padding: '0 15px' }}>
                 Page {state.page} of {state.totalPage}
@@ -75,14 +75,14 @@ function Pagination(props) {
                 disabled={state.page === state.totalPage}
                 aria-label="next page"
             >
-                <KeyboardArrowRight style={{color: color || '#222'}} />
+                <KeyboardArrowRight style={{ color: color || '#222' }} />
             </IconButton>
             <IconButton
                 onClick={onLastPageClick}
                 disabled={state.page === state.totalPage}
                 aria-label="last page"
             >
-                <LastPageIcon style={{color: color || '#222'}} />
+                <LastPageIcon style={{ color: color || '#222' }} />
             </IconButton>
         </div>
     )

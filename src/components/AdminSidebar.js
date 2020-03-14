@@ -9,7 +9,6 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import LocalMallIcon from '@material-ui/icons/LocalMall';
 import BrandingWatermarkIcon from '@material-ui/icons/BrandingWatermark'
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt'
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import HistoryIcon from '@material-ui/icons/History'
 import SaveIcon from '@material-ui/icons/Save'
 import ShopTwoIcon from '@material-ui/icons/ShopTwo'
@@ -109,7 +108,7 @@ const AdminSidebar = (props) => {
                         <ListItemIcon>
                             <ShopTwoIcon style={{ color: 'white' }} />
                         </ListItemIcon>
-                        <ListItemText primary='User Transactions' />
+                        <ListItemText primary='Active Transactions' />
                     </ListItem>
                     <ListItem button
                         className={active === 6 ? classes.listItemB : classes.listItemA}

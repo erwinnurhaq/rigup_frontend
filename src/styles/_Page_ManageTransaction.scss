@@ -10,6 +10,15 @@
         .manageTransactionHeader{
             @include flex(row, space-between, center);
             height: 70px;
+            .manageTransactionText{
+                @include flex(row, center, center);
+                h2{
+                    padding-right: 15px;
+                }
+            }
+            .manageTransactionOption{
+                @include flex(row, center, flex-end);
+            }
         }
         table, tr, th{
             padding: 4px;

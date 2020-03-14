@@ -38,33 +38,33 @@ export const selectFilter = (categoryId) => {
 
 export const getCategoriesSearchFilter = (search) => {
 	return async (dispatch) => {
-		try{
-			const res = await axios.get(`${API_URL}/products`,{
-				params: {search}
+		try {
+			const res = await axios.get(`${API_URL}/products`, {
+				params: { search }
 			});
 			dispatch({
 				type: 'PRODUCTLISTCOUNT_FETCH_SUCCESS',
 				payload: res.data.length
 			})
-			let x = res.data.map(i=> {
+			let x = res.data.map(i => {
 				let obj = {}
 				obj.categoryId = i.categoryId
 				obj.category = i.category
 				obj.count = 1
 				return obj
-			}).sort((a,b)=> a.categoryId - b.categoryId)
+			}).sort((a, b) => a.categoryId - b.categoryId)
 			console.log('res.data product list: ', res.data)
-			console.log('all before filtered: ',x)
+			console.log('all before filtered: ', x)
 			let categoryFilterResult = []
 			let count = 1
-			for(let i = 0; i< x.length; i++){
-				if(categoryFilterResult.findIndex(j=> j.categoryId===x[i].categoryId)<0){
+			for (let i = 0; i < x.length; i++) {
+				if (categoryFilterResult.findIndex(j => j.categoryId === x[i].categoryId) < 0) {
 					categoryFilterResult.push(x[i])
 					count = 1
 				} else {
-					categoryFilterResult[categoryFilterResult.length-1].count = count
+					categoryFilterResult[categoryFilterResult.length - 1].count = count
 				}
-				count ++
+				count++
 			}
 			console.log('after filtered: ', categoryFilterResult)
 			dispatch({
@@ -105,7 +105,7 @@ export const getMostParent = () => {
 			});
 			dispatch({
 				type: 'CATLIST_CHANGE',
-				payload: [ res.data ]
+				payload: [res.data]
 			});
 		} catch (err) {
 			dispatch(error(err));
