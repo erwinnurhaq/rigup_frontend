@@ -3,7 +3,8 @@ import { withRouter } from 'react-router-dom'
 
 import { Button, ClickAwayListener, Grow, Paper, Popper, MenuItem, MenuList, IconButton, Badge } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import TheatersIcon from '@material-ui/icons/Theaters';
+import HistoryIcon from '@material-ui/icons/History';
+import ListIcon from '@material-ui/icons/List';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
@@ -69,8 +70,12 @@ class NavbarRightMenu extends Component {
                                 My Cart
                             </MenuItem>
                             <MenuItem onClick={() => this.onLinkClick(`/userdashboard/transaction`)}>
-                                <TheatersIcon />
+                                <ListIcon />
                                 My Transactions
+                            </MenuItem>
+                            <MenuItem onClick={() => this.onLinkClick(`/userdashboard/history`)}>
+                                <HistoryIcon />
+                                My History
                             </MenuItem>
                             <MenuItem onClick={this.onLogoutClick}>
                                 <ExitToAppIcon />
@@ -88,9 +93,9 @@ class NavbarRightMenu extends Component {
         return (
             <>
                 <div className="navIconContainer">
-                    <IconButton aria-label="cart" onClick={()=> this.props.history.push('/userdashboard/cart')}>
+                    <IconButton aria-label="cart" onClick={() => this.props.history.push('/userdashboard/cart')}>
                         <Badge badgeContent={this.props.userCart ? this.props.userCart.length : 0} color="secondary">
-                            <ShoppingCartIcon style={{color: 'darkviolet'}} />
+                            <ShoppingCartIcon style={{ color: 'darkviolet' }} />
                         </Badge>
                     </IconButton>
                 </div>
@@ -121,8 +126,8 @@ class NavbarRightMenu extends Component {
     }
 }
 
-const stateToProps = ({userCart}) => {
-    return {userCart: userCart.cart}
+const stateToProps = ({ userCart }) => {
+    return { userCart: userCart.cart }
 }
 
 export default withRouter(connect(stateToProps, { userLogout })(NavbarRightMenu))

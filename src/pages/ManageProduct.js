@@ -44,13 +44,15 @@ const ManageProduct = () => {
 	};
 	const [state, setState] = useState(initialState);
 	const sortList = [
-        {id: 1, label: 'Last Updated'},
-        {id: 2, label: 'Name A to Z'},
-        {id: 3, label: 'Name Z to A'},
-        {id: 4, label: 'Price Low to High'},
-        {id: 5, label: 'Price High to Low'}
-    ]
-    const [sort, setSort] = useState(1)
+		{ id: 1, label: 'Last Updated' },
+		{ id: 2, label: 'Name A to Z' },
+		{ id: 3, label: 'Name Z to A' },
+		{ id: 4, label: 'Price Low to High' },
+		{ id: 5, label: 'Price High to Low' },
+		{ id: 6, label: 'Stock Low to High' },
+		{ id: 7, label: 'Stock High to Low' }
+	]
+	const [sort, setSort] = useState(1)
 	const [selectedProduct, setSelectedProduct] = useState(0);
 	const [showModalForm, setShowModalForm] = useState(false);
 	const [showModalWarning, setShowModalWarning] = useState(false);
@@ -260,10 +262,10 @@ const ManageProduct = () => {
 					<TableFooter>
 						<TableRow>
 							<TableCell colSpan={7}>
-								<div style={{display: 'flex', justifyContent: 'flex-end'}}>
+								<div style={{ display: 'flex', justifyContent: 'flex-end' }}>
 									<Select
 										value={sort}
-										onChange={e=>setSort(e.target.value)}
+										onChange={e => setSort(e.target.value)}
 									>
 										{sortList.map(i => (
 											<MenuItem key={i.id} value={i.id} >{i.label}</MenuItem>
@@ -274,7 +276,7 @@ const ManageProduct = () => {
 										rangeLimit={[5, 10, 15, 20, 25, 50]}
 										state={state}
 										setState={setState}
-										/>
+									/>
 								</div>
 							</TableCell>
 						</TableRow>

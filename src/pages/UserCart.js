@@ -2,6 +2,7 @@ import React, { useState, useEffect, lazy, Suspense } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { withRouter } from 'react-router-dom';
 import { API_URL } from '../support/API_URL';
+import formatter from '../support/FormatterRupiah'
 import {
     Table,
     TableHead,
@@ -23,7 +24,6 @@ import SaveIcon from '@material-ui/icons/Save'
 import CancelIcon from '@material-ui/icons/Cancel'
 import TableHeadRow from '../components/TableHeadRow'
 import Loading from '../components/Loading'
-import formatter from '../support/FormatterRupiah'
 import {
     emptyCart,
     editCart,
@@ -39,10 +39,10 @@ import {
     uploadReceipt
 } from '../redux/actions'
 
-const ModalWarning = lazy(() => import('./ModalWarning'))
-const ModalConfirm = lazy(() => import('./ModalConfirm'))
-const ModalDefault = lazy(() => import('./ModalDefault'))
-const ModalTransactionSuccess = lazy(() => import('./ModalTransactionSuccess'))
+const ModalWarning = lazy(() => import('../components/ModalWarning'))
+const ModalConfirm = lazy(() => import('../components/ModalConfirm'))
+const ModalDefault = lazy(() => import('../components/ModalDefault'))
+const ModalTransactionSuccess = lazy(() => import('../components/ModalTransactionSuccess'))
 
 const UserCart = (props) => {
     const dispatch = useDispatch()

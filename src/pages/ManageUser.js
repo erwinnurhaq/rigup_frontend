@@ -62,6 +62,8 @@ function ManageUser() {
         { id: 'city', label: 'City', minWidth: 100, align: 'center' },
         { id: 'phone', label: 'Phone', minWidth: 100, align: 'center' },
         { id: 'role', label: 'Role', minWidth: 50, align: 'center' },
+        { id: 'verified', label: 'Verified', minWidth: 50, align: 'center' },
+        { id: 'lastlogin', label: 'Last Login', minWidth: 50, align: 'center' },
         { id: 'options', label: 'Options', minWidth: 70, align: 'center' }
     ];
     //end table material
@@ -70,7 +72,7 @@ function ManageUser() {
         if (userListsLoading) {
             return new Array(state.limit).fill(0).map((i, index) => (
                 <TableRow key={index}>
-                    {new Array(10).fill(0).map((j, index) => (
+                    {new Array(12).fill(0).map((j, index) => (
                         <TableCell key={index} style={{ position: 'relative', height: '50px' }}>
                             <Loading type='bar' />
                         </TableCell>
@@ -89,6 +91,16 @@ function ManageUser() {
                     <TableCell>{i.city}</TableCell>
                     <TableCell>{i.phone}</TableCell>
                     <TableCell>{i.role}</TableCell>
+                    <TableCell>{i.verified === 1 ? 'Verified' : 'Not Verified'}</TableCell>
+                    <TableCell>{new Date(i.lastLogin).toLocaleDateString(undefined, {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'numeric',
+                        day: 'numeric',
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        second: 'numeric'
+                    })}</TableCell>
                     <TableCell>
                         <div style={{ display: 'flex', justifyContent: 'center' }}>
                             <IconButton aria-label="Delete"
@@ -105,7 +117,7 @@ function ManageUser() {
 
     const renderPagination = () => (
         <TableRow>
-            <TableCell colSpan={10} align='right'>
+            <TableCell colSpan={12} align='right'>
                 <Pagination
                     totalProduct={userCount}
                     state={state}

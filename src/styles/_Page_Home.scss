@@ -39,6 +39,7 @@
         cursor: pointer;
         &.show{
             width: 75%;
+            background-blend-mode: normal;
             .title{
                 pointer-events: none;
             }
@@ -56,6 +57,7 @@
         cursor: pointer;
         &.show{
             width: 75%;
+            background-blend-mode: normal;
             .title{
                 pointer-events: none;
             }

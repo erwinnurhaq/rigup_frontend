@@ -28,6 +28,12 @@
                     font-size: 1.6rem;
                     text-transform: uppercase;
                     font-weight: 400;
+                    transition: all 0.4s ease;
+                }
+                &:hover{
+                    a{
+                        letter-spacing: 0.5rem;
+                    }
                 }
             }
         }

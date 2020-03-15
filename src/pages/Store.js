@@ -14,7 +14,6 @@ import StoreBottomContentA from '../components/StoreBottomContentA'
 const Store = () => {
     const dispatch = useDispatch()
     const selectedCat = useSelector(({ categories }) => categories.selectedCat)
-    const changeCategoryBox = useSelector(({ changeStyle }) => changeStyle.changeCategoryBox)
     const changeBrowseProducts = useSelector(({ changeStyle }) => changeStyle.changeBrowseProducts)
 
     const listLogo = [
@@ -22,20 +21,18 @@ const Store = () => {
         'kingston.png', 'klevv.png', 'logitech.png', 'samsung.png', 'sandisk.png', 'seasonic.png', 'zotac.png'
     ]
 
-    const onBrowseProductsClick = () => {
+    const onBrowseProductsClick = async () => {
         if (selectedCat === 0 && !changeBrowseProducts) {
-            window.scrollTo(0, 0.725 * window.innerHeight)
             dispatch(setChangeStyle('changeBrowseProducts', true))
             dispatch(selectCat(1))
-            setTimeout(async()=>{
-                await dispatch(getChildOfMainParent(1))
-                await dispatch(getCountProductByCategoryId(1))
-                await dispatch(getProductByCategoryId(1, 1, 12, 0))
-            }, 400)
+            await dispatch(getChildOfMainParent(1))
+            await dispatch(getCountProductByCategoryId(1))
+            await dispatch(getProductByCategoryId(1, 1, 12, 0))
+            window.scrollTo(0, 0.725 * window.innerHeight)
         } else {
-            window.scrollTo(0, 0)
             dispatch(setChangeStyle('changeBrowseProducts', false))
             dispatch(selectCat(0))
+            window.scrollTo(0, 0)
         }
     }
 
@@ -43,7 +40,7 @@ const Store = () => {
         <div className='storeContainer'>
             <StoreCarousel />
             <StoreCategoryBox />
-            <div style={{ width: '100%', height:'8vh', display: `${changeCategoryBox? 'block' : 'none'}`}} />
+            {/* <div style={{ width: '100%', height: '8vh', display: `${changeCategoryBox ? 'block' : 'none'}` }} /> */}
             <StoreBrowseProduct />
             <Button className='btnBrowseProducts' onClick={onBrowseProductsClick} >
                 <div style={{ display: 'flex' }}>

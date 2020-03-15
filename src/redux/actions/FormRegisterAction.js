@@ -8,8 +8,19 @@ export const setRegisterInput = (prop, value) => {
     };
 };
 
+export const setRegisterInputAll = (data) => {
+    return {
+        type: 'REGISTER_INPUT_ALLCHANGE',
+        payload: data
+    };
+};
+
 export const setRegisterInitial = () => {
     return { type: 'REGISTER_INPUT_INITIAL' }
+};
+
+export const setRegisterUserInitial = () => {
+    return { type: 'REGISTER_USER_INPUT_INITIAL' }
 };
 
 export const fetchCityList = () => {

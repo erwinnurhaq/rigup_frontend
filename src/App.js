@@ -19,6 +19,7 @@ const Test3 = lazy(() => import('./pages/Test3'))
 const Home = lazy(() => import('./pages/Home'))
 const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
+const ResetPassword = lazy(() => import('./pages/ResetPassword'))
 const Verification = lazy(() => import('./pages/Verification'))
 const Verifying = lazy(() => import('./components/Verifying'))
 const Store = lazy(() => import('./pages/Store'))
@@ -39,12 +40,22 @@ class App extends React.Component {
 
   componentDidMount() {
     this.props.userKeepLogin()
+    let mainCursor = this.refs.mainCursor
+    window.addEventListener('mousemove', (e) => {
+      mainCursor.style.top = e.pageY + 'px';
+      mainCursor.style.left = e.pageX + 'px';
+    })
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('mousemove')
   }
 
   render() {
     return (
       <MuiThemeProvider theme={theme}>
         <div className="main">
+          <div className="mainCursor" ref="mainCursor" />
           <Navbar />
           <Switch>
             <Suspense fallback={<Loading />}>
@@ -53,6 +64,7 @@ class App extends React.Component {
               <Route path="/promo" component={OnDevelopment} />
               <Route path="/login" component={Login} />
               <Route path="/register" component={Register} />
+              <Route path="/resetpassword/:usertoken" component={ResetPassword} />
               <Route path="/verification" component={Verification} />
               <Route path="/verifying/:usertoken" component={Verifying} />
               <Route path="/store" component={Store} />

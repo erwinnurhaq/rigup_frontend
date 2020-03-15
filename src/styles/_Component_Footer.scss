@@ -18,6 +18,13 @@
                 position: relative;
                 margin: 0 10px;
                 @include flex(row, center,center);
+                transition: all 0.4s ease;
+                &:hover{
+                    background-color: $accent1;
+                    width: 42px;
+                    height: 42px;
+                    font-size: 1.8rem;
+                }
             }
         }
         .linksContainer{
@@ -31,10 +38,15 @@
                 width: 50%;
                 li{
                     font-size: 1.2rem;
+                    padding: 0 5px;
                     margin: 0 5%;
                     @include flex(row, center, center);
                     a{
                         color: $light;
+                        transition: all 0.4s ease;
+                        &:hover{
+                            letter-spacing: 0.5rem;
+                        }
                     }
                 }
             }

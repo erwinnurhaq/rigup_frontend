@@ -203,7 +203,7 @@ const StoreBrowseProduct = () => {
     ) : null
 
     return (
-        <div className={`browseProducts ${changeBrowseProducts ? '' : 'hide'}`}>
+        <div className={`browseProducts ${changeBrowseProducts ? '' : 'hide'}`} style={{ marginTop: `${changeCategoryBox ? '8vh' : '0'}` }}>
             <div className={`browseProductsWrapper ${changeCategoryBox ? 'change' : ''}`}>
                 <div className="searchContainer">
                     <div className='searchWrapper'>

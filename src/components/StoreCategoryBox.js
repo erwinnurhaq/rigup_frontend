@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Case, Motherboard2, Processor, Storage, Memory, VGA, PSU, Monitor, Accessories } from './IconSVG'
 import Loading from './Loading'
-import { 
+import {
     getMostParent,
     selectCat,
     selectFilter,
@@ -10,7 +10,7 @@ import {
     selectChildCat,
     getChildOfMainParent,
     getCountProductByCategoryId,
-    getProductByCategoryId 
+    getProductByCategoryId
 } from '../redux/actions'
 
 const CategoryBox = () => {
@@ -39,23 +39,21 @@ const CategoryBox = () => {
         }
     }
 
-    const onCategoryClick = (id) => {
+    const onCategoryClick = async (id) => {
         if (selectedCat === id) {
-            window.scrollTo(0, 0)
             dispatch(setChangeStyle('changeBrowseProducts', false))
             dispatch(selectFilter(0))
             dispatch(selectCat(0))
             dispatch(selectChildCat(0))
+            window.scrollTo(0, 0)
         } else {
-            window.scrollTo(0, 0.725 * window.innerHeight)
             dispatch(setChangeStyle('changeBrowseProducts', true))
             dispatch(selectFilter(0))
             dispatch(selectCat(id))
-            setTimeout(async() => {
-                await dispatch(getChildOfMainParent(id))
-                await dispatch(getCountProductByCategoryId(id))
-                await dispatch(getProductByCategoryId(id, 1, 12, 0))
-            }, 400);
+            await dispatch(getChildOfMainParent(id))
+            await dispatch(getCountProductByCategoryId(id))
+            await dispatch(getProductByCategoryId(id, 1, 12, 0))
+            window.scrollTo(0, 0.725 * window.innerHeight)
             dispatch(selectChildCat(0))
         }
     }

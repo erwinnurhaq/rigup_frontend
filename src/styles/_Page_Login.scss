@@ -54,6 +54,17 @@
                 }
             }
         }
+        .forgotPassword{
+            display: flex;
+            padding-top: 25px;
+            color: $light;
+            div{
+                cursor: pointer;
+                padding-left: 5px;
+                color: $accent1;
+                font-weight: bold;
+            }
+        }
         .notAMember{
             position: absolute;
             bottom: 20%;

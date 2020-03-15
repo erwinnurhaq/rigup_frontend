@@ -13,7 +13,7 @@ export default (state = initialState, action) => {
             }
         case 'USER_ERROR':
             return {
-                ...initialState,
+                ...state,
                 error: action.payload,
                 loading: false
             }
@@ -27,6 +27,10 @@ export default (state = initialState, action) => {
         case 'USER_LOGOUT':
             return initialState
         case 'RESEND_VERIFICATION_SUCCESS':
+            return { ...state, loading: false }
+        case 'SEND_EMAIL_RESETPASS_SUCCESS':
+            return { ...state, loading: false }
+        case 'RESETPASS_SUCCESS':
             return { ...state, loading: false }
         default:
             return state

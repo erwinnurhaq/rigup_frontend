@@ -1,18 +1,22 @@
 import React, { Component, lazy, Suspense } from 'react'
 import { connect } from 'react-redux'
-import { TextField, Button, FormControlLabel, Checkbox, InputAdornment, IconButton } from '@material-ui/core'
+import { TextField, Button, FormControlLabel, Checkbox, InputAdornment, IconButton, DialogActions } from '@material-ui/core'
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
-import { userLogin } from '../redux/actions'
+import { userLogin, userLogout, sendEmailResetPassword } from '../redux/actions'
 import { Redirect, Link } from 'react-router-dom'
 
 import Loading from '../components/Loading'
 const ModalWarning = lazy(() => import('../components/ModalWarning'))
+const ModalDefault = lazy(() => import('../components/ModalDefault'))
 
 class Login extends Component {
     state = {
         modalShow: false,
+        modalResetShow: false,
+        modalResetSuccessShow: false,
+        emailReset: '',
         userOrEmail: '',
         password: '',
         keepLogin: false,
@@ -24,6 +28,8 @@ class Login extends Component {
     }
 
     closeModal = () => this.setState({ modalShow: false })
+    closeModalReset = () => this.setState({ modalResetShow: false })
+    closeModalResetSuccess = () => this.setState({ modalResetSuccessShow: false })
 
     onInputChange = e => {
         let x = e.target.value
@@ -31,13 +37,13 @@ class Login extends Component {
         this.setState({ [e.target.id]: x })
     }
 
-    onLoginClick = () => {
+    onLoginClick = async () => {
         const { userOrEmail, password, keepLogin } = this.state
         if (userOrEmail === '' || password === '') {
             return this.setState({ modalShow: true })
         }
         this.setState({ userOrEmail: '', password: '', keepLogin: false })
-        this.props.userLogin({ userOrEmail, password, keepLogin })
+        await this.props.userLogin({ userOrEmail, password, keepLogin })
     }
 
     onKeyUp = e => {
@@ -45,6 +51,69 @@ class Login extends Component {
             this.onLoginClick()
         }
     }
+
+    onBtnForgotPasswordClick = () => {
+        this.props.userLogout()
+        this.setState({ modalResetShow: true })
+    }
+
+    onBtnResetClick = async () => {
+        console.log('ok')
+        await this.props.sendEmailResetPassword(this.state.emailReset)
+        if (!this.props.user.error) {
+            this.setState({ modalResetShow: false, modalResetSuccessShow: true })
+        }
+    }
+
+    onKeyUpResetPassword = e => {
+        if (e.key === "Enter") {
+            this.onBtnResetClick()
+        }
+    }
+
+    modalCannotBlank = () => this.state.modalShow ? (
+        <Suspense fallback={<Loading />}>
+            <ModalWarning
+                show={this.state.modalShow}
+                setShow={this.closeModal}
+            >Cannot Blank!</ModalWarning>
+        </Suspense>
+    ) : null
+
+    modalResetSuccess = () => this.state.modalResetSuccessShow ? (
+        <Suspense fallback={<Loading />}>
+            <ModalWarning
+                title='Success'
+                show={this.state.modalResetSuccessShow}
+                setShow={this.closeModalResetSuccess}
+            >Reset link has been sent and valid for 1 hour, please check your email!</ModalWarning>
+        </Suspense>
+    ) : null
+
+    modalResetPassword = () => this.state.modalResetShow ? (
+        <Suspense fallback={<Loading />}>
+            <ModalDefault
+                title='Forgot Password'
+                size='sm'
+                show={this.state.modalResetShow}
+            >
+                <div style={{ padding: '0 50px' }}>
+                    <TextField
+                        margin="dense" label="Email Address" id="emailReset" type="text"
+                        value={this.state.emailReset}
+                        onChange={this.onInputChange}
+                        onKeyUp={this.onKeyUpResetPassword}
+                        fullWidth required
+                    />
+                    <div>{this.props.user.loading ? <Loading /> : this.props.user.error ? this.props.user.error : ''}</div>
+                </div>
+                <DialogActions>
+                    <Button variant='text' onClick={this.closeModalReset} >Close</Button>
+                    <Button variant='text' color='secondary' onClick={this.onBtnResetClick} >Reset</Button>
+                </DialogActions>
+            </ModalDefault>
+        </Suspense>
+    ) : null
 
     render() {
         if (this.props.user.user && this.props.user.user.verified === 1) {
@@ -95,20 +164,18 @@ class Login extends Component {
                                 </Button>
                             </div>
                         </form>
-                        {this.state.modalShow ? (
-                            <Suspense fallback={<Loading />}>
-                                <ModalWarning
-                                    show={this.state.modalShow}
-                                    setShow={this.closeModal}
-                                >Cannot Blank!</ModalWarning>
-                            </Suspense>
-                        ) : null}
+                        {this.modalCannotBlank()}
                         {this.props.user.error ? (
                             <h3 style={{ color: 'lightcoral', paddingTop: '15px' }}>{this.props.user.error}</h3>
                         ) : null}
+                        <div className='forgotPassword'>
+                            Forgot password? Please <div onClick={this.onBtnForgotPasswordClick}>Click Here</div>
+                        </div>
                         <div className='notAMember'>
                             Not a member yet? Please <Link to='/register'>Register Here</Link>
                         </div>
+                        {this.modalResetPassword()}
+                        {this.modalResetSuccess()}
                     </div>
                 </div>
             )
@@ -122,4 +189,4 @@ const stateToProps = ({ user }) => {
     }
 }
 
-export default connect(stateToProps, { userLogin })(Login)
+export default connect(stateToProps, { userLogin, userLogout, sendEmailResetPassword })(Login)

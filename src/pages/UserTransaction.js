@@ -2,20 +2,22 @@ import React, { useState, useEffect, lazy, Suspense } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Table, TableHead, TableBody, IconButton, TableRow, TableCell, Button, DialogActions } from '@material-ui/core';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
-import TableHeadRow from './TableHeadRow'
+import TableHeadRow from '../components/TableHeadRow'
 import formatter from '../support/FormatterRupiah'
-import Loading from './Loading';
+import Loading from '../components/Loading';
 import { getUserTransactionList, getUserTransactionDetailList, selectTransaction, setImageReceipt, setImageReceiptError, uploadReceipt } from '../redux/actions'
 import { API_URL } from '../support/API_URL';
 
-const ModalTransactionSuccess = lazy(() => import('./ModalTransactionSuccess'))
-const ModalDefault = lazy(() => import('./ModalDefault'))
+const ModalTransactionSuccess = lazy(() => import('../components/ModalTransactionSuccess'))
+const ModalDefault = lazy(() => import('../components/ModalDefault'))
 
 const UserTransaction = () => {
     const dispatch = useDispatch();
     const { list, detail, selected, receiptImg } = useSelector(({ userTransaction }) => userTransaction)
     const [showModalUpload, setShowModalUpload] = useState(false)
     const [showDetail, setShowDetail] = useState(false)
+    const [showImage, setShowImage] = useState(false)
+    const [selImage, setSelImage] = useState('')
 
     useEffect(() => {
         dispatch(getUserTransactionList())
@@ -54,6 +56,20 @@ const UserTransaction = () => {
         }
     }
 
+    const onModalImageClose = () => {
+        setSelImage('');
+        setShowImage(false);
+    }
+
+    const imageReceiptRender = (i) => i.receiptImg ? (
+        <img src={`${API_URL}${i.receiptImg}`} style={{ height: '40px', cursor: 'pointer' }} alt={i.id}
+            onClick={() => {
+                setSelImage(`${API_URL}${i.receiptImg}`);
+                setShowImage(true)
+            }}
+        />
+    ) : 'none'
+
     const paidStatusList = ['Unpaid', 'Verifying Payment', 'Paid', 'Fail, check email for further information']
     const deliveredStatusList = ['Waiting', 'On Delivery', 'Delivered', 'Undelivered']
 
@@ -71,6 +87,7 @@ const UserTransaction = () => {
         { id: 'totalCost', label: 'Total Cost', minWidth: 50, align: 'center' },
         { id: 'paidStatus', label: 'Status', minWidth: 50, align: 'center' },
         { id: 'deliveredStatus', label: 'Delivery', minWidth: 50, align: 'center' },
+        { id: 'receiptImg', label: 'Receipt', minWidth: 50, align: 'center' },
         { id: 'option', label: 'Option', minWidth: 50, align: 'center' }
     ]
 
@@ -109,6 +126,7 @@ const UserTransaction = () => {
             <TableCell>{formatter.format(i.totalCost)}</TableCell>
             <TableCell>{paidStatusList[i.paidStatus]}</TableCell>
             <TableCell>{deliveredStatusList[i.deliveredStatus]}</TableCell>
+            <TableCell>{imageReceiptRender(i)}</TableCell>
             <TableCell>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <IconButton aria-label="Detail" onClick={() => onBtnDetailClick(i.id)}>
@@ -125,7 +143,7 @@ const UserTransaction = () => {
         </TableRow>
     )) : (
             <TableRow>
-                <TableCell colSpan={14}>Transaction Empty</TableCell>
+                <TableCell colSpan={15}>Transaction Empty</TableCell>
             </TableRow>
         )
 
@@ -190,6 +208,26 @@ const UserTransaction = () => {
         </Suspense>
     ) : null
 
+    const renderModalImage = () => showImage ? (
+        <Suspense fallback={<Loading />}>
+            <ModalDefault
+                show={showImage}
+                title='Receipt Image'
+                size='lg'
+            >
+                <div style={{ width: '100%', height: '100%' }}>
+                    <img src={selImage} alt='receipt image' style={{ width: '100%' }} />
+                </div>
+                <DialogActions>
+                    <Button variant='contained' style={{ backgroundColor: 'darkviolet', color: 'white' }}
+                        onClick={onModalImageClose}>
+                        CLOSE
+                    </Button>
+                </DialogActions>
+            </ModalDefault>
+        </Suspense>
+    ) : null
+
     return (
         <div className='userCartContainer'>
             <div className="userCartWrapper">
@@ -202,6 +240,7 @@ const UserTransaction = () => {
             </div>
             {renderModalUpload()}
             {renderModalDetail()}
+            {renderModalImage()}
         </div>
     )
 }

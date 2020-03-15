@@ -48,6 +48,24 @@ export const getUserTransactionList = () => {
     }
 }
 
+export const getUserHistoryList = () => {
+    return async dispatch => {
+        try {
+            dispatch({ type: 'USER_TRANSACTION_LOADING' })
+            const token = localStorage.getItem('riguptoken')
+            const res = await axios.get(`${API_URL}/transactions/user/history`, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
+            dispatch({
+                type: 'USER_TRANSACTION_LIST',
+                payload: res.data
+            })
+        } catch (err) {
+            dispatch(error(err))
+        }
+    }
+}
+
 export const getUserTransactionDetailList = (transactionId) => {
     return async dispatch => {
         try {
@@ -117,6 +135,32 @@ export const getAllTransactionList = (sort, limit, offset, search) => {
             dispatch({ type: 'USER_TRANSACTION_LOADING' })
             const token = localStorage.getItem('riguptoken')
             const res = await axios.get(`${API_URL}/transactions`, {
+                params: { sort, limit, offset, search },
+                headers: { Authorization: `Bearer ${token}` }
+            })
+            dispatch({
+                type: 'USER_TRANSACTION_LISTALLCOUNT',
+                payload: res.data.allCount
+            })
+            dispatch({
+                type: 'USER_TRANSACTION_LIST',
+                payload: res.data.transactionList
+            })
+        } catch (err) {
+            dispatch(error(err))
+        }
+    }
+}
+
+export const getAllHistoryList = (sort, limit, offset, search) => {
+    return async dispatch => {
+        try {
+            if (search === '') {
+                search = null
+            }
+            dispatch({ type: 'USER_TRANSACTION_LOADING' })
+            const token = localStorage.getItem('riguptoken')
+            const res = await axios.get(`${API_URL}/transactions/history`, {
                 params: { sort, limit, offset, search },
                 headers: { Authorization: `Bearer ${token}` }
             })

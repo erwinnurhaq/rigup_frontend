@@ -10,6 +10,7 @@ const ManageProduct = lazy(() => import('./ManageProduct'))
 const ManageBrandAndCategory = lazy(() => import('./ManageBrandAndCategory'))
 const ManageUser = lazy(() => import('./ManageUser'))
 const ManageTransaction = lazy(() => import('./ManageTransaction'))
+const ManageHistory = lazy(() => import('./ManageHistory'))
 const OnDevelopment = lazy(() => import('./OnDevelopment'))
 
 const useStyles = makeStyles(theme => ({
@@ -33,7 +34,7 @@ const AdminDashboard = (props) => {
         { id: 3, path: '/admindashboard/manageuser', name: 'Manage User', comp: ManageUser },
         { id: 4, path: '/admindashboard/manageusersavedbuild', name: 'Manage User Saved Build', comp: OnDevelopment },
         { id: 5, path: '/admindashboard/managetransactions', name: 'Active Transaction', comp: ManageTransaction },
-        { id: 6, path: '/admindashboard/managehistory', name: 'History', comp: OnDevelopment }
+        { id: 6, path: '/admindashboard/managehistory', name: 'History', comp: ManageHistory }
     ]
     const [active, setActive] = useState('')
     const [title, setTitle] = useState('')

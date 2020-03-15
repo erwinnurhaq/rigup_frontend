@@ -27,9 +27,7 @@ const StoreCarousel = (prop) => {
     return (
         <Slider {...settings}>
             {carouselContent.length !== 0 ? carouselContent.map((item) => (
-                <div key={item.id} className="carouselItem"
-                    onClick={() => prop.history.push(item.link)}
-                >
+                <div key={item.id} className="carouselItem">
                     <div className='imageContainer'>
                         <img src={`${API_URL}${item.image}`} alt={item.id} />
                     </div>

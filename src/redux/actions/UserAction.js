@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { API_URL } from '../../support/API_URL'
-import {getUserCart} from './UserCartAction'
+import { getUserCart } from './UserCartAction'
 
 const error = (err) => {
-    let error = err.response && Object.keys(err.response).length >= 0 ? err.response.data.message : 'Cannot connect to API'
+    let error = err && Object.keys(err.response.data).length > 0 ? err.response.data.message : 'Error'
     return {
         type: 'USER_ERROR',
         payload: error
@@ -119,6 +119,70 @@ export const resendVerification = (id, email) => {
             dispatch({ type: 'USER_LOADING' })
             await axios.post(`${API_URL}/users/resendverify`, { id, email })
             dispatch({ type: 'RESEND_VERIFICATION_SUCCESS' })
+        } catch (err) {
+            dispatch(error(err))
+        }
+    }
+}
+
+export const sendEmailResetPassword = (email) => {
+    return async dispatch => {
+        try {
+            dispatch({ type: 'USER_LOADING' })
+            await axios.post(`${API_URL}/users/sendresetpassword`, { email })
+            dispatch({ type: 'SEND_EMAIL_RESETPASS_SUCCESS' })
+        } catch (err) {
+            dispatch(error(err))
+        }
+    }
+}
+
+export const resetPassword = (newPassword, token) => {
+    return async dispatch => {
+        try {
+            dispatch({ type: 'USER_LOADING' })
+            console.log(token)
+            await axios.post(`${API_URL}/users/resetpassword`, { password: newPassword }, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
+            dispatch({ type: 'RESETPASS_SUCCESS' })
+        } catch (err) {
+            dispatch(error(err))
+        }
+    }
+}
+
+export const editProfile = (data) => {
+    return async dispatch => {
+        try {
+            dispatch({ type: 'USER_LOADING' })
+            let token = localStorage.getItem('riguptoken')
+            const res = await axios.put(`${API_URL}/users`, data, {
+                headers: { Authorization: `Bearer ${token}` }
+            })
+            dispatch({
+                type: 'USER_LOGIN',
+                payload: res.data.user
+            })
+        } catch (err) {
+            dispatch(error(err))
+        }
+    }
+}
+
+export const editPassword = (currentPassword, newPassword) => {
+    return async dispatch => {
+        try {
+            dispatch({ type: 'USER_LOADING' })
+            let token = localStorage.getItem('riguptoken')
+            const res = await axios.put(`${API_URL}/users/changepass`,
+                { currentPassword, newPassword },
+                { headers: { Authorization: `Bearer ${token}` } }
+            )
+            dispatch({
+                type: 'USER_LOGIN',
+                payload: res.data.user
+            })
         } catch (err) {
             dispatch(error(err))
         }
