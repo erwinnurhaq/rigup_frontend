@@ -73,7 +73,7 @@ const StoreProductCard = (props) => {
 
     const checkWishlistColor = () => {
         let id = props.product.productId || props.product.id
-        if (props.userWishlist.filter(i => i.productId === id).length > 0) {
+        if (props.user && props.userWishlist && props.userWishlist.filter(i => i.productId === id).length > 0) {
             return 'secondary'
         } else {
             return 'inherit'

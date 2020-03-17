@@ -67,6 +67,7 @@ const ModalProductDetail = (props) => {
     }, [dispatch])
 
     const product = useSelector(({ productDetail }) => productDetail)
+    const { user } = useSelector(({ user }) => user)
     const { wishlist } = useSelector(({ userWishlist }) => userWishlist)
     const [selectedImage, setSelectedImage] = useState(0)
 
@@ -75,7 +76,7 @@ const ModalProductDetail = (props) => {
     };
 
     const wishListText = () => {
-        if (wishlist.filter(i => i.productId === productId).length > 0) {
+        if (user && wishlist && wishlist.filter(i => i.productId === productId).length > 0) {
             return 'Remove from Wishlist'
         } else {
             return 'Add to Wishlist'
