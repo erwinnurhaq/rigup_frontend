@@ -105,6 +105,10 @@ const UserCart = (props) => {
             setShowModalWarning(true)
         } else if (userCart && userCart.findIndex(i => i.stock === 0) >= 0) {
             alert('One of products in your cart is out of stock, please remove it to continue!')
+        } else if (totalWeight > 30000) {
+            alert('Over weight! Maximum courier weight 30kg. Please split to another transaction.')
+        } else if (!cityId || !destination || cityId === 0 || destination === '') {
+            alert('Please insert address and city for shipping.')
         } else {
             let data = {
                 deliveryAddress: destination,
@@ -250,17 +254,17 @@ const UserCart = (props) => {
             </TableRow>
         )
 
-    const renderModalWarningWeight = () => showModalWarning ? (
-        <Suspense fallback={<Loading />}>
-            <ModalWarning
-                show={showModalWarning}
-                setShow={setShowModalWarning}
-                title='Warning'
-            >
-                Weight is over 30kg! Please split into another transaction!
-            </ModalWarning>
-        </Suspense>
-    ) : null
+    // const renderModalWarningWeight = () => showModalWarning ? (
+    //     <Suspense fallback={<Loading />}>
+    //         <ModalWarning
+    //             show={showModalWarning}
+    //             setShow={setShowModalWarning}
+    //             title='Warning'
+    //         >
+    //             Weight is over 30kg! Please split into another transaction!
+    //         </ModalWarning>
+    //     </Suspense>
+    // ) : null
 
     const renderModalWarning = () => showModalWarning ? (
         <Suspense fallback={<Loading />}>
@@ -341,7 +345,7 @@ const UserCart = (props) => {
                         <div className="dataInfo">
                             <div>
                                 <p>Total Product</p>
-                                <h3>{userCart.length || '0'}</h3>
+                                <h3>{userCart ? userCart.length : '0'}</h3>
                             </div>
                             <div>
                                 <p>Total Quantity</p>
@@ -398,7 +402,7 @@ const UserCart = (props) => {
                     <Button onClick={onBuyNowClick}>BUY NOW</Button>
                 </div>
             </div>
-            {renderModalWarningWeight()}
+            {/* {renderModalWarningWeight()} */}
             {renderModalWarning()}
             {renderModalConfirmDelete()}
             {renderModalSuccess()}

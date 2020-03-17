@@ -50,9 +50,9 @@ class App extends React.Component {
     // })
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('mousemove')
-  }
+  // componentWillUnmount() {
+  //   window.removeEventListener('mousemove')
+  // }
 
   render() {
     return (

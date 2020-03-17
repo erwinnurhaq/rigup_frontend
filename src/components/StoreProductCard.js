@@ -35,7 +35,7 @@ const StoreProductCard = (props) => {
             let weight = 0
             if (props.userCart) {
                 props.userCart.forEach(i => weight += (i.weight * i.quantity))
-                if (weight >= 30000) {
+                if (weight > 30000) {
                     alert('Over weight! Maximum courier weight 30kg. Please split to another transaction.')
                 } else {
                     let find = props.userCart.filter(i => i.productId === id)
