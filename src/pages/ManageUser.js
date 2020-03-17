@@ -84,12 +84,12 @@ function ManageUser() {
                 <TableRow key={index}>
                     <TableCell align='center'>{state.offset + (index + 1)}</TableCell>
                     <TableCell>{i.fullname}</TableCell>
-                    <TableCell>{i.gender}</TableCell>
+                    <TableCell>{i.gender || '-'}</TableCell>
                     <TableCell>{i.username}</TableCell>
                     <TableCell>{i.email}</TableCell>
-                    <TableCell>{i.address}</TableCell>
-                    <TableCell>{i.city}</TableCell>
-                    <TableCell>{i.phone}</TableCell>
+                    <TableCell>{i.address || '-'}</TableCell>
+                    <TableCell>{i.city || '-'}</TableCell>
+                    <TableCell>{i.phone || '-'}</TableCell>
                     <TableCell>{i.role}</TableCell>
                     <TableCell>{i.verified === 1 ? 'Verified' : 'Not Verified'}</TableCell>
                     <TableCell>{new Date(i.lastLogin).toLocaleDateString(undefined, {

@@ -23,21 +23,21 @@ const CategoryBox = () => {
         dispatch(getMostParent())
     }, [dispatch])
 
-    useEffect(() => {
-        window.addEventListener('scroll', positionChange)
-        return () => {
-            window.removeEventListener('scroll', positionChange)
-            dispatch(setChangeStyle('changeCategoryBox', false))
-        };
-    }, [])
+    // useEffect(() => {
+    //     window.addEventListener('scroll', positionChange)
+    //     return () => {
+    //         window.removeEventListener('scroll', positionChange)
+    //         dispatch(setChangeStyle('changeCategoryBox', false))
+    //     };
+    // }, [])
 
-    const positionChange = () => {
-        if (window.scrollY >= 0.72 * window.innerHeight) {
-            dispatch(setChangeStyle('changeCategoryBox', true))
-        } else {
-            dispatch(setChangeStyle('changeCategoryBox', false))
-        }
-    }
+    // const positionChange = () => {
+    //     if (window.scrollY >= 0.72 * window.innerHeight) {
+    //         dispatch(setChangeStyle('changeCategoryBox', true))
+    //     } else {
+    //         dispatch(setChangeStyle('changeCategoryBox', false))
+    //     }
+    // }
 
     const onCategoryClick = async (id) => {
         if (selectedCat === id) {

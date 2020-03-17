@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from 'react'
+import React, { useState, lazy, Suspense, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button } from '@material-ui/core'
@@ -27,6 +27,10 @@ const Verification = () => {
             >{loading ? 'Resend...' : 'Verification link has been sent'}</ModalWarning>
         </Suspense>
     ) : null
+
+    useEffect(() => {
+        document.title = 'Verification - RIGUP!'
+    }, [])
 
     if (user && user.verified === 1) {
         return <Redirect to='/' />

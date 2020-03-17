@@ -7,6 +7,7 @@ import HistoryIcon from '@material-ui/icons/History';
 import ListIcon from '@material-ui/icons/List';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import FavoriteIcon from '@material-ui/icons/Favorite'
 
 import { userLogout } from '../redux/actions'
 import { connect } from 'react-redux';
@@ -65,6 +66,10 @@ class NavbarRightMenu extends Component {
                                 <AccountCircleIcon />
                                 Profile
                             </MenuItem>
+                            <MenuItem onClick={() => this.onLinkClick(`/userdashboard/wishlist`)}>
+                                <FavoriteIcon />
+                                My Wishlist
+                            </MenuItem>
                             <MenuItem onClick={() => this.onLinkClick(`/userdashboard/cart`)}>
                                 <ShoppingCartIcon />
                                 My Cart
@@ -93,6 +98,11 @@ class NavbarRightMenu extends Component {
         return (
             <>
                 <div className="navIconContainer">
+                    <IconButton aria-label="wishlist" onClick={() => this.props.history.push('/userdashboard/wishlist')}>
+                        <Badge badgeContent={this.props.userWishlist ? this.props.userWishlist.length : 0} color="secondary">
+                            <FavoriteIcon style={{ color: 'darkviolet' }} />
+                        </Badge>
+                    </IconButton>
                     <IconButton aria-label="cart" onClick={() => this.props.history.push('/userdashboard/cart')}>
                         <Badge badgeContent={this.props.userCart ? this.props.userCart.length : 0} color="secondary">
                             <ShoppingCartIcon style={{ color: 'darkviolet' }} />
@@ -126,8 +136,8 @@ class NavbarRightMenu extends Component {
     }
 }
 
-const stateToProps = ({ userCart }) => {
-    return { userCart: userCart.cart }
+const stateToProps = ({ userCart, userWishlist }) => {
+    return { userCart: userCart.cart, userWishlist: userWishlist.wishlist }
 }
 
 export default withRouter(connect(stateToProps, { userLogout })(NavbarRightMenu))

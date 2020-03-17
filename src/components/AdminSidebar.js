@@ -91,28 +91,20 @@ const AdminSidebar = (props) => {
                         </ListItemIcon>
                         <ListItemText primary='User Lists' />
                     </ListItem>
-                    <ListItem button
-                        className={active === 4 ? classes.listItemB : classes.listItemA}
-                        onClick={() => onDrawerListClick(4)}>
-                        <ListItemIcon>
-                            <SaveIcon style={{ color: 'white' }} />
-                        </ListItemIcon>
-                        <ListItemText primary='User Saved Builds' />
-                    </ListItem>
                 </List>
                 <Divider />
                 <List>
                     <ListItem button
-                        className={active === 5 ? classes.listItemB : classes.listItemA}
-                        onClick={() => onDrawerListClick(5)}>
+                        className={active === 4 ? classes.listItemB : classes.listItemA}
+                        onClick={() => onDrawerListClick(4)}>
                         <ListItemIcon>
                             <ShopTwoIcon style={{ color: 'white' }} />
                         </ListItemIcon>
                         <ListItemText primary='Active Transactions' />
                     </ListItem>
                     <ListItem button
-                        className={active === 6 ? classes.listItemB : classes.listItemA}
-                        onClick={() => onDrawerListClick(6)}>
+                        className={active === 5 ? classes.listItemB : classes.listItemA}
+                        onClick={() => onDrawerListClick(5)}>
                         <ListItemIcon>
                             <HistoryIcon style={{ color: 'white' }} />
                         </ListItemIcon>

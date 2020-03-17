@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button } from '@material-ui/core'
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
@@ -35,6 +35,10 @@ const Store = () => {
             window.scrollTo(0, 0)
         }
     }
+
+    useEffect(() => {
+        document.title = 'Store - RIGUP!'
+    }, [])
 
     return (
         <div className='storeContainer'>

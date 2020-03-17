@@ -1,12 +1,37 @@
 import axios from 'axios'
 import { API_URL } from '../../support/API_URL'
 import { getUserCart } from './UserCartAction'
+import { getUserWishlist } from './UserWishlistAction'
 
 const error = (err) => {
-    let error = err && Object.keys(err.response.data).length > 0 ? err.response.data.message : 'Error'
+    let error = err.response && Object.keys(err.response.data).length > 0 ? err.response.data.message : ''
     return {
         type: 'USER_ERROR',
         payload: error
+    }
+}
+
+export const userLoginByGoogle = (token) => {
+    return async dispatch => {
+        try {
+            console.log('tokenId: ', token)
+            dispatch({ type: 'USER_LOADING' })
+            const res = await axios.post(`${API_URL}/users/loginbygoogle`, {},
+                { headers: { Authorization: `Bearer ${token}` } }
+            )
+            console.log('user login: ', res.data)
+            dispatch({
+                type: 'USER_LOGIN',
+                payload: res.data.user
+            })
+            if (res.data.user.verified === 1) {
+                localStorage.setItem('riguptoken', res.data.token)
+                dispatch(getUserCart(res.data.user.id))
+                dispatch(getUserWishlist(res.data.user.id))
+            }
+        } catch (err) {
+            dispatch(error(err))
+        }
     }
 }
 
@@ -25,6 +50,7 @@ export const userLogin = ({ userOrEmail, password, keepLogin }) => {
             if (res.data.user.verified === 1) {
                 localStorage.setItem('riguptoken', res.data.token)
                 dispatch(getUserCart(res.data.user.id))
+                dispatch(getUserWishlist(res.data.user.id))
             }
         } catch (err) {
             dispatch(error(err))
@@ -55,6 +81,7 @@ export const userKeepLogin = () => {
                 })
                 if (res.data.user.verified === 1) {
                     dispatch(getUserCart(res.data.user.id))
+                    dispatch(getUserWishlist(res.data.user.id))
                 }
             } catch (err) {
                 dispatch(userLogout())

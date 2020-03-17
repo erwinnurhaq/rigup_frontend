@@ -5,6 +5,7 @@ import Loading from '../components/Loading'
 import { Button } from '@material-ui/core'
 
 const UserProfile = lazy(() => import('./UserProfile'))
+const UserWishlist = lazy(() => import('./UserWishlist'))
 const UserCart = lazy(() => import('./UserCart'))
 const UserTransaction = lazy(() => import('./UserTransaction'))
 const UserHistory = lazy(() => import('./UserHistory'))
@@ -13,9 +14,10 @@ const UserDashboard = (props) => {
 
     const sideBarList = [
         { id: 1, path: '/userdashboard/profile', name: 'My Profile', component: UserProfile, shortTitle: 'P R O F I L E' },
-        { id: 2, path: '/userdashboard/cart', name: 'My Cart', component: UserCart, shortTitle: 'C A R T' },
-        { id: 3, path: '/userdashboard/transaction', name: 'My Transaction', component: UserTransaction, shortTitle: 'T R A N S' },
-        { id: 4, path: '/userdashboard/history', name: 'My History', component: UserHistory, shortTitle: 'H I S T O R Y' }
+        { id: 2, path: '/userdashboard/wishlist', name: 'My Wishlist', component: UserWishlist, shortTitle: 'W I S H' },
+        { id: 3, path: '/userdashboard/cart', name: 'My Cart', component: UserCart, shortTitle: 'C A R T' },
+        { id: 4, path: '/userdashboard/transaction', name: 'My Transaction', component: UserTransaction, shortTitle: 'T R A N S' },
+        { id: 5, path: '/userdashboard/history', name: 'My History', component: UserHistory, shortTitle: 'H I S T O R Y' }
     ]
     const [active, setActive] = useState('')
     const [title, setTitle] = useState('')

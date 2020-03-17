@@ -224,7 +224,7 @@ const UserProfile = () => {
                                     aria-label="gender"
                                     name="genderId"
                                     id="genderId"
-                                    value={formRegister.genderId}
+                                    value={formRegister.genderId || 0}
                                     onChange={onInputNumChange}
                                 >
                                     <div style={{ display: 'flex' }}>
@@ -257,7 +257,7 @@ const UserProfile = () => {
                                 id="address"
                                 type="text"
                                 fullWidth
-                                value={formRegister.address}
+                                value={formRegister.address || ''}
                                 onChange={onInputChange}
                                 required
                             />
@@ -275,7 +275,7 @@ const UserProfile = () => {
                                     labelId="cityId"
                                     id="cityId"
                                     name="cityId"
-                                    value={formRegister.cityId}
+                                    value={formRegister.cityId || 0}
                                     onChange={onInputNumChange}
                                     style={{ color: 'white' }}
                                 >
@@ -297,7 +297,7 @@ const UserProfile = () => {
                                 id="phone"
                                 type="number"
                                 fullWidth
-                                value={formRegister.phone}
+                                value={formRegister.phone || ''}
                                 onChange={onInputChange}
                                 required
                             />

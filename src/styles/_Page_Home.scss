@@ -28,9 +28,9 @@
         }
     }
     .leftContainer{
-        background-image: url('../img/photo-1547751720-6b718b84699d.jpg');
+        background-image: url('../img/1.jpg');
         background-attachment: fixed;
-        background-size: contain;
+        background-size: cover;
         background-position: left;
         height: 100%;
         width: 25%;
@@ -39,7 +39,6 @@
         cursor: pointer;
         &.show{
             width: 75%;
-            background-blend-mode: normal;
             .title{
                 pointer-events: none;
             }
@@ -57,7 +56,6 @@
         cursor: pointer;
         &.show{
             width: 75%;
-            background-blend-mode: normal;
             .title{
                 pointer-events: none;
             }

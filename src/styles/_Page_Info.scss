@@ -1,0 +1,78 @@
+.infoContainer{
+    width: 100%;
+    height: 100vh;
+    @include flex(row, center, center);
+    position: relative;
+    .infoWrapper{
+        width: 100%;
+        height: 100%;
+        @include flex(row, center, center);
+        .infoLeftContainer{
+            width: 70%;
+            height: 100%;
+            padding-top: 7vh;
+            padding-bottom: 12vh;
+            .infoContent{
+                height: 100%;
+                width: 100%;
+                padding: 20px 20px 20px 15%;
+                color: $light;
+                background-color: $darkgrey;
+                @include flex(column, flex-start, flex-start);
+                overflow-y: auto;
+                &::-webkit-scrollbar-track{
+                    -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0);
+                    background-color: rgba(245, 245, 245, 0);
+                }
+                &::-webkit-scrollbar{
+                    width: 6px;
+                    background-color: rgba(245, 245, 245, 0);
+                }
+                &::-webkit-scrollbar-thumb{
+                    background-color: $accent1;
+                    // border: 2px solid #55555541;
+                    border-radius: 3px;
+                }
+                .section{
+                    padding: 15px;
+                    border-bottom: 1px solid $dimgrey;
+                    h1{
+                        padding-bottom: 15px;
+                    }
+                    h3{
+                        padding-bottom: 5px;
+                    }
+                    ul{
+                        padding: 15px;
+                        li{
+                            padding: 5px;
+                        }
+                    }
+                }
+                .contentWrapper{
+                    height: 100%;
+                    @include flex(column, center, flex-start);
+                }
+                .infoContentBankImg{
+                    margin-top: 25px;
+                    width: 100%;
+                    height: 10vh;
+                    img{
+                        padding: 15px;
+                        height: 100%;
+                    }
+                }
+            }
+        }
+        .infoRightContainer{
+            width: 30%;
+            height: 100%;
+            overflow: hidden;
+            img{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+}

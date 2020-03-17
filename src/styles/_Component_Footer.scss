@@ -9,21 +9,26 @@
         .socialContainer{
             @include flex(row, center,center);
             margin-bottom: 2vh;
-            .iconWrap{
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                background-color: $dark;
+            a{
                 color: $light;
-                position: relative;
-                margin: 0 10px;
-                @include flex(row, center,center);
-                transition: all 0.4s ease;
-                &:hover{
-                    background-color: $accent1;
-                    width: 42px;
-                    height: 42px;
-                    font-size: 1.8rem;
+                .iconWrap{
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    background-color: $dark;
+                    color: $light;
+                    position: relative;
+                    margin: 0 10px;
+                    @include flex(row, center,center);
+                    transition: all 0.4s ease;
+                    cursor: pointer;
+                    
+                    &:hover{
+                        background-color: $accent1;
+                        width: 42px;
+                        height: 42px;
+                        font-size: 1.8rem;
+                    }
                 }
             }
         }

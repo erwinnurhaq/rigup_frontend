@@ -198,13 +198,13 @@ const StoreBrowseProduct = () => {
                 show={showModalSuccess}
                 setShow={setShowModalSuccess}
                 title='Success'
-            >Product has been added to your cart!</ModalWarning>
+            >Done!</ModalWarning>
         </Suspense>
     ) : null
 
     return (
         <div className={`browseProducts ${changeBrowseProducts ? '' : 'hide'}`} style={{ marginTop: `${changeCategoryBox ? '8vh' : '0'}` }}>
-            <div className={`browseProductsWrapper ${changeCategoryBox ? 'change' : ''}`}>
+            <div className='browseProductsWrapper'>
                 <div className="searchContainer">
                     <div className='searchWrapper'>
                         <TextField

@@ -1,5 +1,5 @@
-import React, { lazy, Suspense } from 'react'
 import { Switch, Route } from 'react-router-dom'
+import React, { lazy, Suspense } from 'react'
 import { connect } from 'react-redux'
 import './styles/App.scss'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core'
@@ -13,9 +13,6 @@ import Footer from './components/Footer'
 import Loading from './components/Loading'
 
 //public
-const Test = lazy(() => import('./pages/Test'))
-const Test2 = lazy(() => import('./pages/Test2'))
-const Test3 = lazy(() => import('./pages/Test3'))
 const Home = lazy(() => import('./pages/Home'))
 const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
@@ -25,6 +22,12 @@ const Verifying = lazy(() => import('./components/Verifying'))
 const Store = lazy(() => import('./pages/Store'))
 const OnDevelopment = lazy(() => import('./pages/OnDevelopment'))
 const UserDashboard = lazy(() => import('./pages/UserDashboard'))
+const InfoPayment = lazy(() => import('./pages/InfoPayment'))
+const InfoDelivery = lazy(() => import('./pages/InfoDelivery'))
+const InfoSupport = lazy(() => import('./pages/InfoSupport'))
+const InfoAbout = lazy(() => import('./pages/InfoAbout'))
+const InfoCareer = lazy(() => import('./pages/InfoCareer'))
+const InfoPrivacyPolicy = lazy(() => import('./pages/InfoPrivacyPolicy'))
 
 //admin area
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'))
@@ -40,11 +43,11 @@ class App extends React.Component {
 
   componentDidMount() {
     this.props.userKeepLogin()
-    let mainCursor = this.refs.mainCursor
-    window.addEventListener('mousemove', (e) => {
-      mainCursor.style.top = e.pageY + 'px';
-      mainCursor.style.left = e.pageX + 'px';
-    })
+    // let mainCursor = this.refs.mainCursor
+    // window.addEventListener('mousemove', (e) => {
+    //   mainCursor.style.top = e.pageY + 'px';
+    //   mainCursor.style.left = e.pageX + 'px';
+    // })
   }
 
   componentWillUnmount() {
@@ -55,7 +58,7 @@ class App extends React.Component {
     return (
       <MuiThemeProvider theme={theme}>
         <div className="main">
-          <div className="mainCursor" ref="mainCursor" />
+          {/* <div className="mainCursor" ref="mainCursor" /> */}
           <Navbar />
           <Switch>
             <Suspense fallback={<Loading />}>
@@ -70,11 +73,12 @@ class App extends React.Component {
               <Route path="/store" component={Store} />
               <Route path="/build" component={OnDevelopment} />
               <Route path="/userdashboard" component={UserDashboard} />
-
-              <Route path="/test" component={Test} />
-              <Route path="/test2" component={Test2} />
-              <Route path="/test3" component={Test3} />
-
+              <Route path="/infopayment" component={InfoPayment} />
+              <Route path="/infodelivery" component={InfoDelivery} />
+              <Route path="/infosupport" component={InfoSupport} />
+              <Route path="/infoabout" component={InfoAbout} />
+              <Route path="/infocareer" component={InfoCareer} />
+              <Route path="/infoprivacypolicy" component={InfoPrivacyPolicy} />
               {/* admin area */}
               <Route path="/admindashboard" component={AdminDashboard} />
             </Suspense>

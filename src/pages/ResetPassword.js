@@ -8,6 +8,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Loading from '../components/Loading'
 import ModalDefault from '../components/ModalDefault'
 import { resetPassword } from '../redux/actions'
+import { useEffect } from 'react';
 
 const ResetPassword = (props) => {
     const { usertoken } = useParams()
@@ -69,6 +70,10 @@ const ResetPassword = (props) => {
             onResetPassword()
         }
     }
+
+    useEffect(() => {
+        document.title = 'Reset Password - RIGUP!'
+    }, [])
 
     const renderModalLoading = () => showModalLoading ? (
         <Suspense fallback={<Loading />}>

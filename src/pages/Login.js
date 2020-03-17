@@ -3,9 +3,11 @@ import { connect } from 'react-redux'
 import { TextField, Button, FormControlLabel, Checkbox, InputAdornment, IconButton, DialogActions } from '@material-ui/core'
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { GoogleLogin } from 'react-google-login'
 
-import { userLogin, userLogout, sendEmailResetPassword } from '../redux/actions'
+import { userLogin, userLogout, sendEmailResetPassword, userLoginByGoogle } from '../redux/actions'
 import { Redirect, Link } from 'react-router-dom'
+import { clientIdGoogle } from '../support/ClientId'
 
 import Loading from '../components/Loading'
 const ModalWarning = lazy(() => import('../components/ModalWarning'))
@@ -14,6 +16,7 @@ const ModalDefault = lazy(() => import('../components/ModalDefault'))
 class Login extends Component {
     state = {
         modalShow: false,
+        modalProcessShow: false,
         modalResetShow: false,
         modalResetSuccessShow: false,
         emailReset: '',
@@ -30,6 +33,13 @@ class Login extends Component {
     closeModal = () => this.setState({ modalShow: false })
     closeModalReset = () => this.setState({ modalResetShow: false })
     closeModalResetSuccess = () => this.setState({ modalResetSuccessShow: false })
+    closeModalProcess = () => this.setState({ modalProcessShow: false })
+
+    responseGoogle = async (response) => {
+        console.log(response);
+        this.setState({ modalProcessShow: true })
+        await this.props.userLoginByGoogle(response.tokenId)
+    }
 
     onInputChange = e => {
         let x = e.target.value
@@ -115,6 +125,21 @@ class Login extends Component {
         </Suspense>
     ) : null
 
+    modalProcess = () => this.state.modalProcessShow ? (
+        <Suspense fallback={<Loading />}>
+            <ModalDefault
+                title='Process'
+                size='sm'
+                show={this.state.modalProcessShow}
+            >
+                {this.props.user.loading ? <Loading /> : this.props.user.error ? this.props.user.error : ''}
+                <DialogActions>
+                    <Button variant='text' onClick={this.closeModalProcess} >Close</Button>
+                </DialogActions>
+            </ModalDefault>
+        </Suspense>
+    ) : null
+
     render() {
         if (this.props.user.user && this.props.user.user.verified === 1) {
             return <Redirect to={localStorage.getItem('rigupprevpath') || '/'} />
@@ -159,9 +184,19 @@ class Login extends Component {
                                         />}
                                     label='Keep Me Logged in'
                                 />
-                                <Button onClick={this.onLoginClick} variant='outlined'>
+                                <Button className='btnLogin' onClick={this.onLoginClick} variant='outlined'>
                                     <p style={{ padding: '0 5px' }}>LOGIN</p>
                                 </Button>
+                            </div>
+                            <div style={{ width: '100%', display: 'flex', justifyContent: 'center', paddingTop: '20px' }}>
+                                <GoogleLogin
+                                    clientId={clientIdGoogle}
+                                    buttonText="Login With Google"
+                                    theme='dark'
+                                    onSuccess={this.responseGoogle}
+                                    onFailure={this.responseGoogle}
+                                    cookiePolicy={'single_host_origin'}
+                                />
                             </div>
                         </form>
                         {this.modalCannotBlank()}
@@ -176,6 +211,7 @@ class Login extends Component {
                         </div>
                         {this.modalResetPassword()}
                         {this.modalResetSuccess()}
+                        {this.modalProcess()}
                     </div>
                 </div>
             )
@@ -189,4 +225,4 @@ const stateToProps = ({ user }) => {
     }
 }
 
-export default connect(stateToProps, { userLogin, userLogout, sendEmailResetPassword })(Login)
+export default connect(stateToProps, { userLogin, userLogout, sendEmailResetPassword, userLoginByGoogle })(Login)

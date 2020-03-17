@@ -341,7 +341,7 @@ const UserCart = (props) => {
                         <div className="dataInfo">
                             <div>
                                 <p>Total Product</p>
-                                <h3>{userCart ? userCart.length : '0'}</h3>
+                                <h3>{userCart.length || '0'}</h3>
                             </div>
                             <div>
                                 <p>Total Quantity</p>
@@ -370,7 +370,7 @@ const UserCart = (props) => {
                         <div className="dataDestination">
                             <TextField margin="dense" label="Address" id="itemCartQuantity"
                                 type="text" fullWidth multiline
-                                value={destination}
+                                value={destination || ''}
                                 onChange={e => setDestination(e.target.value)}
                             />
                             <FormControl required style={{ width: '50%', marginLeft: '20px' }}>
@@ -379,7 +379,7 @@ const UserCart = (props) => {
                                     labelId="cityId"
                                     id="cityId"
                                     name="cityId"
-                                    value={cityId}
+                                    value={cityId || 0}
                                     onChange={e => setCityId(parseInt(e.target.value))}
                                     style={{ color: 'white' }}
                                 >

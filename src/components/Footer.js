@@ -8,22 +8,22 @@ class Footer extends React.Component {
                 <div className="footerContainer">
                     <div className="wrapper">
                         <div className="socialContainer">
-                            <div className="iconWrap">f</div>
-                            <div className="iconWrap">t</div>
-                            <div className="iconWrap">ig</div>
-                            <div className="iconWrap">bl</div>
-                            <div className="iconWrap">tp</div>
+                            <a href='https://www.facebook.com' target="blank"><div className="iconWrap">f</div></a>
+                            <a href='https://www.twitter.com' target="blank"><div className="iconWrap">t</div></a>
+                            <a href='https://www.instagram.com' target="blank"><div className="iconWrap">ig</div></a>
+                            <a href='https://www.bukalapak.com' target="blank"><div className="iconWrap">bl</div></a>
+                            <a href='https://www.tokopedia.com' target="blank"><div className="iconWrap">tp</div></a>
                         </div>
                         <div className="linksContainer">
                             <ul>
-                                <li><Link to='/'>Features</Link></li>
-                                <li><Link to='/'>Payment</Link></li>
-                                <li><Link to='/'>Delivery</Link></li>
+                                <li><Link to='/infopayment'>Payment</Link></li>
+                                <li><Link to='/infodelivery'>Delivery</Link></li>
+                                <li><Link to='/infosupport'>Support</Link></li>
                             </ul>
                             <ul>
-                                <li><Link to='/'>About</Link></li>
-                                <li><Link to='/'>Privacy Policy</Link></li>
-                                <li><Link to='/'>Support</Link></li>
+                                <li><Link to='/infoabout'>About</Link></li>
+                                <li><Link to='/infocareer'>Careers</Link></li>
+                                <li><Link to='/infoprivacypolicy'>Privacy Policy</Link></li>
                             </ul>
                         </div>
                         <div className="copyrightsContainer">

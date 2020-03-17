@@ -40,13 +40,13 @@
             .btnLoginContainer{
                 margin-top: 15px;
                 @include flex(row, space-between, center);
-                button{
+                .btnLogin{
                     border-color: $accent1;
                     color: $accent1;
                     font-weight: 300;
                     font-size: 1.4rem;
                     width: 120px;
-                    height: 40px;
+                    height: 45px;
                     &:hover{
                         background-color: $accent1;
                         color: $light;
