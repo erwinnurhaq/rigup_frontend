@@ -1,3 +1,13 @@
+import {
+	CATLIST_CHANGE,
+	NEWCATEGORIES_CHANGE,
+	NEWPRODUCT_CHANGE,
+	IMAGE_CHANGE,
+	INITIALFORMPRODUCT,
+	FORMDETAILPRODUCT,
+	IMAGEWILLDELETE
+} from '../actions/Types'
+
 const initialState = {
 	catList: [],
 	newCategories: [0],
@@ -8,22 +18,22 @@ const initialState = {
 
 export default (state = initialState, action) => {
 	switch (action.type) {
-		case 'CATLIST_CHANGE':
+		case CATLIST_CHANGE:
 			return { ...state, catList: action.payload };
-		case 'NEWCATEGORIES_CHANGE':
+		case NEWCATEGORIES_CHANGE:
 			return { ...state, newCategories: action.payload };
-		case 'NEWPRODUCT_CHANGE':
+		case NEWPRODUCT_CHANGE:
 			return { ...state, newProduct: { ...state.newProduct, [action.payload.prop]: action.payload.value } };
-		case 'IMAGE_CHANGE':
+		case IMAGE_CHANGE:
 			return { ...state, newImage: action.payload };
-		case 'INITIALFORMPRODUCT':
+		case INITIALFORMPRODUCT:
 			return {
 				...initialState,
 				catList: [state.catList[0]]
 			};
-		case 'FORMDETAILPRODUCT':
+		case FORMDETAILPRODUCT:
 			return { ...state, ...action.payload }
-		case 'IMAGEWILLDELETE':
+		case IMAGEWILLDELETE:
 			return { ...state, deleteImage: action.payload }
 		default:
 			return state;

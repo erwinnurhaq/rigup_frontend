@@ -1,11 +1,12 @@
 import axios from 'axios'
 import { API_URL } from '../../support/API_URL'
+import { CAROUSEL_CONTENT_FETCHED } from './Types'
 
 export const fetchCarouselContent = () => {
     return async dispatch => {
         try {
             const res = await axios.get(`${API_URL}/carousels`)
-            dispatch({ type: 'CAROUSEL_CONTENT_FETCHED', payload: res.data })
+            dispatch({ type: CAROUSEL_CONTENT_FETCHED, payload: res.data })
         } catch (err) {
             console.log(err)
         }

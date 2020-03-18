@@ -27,7 +27,6 @@ function Loading(props) {
         default:
             return (
                 <div style={style.container}>
-                    {/* <div id="lds-ellipsis"><div></div><div></div><div></div><div></div></div> */}
                     <RingLoader css={{ display: 'block', margin: '0 auto' }} size={35} loading={true} />
                 </div>
             )

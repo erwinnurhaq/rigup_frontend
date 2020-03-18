@@ -1,3 +1,13 @@
+import {
+    PRODUCT_LOADING,
+    PRODUCT_ERROR,
+    PRODUCTLIST_FETCH_SUCCESS,
+    PRODUCTLISTCOUNT_FETCH_SUCCESS,
+    UNCATEGORIZEDPRODUCTLIST_FETCH_SUCCESS,
+    PRODUCTLISTBYCATEGORY_FETCH_SUCCESS,
+    PRODUCTLISTBYCATEGORYCOUNT_FETCH_SUCCESS
+} from '../actions/Types'
+
 const initialState = {
     productList: null,
     productListCount: null,
@@ -10,25 +20,25 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case 'PRODUCT_LOADING':
+        case PRODUCT_LOADING:
             return {
                 ...state,
                 loading: true
             }
-        case 'PRODUCT_ERROR':
+        case PRODUCT_ERROR:
             return {
                 ...state,
                 error: action.payload,
                 loading: false
             }
-        case 'PRODUCTLIST_FETCH_SUCCESS':
+        case PRODUCTLIST_FETCH_SUCCESS:
             return {
                 ...state,
                 productList: action.payload,
                 loading: false,
                 error: null
             }
-        case 'PRODUCTLISTCOUNT_FETCH_SUCCESS':
+        case PRODUCTLISTCOUNT_FETCH_SUCCESS:
             return {
                 ...state,
                 productListCount: action.payload,
@@ -37,14 +47,14 @@ export default (state = initialState, action) => {
                 loading: false,
                 error: null
             }
-        case 'UNCATEGORIZEDPRODUCTLIST_FETCH_SUCCESS':
+        case UNCATEGORIZEDPRODUCTLIST_FETCH_SUCCESS:
             return {
                 ...state,
                 uncategorizedProductList: action.payload,
                 loading: false,
                 error: null
             }
-        case 'PRODUCTLISTBYCATEGORY_FETCH_SUCCESS':
+        case PRODUCTLISTBYCATEGORY_FETCH_SUCCESS:
             return {
                 ...state,
                 productList: null,
@@ -52,7 +62,7 @@ export default (state = initialState, action) => {
                 loading: false,
                 error: null
             }
-        case 'PRODUCTLISTBYCATEGORYCOUNT_FETCH_SUCCESS':
+        case PRODUCTLISTBYCATEGORYCOUNT_FETCH_SUCCESS:
             return {
                 ...state,
                 productListCount: null,

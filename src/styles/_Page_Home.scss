@@ -3,7 +3,6 @@
     height: 100vh;
     @include flex(row, flex-end, center);
     overflow: hidden;
-    // position: absolute;
     .title{
         display: flex;
         height: 100%;
@@ -22,9 +21,6 @@
             writing-mode: vertical-lr;
             color: $light;
             font-size: 17vh;
-            // -webkit-background-clip: text;
-            // -webkit-text-fill-color: transparent;
-            // background-image: url('../img/2.jpg');
         }
     }
     .leftContainer{

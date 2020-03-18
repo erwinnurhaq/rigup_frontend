@@ -1,17 +1,22 @@
 import axios from 'axios'
 import { API_URL } from '../../support/API_URL'
+import {
+    COURIER_FETCHED,
+    SELECT_COURIER,
+    COURIER_EMPTY
+} from './Types'
 
 export const fetchCourier = (destination, weight) => {
-    return async dispatch =>  {
-        try{
+    return async dispatch => {
+        try {
             const token = localStorage.getItem('riguptoken')
             const res = await axios.post(`${API_URL}/ro/cost`, {
                 origin: 152, destination, weight, courier: 'jne'
-            },{
-                headers: {Authorization: `Bearer ${token}`}
+            }, {
+                headers: { Authorization: `Bearer ${token}` }
             })
             dispatch({
-                type: 'COURIER_FETCHED',
+                type: COURIER_FETCHED,
                 payload: res.data
             })
         } catch (err) {
@@ -22,9 +27,9 @@ export const fetchCourier = (destination, weight) => {
 
 export const selectCourier = (id) => {
     console.log(id)
-    return {type: 'SELECT_COURIER', payload: id}
+    return { type: SELECT_COURIER, payload: id }
 }
 
 export const emptyCourier = () => {
-    return {type: 'COURIER_EMPTY'}
+    return { type: COURIER_EMPTY }
 }

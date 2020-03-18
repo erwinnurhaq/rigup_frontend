@@ -2,11 +2,20 @@ import axios from 'axios'
 import { API_URL } from '../../support/API_URL'
 import { getUserCart } from './UserCartAction'
 import { getUserWishlist } from './UserWishlistAction'
+import {
+    USER_LOADING,
+    USER_ERROR,
+    USER_LOGIN,
+    USER_LOGOUT,
+    RESEND_VERIFICATION_SUCCESS,
+    SEND_EMAIL_RESETPASS_SUCCESS,
+    RESETPASS_SUCCESS
+} from './Types'
 
 const error = (err) => {
     let error = err.response && Object.keys(err.response.data).length > 0 ? err.response.data.message : ''
     return {
-        type: 'USER_ERROR',
+        type: USER_ERROR,
         payload: error
     }
 }
@@ -15,13 +24,13 @@ export const userLoginByGoogle = (token) => {
     return async dispatch => {
         try {
             console.log('tokenId: ', token)
-            dispatch({ type: 'USER_LOADING' })
+            dispatch({ type: USER_LOADING })
             const res = await axios.post(`${API_URL}/users/loginbygoogle`, {},
                 { headers: { Authorization: `Bearer ${token}` } }
             )
             console.log('user login: ', res.data)
             dispatch({
-                type: 'USER_LOGIN',
+                type: USER_LOGIN,
                 payload: res.data.user
             })
             if (res.data.user.verified === 1) {
@@ -38,13 +47,13 @@ export const userLoginByGoogle = (token) => {
 export const userLogin = ({ userOrEmail, password, keepLogin }) => {
     return async dispatch => {
         try {
-            dispatch({ type: 'USER_LOADING' })
+            dispatch({ type: USER_LOADING })
             const res = await axios.post(`${API_URL}/users/login`,
                 { userOrEmail, password, keepLogin }
             )
             console.log('user login: ', res.data)
             dispatch({
-                type: 'USER_LOGIN',
+                type: USER_LOGIN,
                 payload: res.data.user
             })
             if (res.data.user.verified === 1) {
@@ -61,7 +70,7 @@ export const userLogin = ({ userOrEmail, password, keepLogin }) => {
 export const userLogout = () => {
     localStorage.removeItem('riguptoken')
     return {
-        type: 'USER_LOGOUT'
+        type: USER_LOGOUT
     }
 }
 
@@ -70,13 +79,13 @@ export const userKeepLogin = () => {
         const token = localStorage.getItem('riguptoken')
         if (token) {
             try {
-                dispatch({ type: 'USER_LOADING' })
+                dispatch({ type: USER_LOADING })
                 const res = await axios.post(`${API_URL}/users/keeplogin`, {}, {
                     headers: { Authorization: `Bearer ${token}` }
                 })
                 console.log('user login: ', res.data)
                 dispatch({
-                    type: 'USER_LOGIN',
+                    type: USER_LOGIN,
                     payload: res.data.user
                 })
                 if (res.data.user.verified === 1) {
@@ -94,7 +103,7 @@ export const userKeepLogin = () => {
 export const register = user => {
     return async dispatch => {
         try {
-            dispatch({ type: 'USER_LOADING' })
+            dispatch({ type: USER_LOADING })
             const res = await axios.post(`${API_URL}/users`,
                 {
                     fullname: user.fullname,
@@ -109,7 +118,7 @@ export const register = user => {
             )
             console.log(res.data)
             dispatch({
-                type: 'USER_LOGIN',
+                type: USER_LOGIN,
                 payload: res.data.user
             })
         } catch (err) {
@@ -121,13 +130,13 @@ export const register = user => {
 export const newUserVerification = usertoken => {
     return async dispatch => {
         try {
-            dispatch({ type: 'USER_LOADING' })
+            dispatch({ type: USER_LOADING })
             const res = await axios.post(`${API_URL}/users/verify`, {}, {
                 headers: { Authorization: `Bearer ${usertoken}` }
             })
             console.log('user login: ', res.data)
             dispatch({
-                type: 'USER_LOGIN',
+                type: USER_LOGIN,
                 payload: res.data.user
             })
             if (res.data.user.verified === 1) {
@@ -143,9 +152,9 @@ export const newUserVerification = usertoken => {
 export const resendVerification = (id, email) => {
     return async dispatch => {
         try {
-            dispatch({ type: 'USER_LOADING' })
+            dispatch({ type: USER_LOADING })
             await axios.post(`${API_URL}/users/resendverify`, { id, email })
-            dispatch({ type: 'RESEND_VERIFICATION_SUCCESS' })
+            dispatch({ type: RESEND_VERIFICATION_SUCCESS })
         } catch (err) {
             dispatch(error(err))
         }
@@ -155,9 +164,9 @@ export const resendVerification = (id, email) => {
 export const sendEmailResetPassword = (email) => {
     return async dispatch => {
         try {
-            dispatch({ type: 'USER_LOADING' })
+            dispatch({ type: USER_LOADING })
             await axios.post(`${API_URL}/users/sendresetpassword`, { email })
-            dispatch({ type: 'SEND_EMAIL_RESETPASS_SUCCESS' })
+            dispatch({ type: SEND_EMAIL_RESETPASS_SUCCESS })
         } catch (err) {
             dispatch(error(err))
         }
@@ -167,12 +176,12 @@ export const sendEmailResetPassword = (email) => {
 export const resetPassword = (newPassword, token) => {
     return async dispatch => {
         try {
-            dispatch({ type: 'USER_LOADING' })
+            dispatch({ type: USER_LOADING })
             console.log(token)
             await axios.post(`${API_URL}/users/resetpassword`, { password: newPassword }, {
                 headers: { Authorization: `Bearer ${token}` }
             })
-            dispatch({ type: 'RESETPASS_SUCCESS' })
+            dispatch({ type: RESETPASS_SUCCESS })
         } catch (err) {
             dispatch(error(err))
         }
@@ -182,13 +191,13 @@ export const resetPassword = (newPassword, token) => {
 export const editProfile = (data) => {
     return async dispatch => {
         try {
-            dispatch({ type: 'USER_LOADING' })
+            dispatch({ type: USER_LOADING })
             let token = localStorage.getItem('riguptoken')
             const res = await axios.put(`${API_URL}/users`, data, {
                 headers: { Authorization: `Bearer ${token}` }
             })
             dispatch({
-                type: 'USER_LOGIN',
+                type: USER_LOGIN,
                 payload: res.data.user
             })
         } catch (err) {
@@ -200,14 +209,14 @@ export const editProfile = (data) => {
 export const editPassword = (currentPassword, newPassword) => {
     return async dispatch => {
         try {
-            dispatch({ type: 'USER_LOADING' })
+            dispatch({ type: USER_LOADING })
             let token = localStorage.getItem('riguptoken')
             const res = await axios.put(`${API_URL}/users/changepass`,
                 { currentPassword, newPassword },
                 { headers: { Authorization: `Bearer ${token}` } }
             )
             dispatch({
-                type: 'USER_LOGIN',
+                type: USER_LOGIN,
                 payload: res.data.user
             })
         } catch (err) {

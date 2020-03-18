@@ -1,10 +1,25 @@
 import axios from 'axios';
 import { API_URL } from '../../support/API_URL';
+import {
+	CATEGORY_LOADING,
+	CATEGORY_ERROR,
+	CATEGORY_FETCH_SUCCESS,
+	MOSTPARENT_FETCH_SUCCESS,
+	MOSTCHILD_FETCH_SUCCESS,
+	CHILD_FETCH_SUCCESS,
+	CHILDOFMAINPARENT_FETCH_SUCCESS,
+	SELECT_CAT,
+	SELECT_CHILD_CAT,
+	SELECT_FILTER_CAT,
+	CATEGORIES_SEARCH_FILTER,
+	PRODUCTLISTCOUNT_FETCH_SUCCESS,
+	CATLIST_CHANGE
+} from './Types'
 
 const error = (err) => {
-	let error = err.response ? err.response.data.error : 'Cannot connect to API';
+	let error = err.response && Object.keys(err.response).length >= 0 ? err.response.data.message : 'Cannot connect to API'
 	return {
-		type: 'CATEGORY_ERROR',
+		type: CATEGORY_ERROR,
 		payload: error
 	};
 };
@@ -12,7 +27,7 @@ const error = (err) => {
 export const selectCat = (categoryId) => {
 	return (dispatch) => {
 		dispatch({
-			type: 'SELECT_CAT',
+			type: SELECT_CAT,
 			payload: categoryId
 		});
 	};
@@ -21,7 +36,7 @@ export const selectCat = (categoryId) => {
 export const selectChildCat = (categoryId) => {
 	return (dispatch) => {
 		dispatch({
-			type: 'SELECT_CHILD_CAT',
+			type: SELECT_CHILD_CAT,
 			payload: categoryId
 		});
 	};
@@ -30,7 +45,7 @@ export const selectChildCat = (categoryId) => {
 export const selectFilter = (categoryId) => {
 	return (dispatch) => {
 		dispatch({
-			type: 'SELECT_FILTER_CAT',
+			type: SELECT_FILTER_CAT,
 			payload: categoryId
 		});
 	};
@@ -43,7 +58,7 @@ export const getCategoriesSearchFilter = (search) => {
 				params: { search }
 			});
 			dispatch({
-				type: 'PRODUCTLISTCOUNT_FETCH_SUCCESS',
+				type: PRODUCTLISTCOUNT_FETCH_SUCCESS,
 				payload: res.data.length
 			})
 			let x = res.data.map(i => {
@@ -68,7 +83,7 @@ export const getCategoriesSearchFilter = (search) => {
 			}
 			console.log('after filtered: ', categoryFilterResult)
 			dispatch({
-				type: 'CATEGORIES_SEARCH_FILTER',
+				type: CATEGORIES_SEARCH_FILTER,
 				payload: categoryFilterResult
 			})
 		} catch (err) {
@@ -80,11 +95,11 @@ export const getCategoriesSearchFilter = (search) => {
 export const getCategories = () => {
 	return async (dispatch) => {
 		try {
-			dispatch({ type: 'CATEGORY_LOADING' });
+			dispatch({ type: CATEGORY_LOADING });
 			const res = await axios.get(`${API_URL}/categories`);
 			console.log('all categories: ', res.data);
 			dispatch({
-				type: 'CATEGORY_FETCH_SUCCESS',
+				type: CATEGORY_FETCH_SUCCESS,
 				payload: res.data
 			});
 		} catch (err) {
@@ -96,15 +111,15 @@ export const getCategories = () => {
 export const getMostParent = () => {
 	return async (dispatch) => {
 		try {
-			dispatch({ type: 'CATEGORY_LOADING' });
+			dispatch({ type: CATEGORY_LOADING });
 			const res = await axios.get(`${API_URL}/categories/mostparent`);
 			console.log('most parent category: ', res.data);
 			dispatch({
-				type: 'MOSTPARENT_FETCH_SUCCESS',
+				type: MOSTPARENT_FETCH_SUCCESS,
 				payload: res.data
 			});
 			dispatch({
-				type: 'CATLIST_CHANGE',
+				type: CATLIST_CHANGE,
 				payload: [res.data]
 			});
 		} catch (err) {
@@ -116,11 +131,11 @@ export const getMostParent = () => {
 export const getMostChild = () => {
 	return async (dispatch) => {
 		try {
-			dispatch({ type: 'CATEGORY_LOADING' });
+			dispatch({ type: CATEGORY_LOADING });
 			const res = await axios.get(`${API_URL}/categories/mostchild`);
 			console.log('most child category: ', res.data);
 			dispatch({
-				type: 'MOSTCHILD_FETCH_SUCCESS',
+				type: MOSTCHILD_FETCH_SUCCESS,
 				payload: res.data
 			});
 		} catch (err) {
@@ -132,11 +147,11 @@ export const getMostChild = () => {
 export const getChild = (parentId) => {
 	return async (dispatch) => {
 		try {
-			dispatch({ type: 'CATEGORY_LOADING' });
+			dispatch({ type: CATEGORY_LOADING });
 			const res = await axios.get(`${API_URL}/categories/child/${parentId}`);
 			console.log('child by parentId: ', res.data);
 			dispatch({
-				type: 'CHILD_FETCH_SUCCESS',
+				type: CHILD_FETCH_SUCCESS,
 				payload: res.data
 			});
 		} catch (err) {
@@ -148,11 +163,11 @@ export const getChild = (parentId) => {
 export const getChildOfMainParent = (mainParentId) => {
 	return async (dispatch) => {
 		try {
-			dispatch({ type: 'CATEGORY_LOADING' });
+			dispatch({ type: CATEGORY_LOADING });
 			const res = await axios.get(`${API_URL}/categories/childofmainparent/${mainParentId}`);
 			console.log('child by mainParentId: ', res.data);
 			dispatch({
-				type: 'CHILDOFMAINPARENT_FETCH_SUCCESS',
+				type: CHILDOFMAINPARENT_FETCH_SUCCESS,
 				payload: res.data
 			});
 		} catch (err) {
@@ -164,7 +179,7 @@ export const getChildOfMainParent = (mainParentId) => {
 export const addCategory = ({ newCategory, newParentId, newMainParentId }) => {
 	return async (dispatch) => {
 		try {
-			dispatch({ type: 'CATEGORY_LOADING' });
+			dispatch({ type: CATEGORY_LOADING });
 			const token = localStorage.getItem('riguptoken');
 			const res = await axios.post(
 				`${API_URL}/categories`,
@@ -182,7 +197,7 @@ export const addCategory = ({ newCategory, newParentId, newMainParentId }) => {
 export const editCategory = ({ categoryId, newCategory, newParentId, newMainParentId }) => {
 	return async (dispatch) => {
 		try {
-			dispatch({ type: 'CATEGORY_LOADING' });
+			dispatch({ type: CATEGORY_LOADING });
 			const token = localStorage.getItem('riguptoken');
 			const res = await axios.put(
 				`${API_URL}/categories/${categoryId}`,
@@ -200,7 +215,7 @@ export const editCategory = ({ categoryId, newCategory, newParentId, newMainPare
 export const deleteCategory = (categoryId) => {
 	return async (dispatch) => {
 		try {
-			dispatch({ type: 'CATEGORY_LOADING' });
+			dispatch({ type: CATEGORY_LOADING });
 			const token = localStorage.getItem('riguptoken');
 			const res = await axios.delete(`${API_URL}/categories/${categoryId}`, {
 				headers: { Authorization: `Bearer ${token}` }

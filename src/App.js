@@ -43,22 +43,12 @@ class App extends React.Component {
 
   componentDidMount() {
     this.props.userKeepLogin()
-    // let mainCursor = this.refs.mainCursor
-    // window.addEventListener('mousemove', (e) => {
-    //   mainCursor.style.top = e.pageY + 'px';
-    //   mainCursor.style.left = e.pageX + 'px';
-    // })
   }
-
-  // componentWillUnmount() {
-  //   window.removeEventListener('mousemove')
-  // }
 
   render() {
     return (
       <MuiThemeProvider theme={theme}>
         <div className="main">
-          {/* <div className="mainCursor" ref="mainCursor" /> */}
           <Navbar />
           <Switch>
             <Suspense fallback={<Loading />}>

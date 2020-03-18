@@ -2,8 +2,6 @@
     background-color: $dark;
     width: 100%;
     min-height: 100vh;
-    // padding-top: 70px;
-    // padding-bottom: 150px;
     @include flex(row, center, center);
     .title{
         position: absolute;

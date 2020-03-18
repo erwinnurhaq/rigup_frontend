@@ -1,0 +1,140 @@
+.browseProducts{
+    width: 100%;
+    height: 82vh;
+    position: relative;
+    .browseProductsWrapper{
+        width: 100%;
+        padding: 0 10%;
+        @include flex(column, center, center);
+        .searchContainer{
+            width: 100%;
+            @include flex(row, flex-end, flex-end);
+            .searchWrapper{
+                width: 20%;
+                div{
+                    font-size: 1.4rem;
+                    label{
+                        color: $lightgrey;
+                        font-weight: 300;
+                        font-size: 1.4rem;
+                    }
+                    div{
+                        &::before{
+                            border-color:$accent1;
+                        }
+                        &::after{
+                            border-color: $accent1;
+                        }
+                        input{
+                            color: $light;
+                        }
+                    }
+                }
+            }
+            .sortWrapper{
+                padding: 0 10px 4px 10px;
+                div{
+                    font-size: 1.4rem;
+                    color: $lightgrey;
+                    &::before{
+                        border-color:$accent1;
+                    }
+                    &::after{
+                        border-color: $accent1;
+                    }
+                    svg{
+                        color: $light;
+                    }
+                }
+            }
+            .browseProductPagination{
+                transform: translateY(5px);
+            }
+        }
+        .contentContainer{
+            width: 100%;
+            height: 75vh;
+            @include flex(row, center, flex-start);
+            .filterContainer{
+                width: 15%;
+                height: 100%;
+                border-right: 1px solid $accent1;
+                @include flex(column, flex-start, flex-start);
+                overflow-y: auto;
+                &::-webkit-scrollbar-track{
+                    -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0);
+                    background-color: rgba(245, 245, 245, 0);
+                }
+                &::-webkit-scrollbar{
+                    width: 6px;
+                    background-color: rgba(245, 245, 245, 0);
+                }
+                &::-webkit-scrollbar-thumb{
+                    background-color: $accent1;
+                    // border: 2px solid #55555541;
+                    border-radius: 3px;
+                }
+                h3{
+                    font-size: 1.8rem;
+                    padding-bottom: 15px;
+                    color: $light
+                }
+                .childOfMainParent{
+                    width: 100%;
+                    @include flex(column, flex-start, flex-start);
+                    button{
+                        color:$light;
+                        width: 100%;
+                        border-radius: 0 !important;
+                        @include flex(row, flex-start, center);
+                        span{
+                            text-align: left;
+                        }
+                        &:hover{
+                            background-color: $accent1;
+                            color: $light;
+                          }
+                    }
+                }
+            }
+            .productsContainer{
+                width: 85%;
+                height: 100%;
+                @include flex(column, flex-start, flex-start);
+                overflow-y: auto;
+                &::-webkit-scrollbar-track{
+                    -webkit-box-shadow: inset 0 0 2px rgba(0, 0, 0, 0);
+                    background-color: rgba(245, 245, 245, 0);
+                }
+                &::-webkit-scrollbar{
+                    width: 6px;
+                    background-color: rgba(245, 245, 245, 0);
+                }
+                &::-webkit-scrollbar-thumb{
+                    background-color: $accent1;
+                    // border: 2px solid #55555541;
+                    border-radius: 3px;
+                }
+                h3{
+                    padding-left: 20px;
+                    font-size: 1.8rem;
+                    padding-bottom: 15px;
+                    color: $light
+                }
+                .productListByCat{
+                    width: 100%;
+                    @include flex(row-reverse, flex-start, flex-start);
+                    flex-wrap: wrap;
+                }
+            }
+        }
+    }
+    // .browseProductsWrapper.change{
+    //     margin-top: 1vh;
+    // }
+}
+.browseProducts.hide{
+    height: 0;
+    pointer-events: none;
+    opacity: 0;
+}

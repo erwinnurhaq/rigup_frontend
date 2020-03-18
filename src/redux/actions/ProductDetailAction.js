@@ -1,5 +1,10 @@
 import axios from 'axios'
 import { API_URL } from '../../support/API_URL'
+import {
+    PRODUCTDETAIL_FETCH_SUCCESS,
+    FORMDETAILPRODUCT,
+    INITIALPRODUCTDETAIL
+} from './Types'
 
 export const getProductDetailById = (productId, mostParent) => {
     return async dispatch => {
@@ -7,7 +12,7 @@ export const getProductDetailById = (productId, mostParent) => {
             const res = await axios.get(`${API_URL}/products/detail/${productId}`)
             console.log('product detail: ', res.data)
             dispatch({
-                type: 'PRODUCTDETAIL_FETCH_SUCCESS',
+                type: PRODUCTDETAIL_FETCH_SUCCESS,
                 payload: res.data
             })
             const cat = res.data.categories.map(i => i.categoryId)
@@ -15,7 +20,7 @@ export const getProductDetailById = (productId, mostParent) => {
                 params: { parentId: cat }
             });
             dispatch({
-                type: 'FORMDETAILPRODUCT',
+                type: FORMDETAILPRODUCT,
                 payload: {
                     catList: [mostParent, ...childTree.data],
                     newCategories: cat,
@@ -38,5 +43,5 @@ export const getProductDetailById = (productId, mostParent) => {
 }
 
 export const setInitialProductDetail = () => {
-    return { type: 'INITIALPRODUCTDETAIL' }
+    return { type: INITIALPRODUCTDETAIL }
 }

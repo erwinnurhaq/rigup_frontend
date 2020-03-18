@@ -1,38 +1,47 @@
+import {
+	CATLIST_CHANGE,
+	NEWCATEGORIES_CHANGE,
+	NEWPRODUCT_CHANGE,
+	IMAGE_CHANGE,
+	INITIALFORMPRODUCT,
+	IMAGEWILLDELETE
+} from './Types'
+
 export const setCatList = (arr) => {
 	return {
-		type: 'CATLIST_CHANGE',
+		type: CATLIST_CHANGE,
 		payload: arr
 	};
 };
 
 export const setNewCategories = (arr) => {
 	return {
-		type: 'NEWCATEGORIES_CHANGE',
+		type: NEWCATEGORIES_CHANGE,
 		payload: arr
 	};
 };
 
 export const setNewProduct = (prop, value) => {
 	return {
-		type: 'NEWPRODUCT_CHANGE',
+		type: NEWPRODUCT_CHANGE,
 		payload: { prop, value }
 	};
 };
 
 export const setNewImage = (arr) => {
 	return {
-		type: 'IMAGE_CHANGE',
+		type: IMAGE_CHANGE,
 		payload: arr
 	};
 };
 
 export const setInitialFormProduct = () => {
-	return { type: 'INITIALFORMPRODUCT' };
+	return { type: INITIALFORMPRODUCT };
 };
 
 export const setDeleteImage = (arr) => {
 	return {
-		type: 'IMAGEWILLDELETE',
+		type: IMAGEWILLDELETE,
 		payload: arr
 	}
 }

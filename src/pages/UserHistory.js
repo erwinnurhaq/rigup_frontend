@@ -12,7 +12,7 @@ const ModalDefault = lazy(() => import('../components/ModalDefault'))
 
 const UserHistory = () => {
     const dispatch = useDispatch();
-    const { list, detail } = useSelector(({ userTransaction }) => userTransaction)
+    const { history, detail } = useSelector(({ userTransaction }) => userTransaction)
     const [showDetail, setShowDetail] = useState(false)
     const [showImage, setShowImage] = useState(false)
     const [selImage, setSelImage] = useState('')
@@ -71,7 +71,7 @@ const UserHistory = () => {
         { id: 'totalPrice', label: 'Total Price', minWidth: 50, align: 'center' }
     ]
 
-    const renderTransactionList = () => list && list.length > 0 ? list.map((i, index) => (
+    const renderHistoryList = () => history && history.length > 0 ? history.map((i, index) => (
         <TableRow key={index}>
             <TableCell>{index + 1}</TableCell>
             <TableCell>{i.transactionCode}</TableCell>
@@ -177,7 +177,7 @@ const UserHistory = () => {
                     <TableHead>
                         <TableHeadRow columns={columns} />
                     </TableHead>
-                    <TableBody>{renderTransactionList()}</TableBody>
+                    <TableBody>{renderHistoryList()}</TableBody>
                 </Table>
             </div>
             {renderModalDetail()}
