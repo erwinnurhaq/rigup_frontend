@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { API_URL } from '../support/API_URL';
 import { fetchCarouselContent } from '../redux/actions'
 import Slider from "react-slick";
 import Loading from './Loading'
 
-const StoreCarousel = (prop) => {
+const StoreCarousel = () => {
     const dispatch = useDispatch();
     const carouselContent = useSelector(({ carousel }) => carousel.carousel)
 
@@ -48,4 +47,4 @@ const StoreCarousel = (prop) => {
     )
 }
 
-export default withRouter(StoreCarousel)
+export default StoreCarousel

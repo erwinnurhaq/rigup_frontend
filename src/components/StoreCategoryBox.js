@@ -15,8 +15,7 @@ import {
 
 const CategoryBox = () => {
     const dispatch = useDispatch()
-    const mostParent = useSelector(({ categories }) => categories.mostParent)
-    const selectedCat = useSelector(({ categories }) => categories.selectedCat)
+    const { mostParent, selectedCat } = useSelector(({ categories }) => categories)
     const changeCategoryBox = useSelector(({ changeStyle }) => changeStyle.changeCategoryBox)
 
     useEffect(() => {

@@ -40,8 +40,7 @@ function ManageCategory(props) {
 
     const [state, setState] = useState(initialState)
     const [showModalAdd, setShowModalAdd] = useState(false)
-    const categories = useSelector(({ categories }) => categories.categories)
-    const mostParent = useSelector(({ categories }) => categories.mostParent)
+    const { categories, mostParent } = useSelector(({ categories }) => categories)
 
     //table material
     const categoryColumns = [

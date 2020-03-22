@@ -27,7 +27,7 @@ class Footer extends React.Component {
                             </ul>
                         </div>
                         <div className="copyrightsContainer">
-                            Copyrights &copy; 2019 - RIG-UP!.INC ALL RIGHTS RESERVED.
+                            Copyrights &copy; 2020 - RIG-UP!.INC ALL RIGHTS RESERVED.
                         </div>
                     </div>
                 </div>

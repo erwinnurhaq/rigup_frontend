@@ -2,8 +2,8 @@ import React from 'react'
 // import ClipLoader from 'react-spinners/ClipLoader'
 // import ScaleLoader from 'react-spinners/ScaleLoader'
 // import HashLoader from 'react-spinners/HashLoader'
-import RingLoader from 'react-spinners/RingLoader'
 // import BeatLoader from 'react-spinners/BeatLoader'
+import RingLoader from 'react-spinners/RingLoader'
 import BarLoader from 'react-spinners/BarLoader'
 
 

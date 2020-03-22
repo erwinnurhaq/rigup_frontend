@@ -16,6 +16,7 @@ import {
 import Loading from './Loading'
 import StoreProductCard from './StoreProductCard'
 import Pagination from '../components/Pagination';
+import ModalDefault from './ModalDefault'
 
 const ModalWarning = lazy(() => import('./ModalWarning'))
 
@@ -24,9 +25,10 @@ const StoreBrowseProduct = () => {
     const { selectedCat, selectedChildCat, selectedFilter, searchFilter, mostParent, childOfMainParent } = useSelector(({ categories }) => categories)
     const { changeCategoryBox, changeBrowseProducts } = useSelector(({ changeStyle }) => changeStyle)
     const { productList, productListCount, productListByCat, productListByCatCount, error } = useSelector(({ products }) => products)
+    const userCartLoading = useSelector(({ userCart }) => userCart.loading)
+    const userWishlistLoading = useSelector(({ userWishlist }) => userWishlist.loading)
 
     const [showModalWarning, setShowModalWarning] = useState(false)
-    const [showModalSuccess, setShowModalSuccess] = useState(false)
 
     const initialState = {
         page: 1,
@@ -45,6 +47,11 @@ const StoreBrowseProduct = () => {
     const [sort, setSort] = useState(1)
     const [search, setSearch] = useState('')
 
+    //----------------------------------------USE EFFECT---------------------------------------//
+
+    //fetch product by category and it's count every change happen to sort, limit and offset by pagination
+    //if clicked is main category, id is selectedCat. if child of main category, id is selectedChildCat
+    //this effect will only run if product by category is fetched before.
     useEffect(() => {
         if (productListByCatCount) {
             let id = selectedChildCat !== 0 ? selectedChildCat : selectedCat
@@ -53,6 +60,9 @@ const StoreBrowseProduct = () => {
         }
     }, [dispatch, sort, state.limit, state.offset])
 
+
+    //set total page by count of product list by category
+    //this effect will run every change happen to count product list and limit by pagination
     useEffect(() => {
         if (productListByCatCount) {
             setState((prev) => {
@@ -61,6 +71,9 @@ const StoreBrowseProduct = () => {
         }
     }, [productListByCatCount, state.limit]);
 
+
+    //this effect is like the first one, but run for search function
+    //this will fetch product list searched and will re-fetch every change happen to sort, limit and offset by pagination
     useEffect(() => {
         if (productListCount) {
             if (selectedFilter !== 0) {
@@ -71,6 +84,9 @@ const StoreBrowseProduct = () => {
         }
     }, [dispatch, sort, state.limit, state.offset])
 
+
+    //set total page by count of product list by search
+    //this effect will run every change happen to count product list and limit by pagination
     useEffect(() => {
         if (productListCount) {
             setState((prev) => {
@@ -78,6 +94,8 @@ const StoreBrowseProduct = () => {
             });
         }
     }, [productListCount, state.limit]);
+
+    //----------------------------------------USE EFFECT---------------------------------------//
 
     const onBtnSearchClick = async () => {
         setState(initialState)
@@ -160,8 +178,6 @@ const StoreBrowseProduct = () => {
                 <StoreProductCard
                     key={product.id}
                     product={product}
-                    showModalSuccess={showModalSuccess}
-                    setShowModalSuccess={setShowModalSuccess}
                     showModalWarning={showModalWarning}
                     setShowModalWarning={setShowModalWarning}
                 />
@@ -171,8 +187,6 @@ const StoreBrowseProduct = () => {
                 <StoreProductCard
                     key={product.id}
                     product={product}
-                    showModalSuccess={showModalSuccess}
-                    setShowModalSuccess={setShowModalSuccess}
                     showModalWarning={showModalWarning}
                     setShowModalWarning={setShowModalWarning}
                 />
@@ -192,15 +206,15 @@ const StoreBrowseProduct = () => {
         </Suspense>
     ) : null
 
-    const renderModalSuccess = () => showModalSuccess ? (
-        <Suspense fallback={<Loading />}>
-            <ModalWarning
-                show={showModalSuccess}
-                setShow={setShowModalSuccess}
-                title='Success'
-            >Done!</ModalWarning>
-        </Suspense>
-    ) : null
+    const renderModalLoading = () => (
+        <ModalDefault
+            show={userCartLoading || userWishlistLoading}
+            title='Please Wait'
+            size='xs'
+        >
+            <Loading />
+        </ModalDefault>
+    )
 
     return (
         <div className={`browseProducts ${changeBrowseProducts ? '' : 'hide'}`} style={{ marginTop: `${changeCategoryBox ? '8vh' : '0'}` }}>
@@ -267,7 +281,7 @@ const StoreBrowseProduct = () => {
                     </div>
                 </div>
                 {renderModalWarning()}
-                {renderModalSuccess()}
+                {renderModalLoading()}
             </div>
         </div>
     )

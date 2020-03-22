@@ -21,8 +21,6 @@ const ManageBrandAndCategory = () => {
 
     const [showModalWarning, setShowModalWarning] = useState(false)
 
-
-
     const renderModalWarning = () => showModalWarning ? (
         <Suspense fallback={<Loading />}>
             <ModalWarning

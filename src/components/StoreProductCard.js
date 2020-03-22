@@ -44,12 +44,10 @@ const StoreProductCard = (props) => {
                     } else {
                         await dispatch(editCart(find[0].id, find[0].quantity + quantity))
                     }
-                    props.setShowModalSuccess(!props.showModalSuccess)
                     setShowModalDetail(false)
                 }
             } else {
                 await dispatch(addCart({ productId: id, quantity }))
-                props.setShowModalSuccess(!props.showModalSuccess)
                 setShowModalDetail(false)
             }
         }
@@ -66,7 +64,6 @@ const StoreProductCard = (props) => {
             } else {
                 await dispatch(deleteWishlist(find[0].id))
             }
-            props.setShowModalSuccess(!props.showModalSuccess)
             setShowModalDetail(false)
         }
     }

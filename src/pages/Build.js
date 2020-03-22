@@ -84,9 +84,7 @@ const Build = () => {
         let exist = build.filter(j => j.mainCategoryId === i.id)
         if (exist.length > 0) {
             return (
-                <div
-                    key={idx}
-                    className="illustList"
+                <div key={idx} className="illustList"
                     style={{ transform: `rotate(${idx * 20 - 80}deg)`, transformOrigin: 'left' }}
                 >
                     <div className="imgIllustList">
@@ -96,9 +94,7 @@ const Build = () => {
             )
         } else {
             return (
-                <div
-                    key={idx}
-                    className="illustList"
+                <div key={idx} className="illustList"
                     style={{ transform: `rotate(${idx * 20 - 80}deg)`, transformOrigin: 'left' }}
                 >
                     <div className="imgIllustList" />
@@ -198,6 +194,8 @@ const Build = () => {
         </ModalDefault>
     )
 
+    //-------------------------------------USEEFFECT---------------------------------------/
+
     //fetch main category list (case, processor, etc)
     //set selected category to 1 on first render
     //and will set selected category to none and browse product element hide on leaving build.js page
@@ -216,6 +214,12 @@ const Build = () => {
             dispatch(getProductByCategoryId(selectedCat, 8))
         }
     }, [dispatch, selectedCat])
+
+    useEffect(() => {
+        document.title = 'Build - RIGUP!'
+    }, [])
+
+    //-------------------------------------USEEFFECT---------------------------------------/
 
     return (
         <div className="buildContainer">

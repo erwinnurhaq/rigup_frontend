@@ -4,7 +4,6 @@ import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { TextField, Select, MenuItem, InputLabel, Button } from '@material-ui/core';
 import { setNewProduct, setNewImage, setDeleteImage } from '../../redux/actions';
-import Loading from '../Loading';
 import { API_URL } from '../../support/API_URL';
 
 const FormProductData = () => {
@@ -14,7 +13,6 @@ const FormProductData = () => {
 	const { newProduct, newImage, deleteImage } = useSelector(({ formProduct }) => formProduct);
 
 	const onSelectBrand = (e) => dispatch(setNewProduct('brandId', parseInt(e.target.value)));
-
 	const onInputDescChange = (data) => dispatch(setNewProduct('description', data));
 
 	const onInputBoxChange = (e) => {
@@ -67,7 +65,7 @@ const FormProductData = () => {
 
 	return (
 		<form encType="multipart/form-data">
-			<Select value={newProduct.brandId ? newProduct.brandId : 0} onChange={onSelectBrand}>
+			<Select value={newProduct.brandId || 0} onChange={onSelectBrand}>
 				<MenuItem value={0}>Choose Brand:</MenuItem>
 				{brand ? (
 					brand.map((i) => (
@@ -82,7 +80,7 @@ const FormProductData = () => {
 				label="Product Name"
 				id="name"
 				type="text"
-				value={newProduct.name ? newProduct.name : ''}
+				value={newProduct.name || ''}
 				onChange={onInputBoxChange}
 				fullWidth
 				required
@@ -91,7 +89,7 @@ const FormProductData = () => {
 			<InputLabel style={{ paddingTop: '24px' }}>Description:</InputLabel>
 			<CKEditor
 				editor={ClassicEditor}
-				data={newProduct.description ? newProduct.description : ''}
+				data={newProduct.description || ''}
 				onInit={(editor) => {
 					console.log('Editor is ready to use!', editor);
 				}}
@@ -105,7 +103,7 @@ const FormProductData = () => {
 				label="Package Weight (Gram)"
 				id="weight"
 				type="number"
-				value={newProduct.weight ? newProduct.weight : 0}
+				value={newProduct.weight || 0}
 				onChange={onInputBoxChange}
 				required
 			/>
@@ -114,7 +112,7 @@ const FormProductData = () => {
 				label="Wattage (Watt)"
 				id="wattage"
 				type="number"
-				value={newProduct.wattage ? newProduct.wattage : 0}
+				value={newProduct.wattage || 0}
 				onChange={onInputBoxChange}
 				required
 			/>
@@ -123,7 +121,7 @@ const FormProductData = () => {
 				label="Price"
 				id="price"
 				type="number"
-				value={newProduct.price ? newProduct.price : 0}
+				value={newProduct.price || 0}
 				onChange={onInputBoxChange}
 				required
 			/>
@@ -132,7 +130,7 @@ const FormProductData = () => {
 				label="Stock"
 				id="stock"
 				type="number"
-				value={newProduct.stock ? newProduct.stock : 0}
+				value={newProduct.stock || 0}
 				onChange={onInputBoxChange}
 				required
 			/>

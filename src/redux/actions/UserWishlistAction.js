@@ -3,8 +3,7 @@ import { API_URL } from '../../support/API_URL'
 import {
     USER_WISHLIST_LOADING,
     USER_WISHLIST_FETCHED,
-    USER_WISHLIST_ERROR,
-    USER_WISHLIST_EMPTY
+    USER_WISHLIST_ERROR
 } from './Types'
 
 const error = (err) => {
@@ -68,8 +67,4 @@ export const deleteWishlist = (wishlistId) => {
             dispatch(error(err))
         }
     }
-}
-
-export const emptyWishlist = () => {
-    return { type: USER_WISHLIST_EMPTY }
 }
