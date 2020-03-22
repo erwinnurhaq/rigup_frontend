@@ -20,6 +20,7 @@ const ResetPassword = lazy(() => import('./pages/ResetPassword'))
 const Verification = lazy(() => import('./pages/Verification'))
 const Verifying = lazy(() => import('./components/Verifying'))
 const Store = lazy(() => import('./pages/Store'))
+const Build = lazy(() => import('./pages/Build'))
 const OnDevelopment = lazy(() => import('./pages/OnDevelopment'))
 const UserDashboard = lazy(() => import('./pages/UserDashboard'))
 const InfoPayment = lazy(() => import('./pages/InfoPayment'))
@@ -61,7 +62,7 @@ class App extends React.Component {
               <Route path="/verification" component={Verification} />
               <Route path="/verifying/:usertoken" component={Verifying} />
               <Route path="/store" component={Store} />
-              <Route path="/build" component={OnDevelopment} />
+              <Route path="/build" component={Build} />
               <Route path="/userdashboard" component={UserDashboard} />
               <Route path="/infopayment" component={InfoPayment} />
               <Route path="/infodelivery" component={InfoDelivery} />

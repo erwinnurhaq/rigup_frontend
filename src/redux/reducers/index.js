@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import ChangeStyleReducer from './ChangeStyleReducer';
 import UserReducer from './UserReducer';
 import UserCartReducer from './UserCartReducer';
+import UserBuildReducer from './UserBuildReducer';
 import UserWishlistReducer from './UserWishlistReducer';
 import UserTransactionReducer from './UserTransactionReducer';
 import CourierReducer from './CourierReducer';
@@ -20,6 +21,7 @@ export default combineReducers({
 	changeStyle: ChangeStyleReducer,
 	user: UserReducer,
 	userCart: UserCartReducer,
+	userBuild: UserBuildReducer,
 	userWishlist: UserWishlistReducer,
 	userTransaction: UserTransactionReducer,
 	courier: CourierReducer,

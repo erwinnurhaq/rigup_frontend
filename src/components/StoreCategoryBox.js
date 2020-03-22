@@ -23,22 +23,6 @@ const CategoryBox = () => {
         dispatch(getMostParent())
     }, [dispatch])
 
-    // useEffect(() => {
-    //     window.addEventListener('scroll', positionChange)
-    //     return () => {
-    //         window.removeEventListener('scroll', positionChange)
-    //         dispatch(setChangeStyle('changeCategoryBox', false))
-    //     };
-    // }, [])
-
-    // const positionChange = () => {
-    //     if (window.scrollY >= 0.72 * window.innerHeight) {
-    //         dispatch(setChangeStyle('changeCategoryBox', true))
-    //     } else {
-    //         dispatch(setChangeStyle('changeCategoryBox', false))
-    //     }
-    // }
-
     const onCategoryClick = async (id) => {
         if (selectedCat === id) {
             dispatch(setChangeStyle('changeBrowseProducts', false))
@@ -60,8 +44,8 @@ const CategoryBox = () => {
 
     const icon = [
         <Case height='100%' width='100%' color='darkviolet' />,
-        <Motherboard2 height='100%' width='100%' color='darkviolet' />,
         <Processor height='100%' width='100%' color='darkviolet' />,
+        <Motherboard2 height='100%' width='100%' color='darkviolet' />,
         <Memory height='100%' width='100%' color='darkviolet' />,
         <VGA height='100%' width='100%' color='darkviolet' />,
         <Storage height='100%' width='100%' color='darkviolet' />,

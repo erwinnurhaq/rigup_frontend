@@ -17,7 +17,8 @@ import {
 	setInitialFormProduct,
 	getBrandByCategoryId,
 	editProductById,
-	setInitialProductDetail
+	setInitialProductDetail,
+	setNewCategories
 } from '../redux/actions';
 
 import Formatter from '../support/FormatterRupiah'
@@ -128,16 +129,13 @@ const ManageProduct = () => {
 			await dispatch(editProductById(productDetail.id, formData))
 		} else {
 			//for add form
-			let data = {
-				newProduct,
-				newCategories: newCategories.slice(0, newCategories.length - 1)
-			}
-			formData.append('data', JSON.stringify(data));
+			formData.append('data', JSON.stringify({ newProduct, newCategories }));
 			await dispatch(addProduct(formData));
 		}
 		await dispatch(selectCat(newCategories[0]))
 		await dispatch(getCountProductByCategoryId(newCategories[0]));
 		await dispatch(getProductByCategoryId(newCategories[0], sort, state.limit, state.offset));
+		dispatch(setNewCategories([0]));
 		setShowModalForm(!showModalForm);
 	};
 

@@ -11,8 +11,30 @@ const NavbarRightMenu = lazy(() => import('./NavbarRightMenu'))
 class Navbar extends React.Component {
 
     toLogin = () => {
-        localStorage.setItem('rigupprevpath', this.props.location.pathname)
-        this.props.history.push('/login')
+        if (this.props.location.pathname !== '/login') {
+            localStorage.setItem('rigupprevpath', this.props.location.pathname)
+            this.props.history.push('/login')
+        }
+    }
+
+    leftContainerRender = () => {
+        if (this.props.location.pathname === '/') {
+            return (
+                <ul>
+                    <li><NavLink to='/'>Home</NavLink></li>
+                    <li><NavLink to='/news'>News</NavLink></li>
+                    <li><NavLink to='/promo'>Special Offers</NavLink></li>
+                </ul>
+            )
+        } else {
+            return (
+                <ul>
+                    <li><NavLink to='/'>Home</NavLink></li>
+                    <li><NavLink to='/store'>Store</NavLink></li>
+                    <li><NavLink to='/build'>Build</NavLink></li>
+                </ul>
+            )
+        }
     }
 
     rightContainerRender = () => {
@@ -54,11 +76,7 @@ class Navbar extends React.Component {
             return (
                 <div className={`navContainer ${this.props.changeStyle.changeNav ? 'change' : ''}`}>
                     <div className="wrapper">
-                        <ul>
-                            <li><NavLink to='/'>Home</NavLink></li>
-                            <li><NavLink to='/news'>News</NavLink></li>
-                            <li><NavLink to='/promo'>Special Offers</NavLink></li>
-                        </ul>
+                        {this.leftContainerRender()}
                         <div className="logoContainer">
                             <p>RIG-Up!</p>
                         </div>

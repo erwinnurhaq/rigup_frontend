@@ -2,6 +2,7 @@ import axios from 'axios'
 import { API_URL } from '../../support/API_URL'
 import { getUserCart } from './UserCartAction'
 import { getUserWishlist } from './UserWishlistAction'
+import { getUserBuild } from './UserBuildAction'
 import {
     USER_LOADING,
     USER_ERROR,
@@ -35,8 +36,10 @@ export const userLoginByGoogle = (token) => {
             })
             if (res.data.user.verified === 1) {
                 localStorage.setItem('riguptoken', res.data.token)
-                dispatch(getUserCart(res.data.user.id))
-                dispatch(getUserWishlist(res.data.user.id))
+                localStorage.removeItem('rigupprevpath')
+                dispatch(getUserCart())
+                dispatch(getUserWishlist())
+                dispatch(getUserBuild())
             }
         } catch (err) {
             dispatch(error(err))
@@ -58,8 +61,10 @@ export const userLogin = ({ userOrEmail, password, keepLogin }) => {
             })
             if (res.data.user.verified === 1) {
                 localStorage.setItem('riguptoken', res.data.token)
-                dispatch(getUserCart(res.data.user.id))
-                dispatch(getUserWishlist(res.data.user.id))
+                localStorage.removeItem('rigupprevpath')
+                dispatch(getUserCart())
+                dispatch(getUserWishlist())
+                dispatch(getUserBuild())
             }
         } catch (err) {
             dispatch(error(err))
@@ -89,8 +94,9 @@ export const userKeepLogin = () => {
                     payload: res.data.user
                 })
                 if (res.data.user.verified === 1) {
-                    dispatch(getUserCart(res.data.user.id))
-                    dispatch(getUserWishlist(res.data.user.id))
+                    dispatch(getUserCart())
+                    dispatch(getUserWishlist())
+                    dispatch(getUserBuild())
                 }
             } catch (err) {
                 dispatch(userLogout())
@@ -141,7 +147,10 @@ export const newUserVerification = usertoken => {
             })
             if (res.data.user.verified === 1) {
                 localStorage.setItem('riguptoken', res.data.token)
-                dispatch(getUserCart(res.data.user.id))
+                localStorage.removeItem('rigupprevpath')
+                dispatch(getUserCart())
+                dispatch(getUserWishlist())
+                dispatch(getUserBuild())
             }
         } catch (err) {
             dispatch(error(err))

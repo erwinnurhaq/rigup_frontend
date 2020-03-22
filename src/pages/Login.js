@@ -142,7 +142,7 @@ class Login extends Component {
 
     render() {
         if (this.props.user.user && this.props.user.user.verified === 1) {
-            return <Redirect to={localStorage.getItem('rigupprevpath') || '/'} />
+            return <Redirect to={localStorage.getItem('rigupprevpath') !== '/login' ? localStorage.getItem('rigupprevpath') : '/'} />
         } else if (this.props.user.user && this.props.user.user.verified === 0) {
             return <Redirect to='/verification' />
         } else {

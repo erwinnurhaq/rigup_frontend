@@ -25,7 +25,7 @@ import CancelIcon from '@material-ui/icons/Cancel'
 import TableHeadRow from '../components/TableHeadRow'
 import Loading from '../components/Loading'
 import {
-    emptyCart,
+    getUserCart,
     editCart,
     deleteCart,
     fetchCityList,
@@ -140,9 +140,9 @@ const UserCart = (props) => {
         if (receiptImg) {
             let transactionCode = list.filter(i => i.id === selected)[0].transactionCode
             let formData = new FormData();
-            formData.append('image', receiptImg)
-            await dispatch(uploadReceipt(transactionCode, formData))
-            dispatch(emptyCart());
+            formData.append('image', receiptImg);
+            await dispatch(uploadReceipt(transactionCode, formData));
+            dispatch(getUserCart());
             props.history.push('/userdashboard/transaction');
         } else {
             alert('Please Upload Receipt Payment Image File!')
@@ -254,18 +254,6 @@ const UserCart = (props) => {
             </TableRow>
         )
 
-    // const renderModalWarningWeight = () => showModalWarning ? (
-    //     <Suspense fallback={<Loading />}>
-    //         <ModalWarning
-    //             show={showModalWarning}
-    //             setShow={setShowModalWarning}
-    //             title='Warning'
-    //         >
-    //             Weight is over 30kg! Please split into another transaction!
-    //         </ModalWarning>
-    //     </Suspense>
-    // ) : null
-
     const renderModalWarning = () => showModalWarning ? (
         <Suspense fallback={<Loading />}>
             <ModalWarning
@@ -312,7 +300,7 @@ const UserCart = (props) => {
                         btnNo='Go to My Transactions'
                         cbNo={() => {
                             dispatch(selectTransaction(0))
-                            dispatch(emptyCart());
+                            dispatch(getUserCart());
                             props.history.push('/userdashboard/transaction');
                         }}
                         btnYes='Upload Payment Receipt'

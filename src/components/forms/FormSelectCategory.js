@@ -16,10 +16,11 @@ function FormSelectCategory() {
 				await dispatch(getBrandByCategoryId(val));
 			}
 			const catChild = await axios.get(`${API_URL}/categories/child/${val}`);
+			console.log(catChild)
 			if (catChild.data.length !== 0 || catList.length === 1) {
 				catList.splice(index + 1, catList.length - index - 1, catChild.data);
 			}
-			newCategories.splice(index, newCategories.length - index - 1, val);
+			newCategories.splice(index, newCategories.length - index, val);
 			dispatch(setCatList(catList));
 			dispatch(setNewCategories(newCategories));
 			dispatch(setNewProduct('brandId', 0));

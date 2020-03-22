@@ -1,6 +1,7 @@
 export * from './ChangeStyleAction';
 export * from './UserAction';
 export * from './UserCartAction';
+export * from './UserBuildAction';
 export * from './UserWishlistAction';
 export * from './UserTransactionAction';
 export * from './CourierAction';

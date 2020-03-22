@@ -3,8 +3,7 @@ import { API_URL } from '../../support/API_URL'
 import {
     USER_CART_LOADING,
     USER_CART_FETCHED,
-    USER_CART_ERROR,
-    USER_CART_EMPTY
+    USER_CART_ERROR
 } from './Types'
 
 const error = (err) => {
@@ -88,8 +87,4 @@ export const deleteCart = (cartId) => {
             dispatch(error(err))
         }
     }
-}
-
-export const emptyCart = () => {
-    return { type: USER_CART_EMPTY }
 }

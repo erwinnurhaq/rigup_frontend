@@ -76,7 +76,7 @@ const UserHistory = () => {
             <TableCell>{index + 1}</TableCell>
             <TableCell>{i.transactionCode}</TableCell>
             <TableCell>
-                {new Date(i.transactionDate).toLocaleDateString(undefined, {
+                {new Date(i.transactionDate).toLocaleDateString('id-ID', {
                     weekday: 'long',
                     year: 'numeric',
                     month: 'numeric',
