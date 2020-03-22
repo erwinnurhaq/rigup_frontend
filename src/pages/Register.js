@@ -4,7 +4,7 @@ import { Button, TextField, FormControl, InputLabel, Select, MenuItem, FormHelpe
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import { useSelector, useDispatch } from 'react-redux'
-import { register, fetchCityList, setRegisterInitial, setRegisterInput } from '../redux/actions'
+import { register, fetchCityList, setRegisterInitial, setRegisterInput, userLogout } from '../redux/actions'
 
 import Loading from '../components/Loading'
 const ModalWarning = lazy(() => import('../components/ModalWarning'))
@@ -53,6 +53,8 @@ const Register = () => {
 
     //-----------------------------------------------------------------
     const onRegClick = async () => {
+        //set user data blank
+        dispatch(userLogout())
         //check form not blank
         for (const key in formRegister) {
             if (formRegister[key] === '') {
@@ -73,8 +75,9 @@ const Register = () => {
         }
         // //do register
         setModalShowLoading(!modalShowLoading)
+        console.log('ok')
         await dispatch(register(formRegister))
-        dispatch(setRegisterInitial())
+        // dispatch(setRegisterInitial())
     }
     //-----------------------------------------------------------------
 
@@ -104,7 +107,7 @@ const Register = () => {
                 show={modalShowLoading}
                 title='Registering'
             >
-                <div>{currentUser.error ? currentUser.error : <Loading />}</div>
+                <div style={{ padding: '0 50px' }}>{currentUser.error ? currentUser.error : <Loading />}</div>
                 <DialogActions>
                     <Button
                         variant='text'

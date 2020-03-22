@@ -99,4 +99,4 @@ const stateToProps = ({ user, changeStyle }) => {
     }
 }
 
-export default withRouter(connect(stateToProps, { setChangeStyle, setChangeStyle })(Navbar))
+export default withRouter(connect(stateToProps, { setChangeStyle })(Navbar))

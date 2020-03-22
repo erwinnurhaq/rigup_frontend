@@ -4,7 +4,7 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { setChangeStyle, selectCat, getChildOfMainParent, getCountProductByCategoryId, getProductByCategoryId } from '../redux/actions'
+import { setChangeStyle, selectCat, getChildOfMainParent, getCountProductByCategoryId, getProductByCategoryId, setSearch } from '../redux/actions'
 
 import StoreCarousel from '../components/StoreCarousel'
 import StoreCategoryBox from '../components/StoreCategoryBox'
@@ -32,6 +32,7 @@ const Store = () => {
         } else {
             dispatch(setChangeStyle('changeBrowseProducts', false))
             dispatch(selectCat(0))
+            dispatch(setSearch(''))
             window.scrollTo(0, 0)
         }
     }

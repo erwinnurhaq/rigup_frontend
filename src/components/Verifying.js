@@ -12,7 +12,7 @@ const Verifying = () => {
 
     useEffect(() => {
         dispatch(newUserVerification(usertoken))
-    }, [usertoken])
+    }, [dispatch, usertoken])
 
     console.log('usertoken: ', usertoken)
 

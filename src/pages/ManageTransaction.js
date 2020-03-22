@@ -312,7 +312,7 @@ const ManageTransaction = () => {
                 size='lg'
             >
                 <div style={{ width: '100%', height: '100%' }}>
-                    <img src={selImage} alt='receipt image' style={{ width: '100%' }} />
+                    <img src={selImage} alt='receipt' style={{ width: '100%' }} />
                 </div>
                 <DialogActions>
                     <Button variant='contained' style={{ backgroundColor: 'darkviolet', color: 'white' }}

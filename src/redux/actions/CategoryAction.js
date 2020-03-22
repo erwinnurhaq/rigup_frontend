@@ -57,6 +57,7 @@ export const getCategoriesSearchFilter = (search) => {
 			const res = await axios.get(`${API_URL}/products`, {
 				params: { search }
 			});
+			console.log(res.data)
 			dispatch({
 				type: PRODUCTLISTCOUNT_FETCH_SUCCESS,
 				payload: res.data.length
@@ -88,6 +89,14 @@ export const getCategoriesSearchFilter = (search) => {
 			})
 		} catch (err) {
 			dispatch(error(err));
+			dispatch({
+				type: PRODUCTLISTCOUNT_FETCH_SUCCESS,
+				payload: 0
+			})
+			dispatch({
+				type: CATEGORIES_SEARCH_FILTER,
+				payload: []
+			})
 		}
 	}
 }

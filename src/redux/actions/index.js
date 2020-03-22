@@ -15,3 +15,4 @@ export * from './ManageUserAction';
 export * from './FormProductAction';
 export * from './FormRegisterAction';
 export * from './CarouselAction';
+export * from './SearchBoxAction';

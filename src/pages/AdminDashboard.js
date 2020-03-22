@@ -45,7 +45,7 @@ const AdminDashboard = (props) => {
         setActive(path[0].id)
         setTitle(path[0].name)
         dispatch(selectCat(1))
-    }, [pathLists, props.location.pathname])
+    }, [dispatch, pathLists, props.location.pathname])
 
     if (!user && userLoading) {
         return (<Loading />)

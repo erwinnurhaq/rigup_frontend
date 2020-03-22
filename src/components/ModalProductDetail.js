@@ -12,7 +12,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
 import { API_URL } from '../support/API_URL';
 
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import ReactHtmlParser from 'react-html-parser';
 import formatter from '../support/FormatterRupiah'
 import Loading from './Loading'
 import { getProductDetailById } from '../redux/actions';
@@ -160,7 +160,7 @@ const ModalProductDetail = (props) => {
                         </div>
                         <div className='detailBottomContainer'>
                             <h3>DESCRIPTION</h3>
-                            <p>{ReactHtmlParser(product.description)}</p>
+                            <div>{ReactHtmlParser(product.description)}</div>
                         </div>
                     </div>
                     <DialogActions className='btnDetailContainer'>

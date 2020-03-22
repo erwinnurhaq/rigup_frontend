@@ -16,6 +16,7 @@ import ManageUserReducer from './ManageUserReducer';
 import FormProductReducer from './FormProductReducer';
 import FormRegisterReducer from './FormRegisterReducer';
 import CarouselReducer from './CarouselReducer';
+import SearchBoxReducer from './SearchBoxReducer'
 
 export default combineReducers({
 	changeStyle: ChangeStyleReducer,
@@ -34,5 +35,6 @@ export default combineReducers({
 	manageUser: ManageUserReducer,
 	formProduct: FormProductReducer,
 	formRegister: FormRegisterReducer,
-	carousel: CarouselReducer
+	carousel: CarouselReducer,
+	search: SearchBoxReducer
 });

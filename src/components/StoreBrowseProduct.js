@@ -10,7 +10,8 @@ import {
     selectCat,
     selectFilter,
     getCategoriesSearchFilter,
-    getCountProductList
+    getCountProductList,
+    setSearch
 } from '../redux/actions'
 
 import Loading from './Loading'
@@ -27,6 +28,7 @@ const StoreBrowseProduct = () => {
     const { productList, productListCount, productListByCat, productListByCatCount, error } = useSelector(({ products }) => products)
     const userCartLoading = useSelector(({ userCart }) => userCart.loading)
     const userWishlistLoading = useSelector(({ userWishlist }) => userWishlist.loading)
+    const search = useSelector(({ search }) => search)
 
     const [showModalWarning, setShowModalWarning] = useState(false)
 
@@ -45,7 +47,6 @@ const StoreBrowseProduct = () => {
         { id: 5, label: 'Price High to Low' }
     ]
     const [sort, setSort] = useState(1)
-    const [search, setSearch] = useState('')
 
     //----------------------------------------USE EFFECT---------------------------------------//
 
@@ -166,7 +167,7 @@ const StoreBrowseProduct = () => {
     const renderTitleListProduct = () => {
         if (childOfMainParent && selectedChildCat !== 0) {
             return childOfMainParent.filter(i => i.id === selectedChildCat)[0].category.toUpperCase()
-        } else if (mostParent && selectedChildCat == 0) {
+        } else if (mostParent && selectedChildCat === 0) {
             return mostParent.filter(i => i.id === selectedCat)[0].category.toUpperCase()
         }
     }
@@ -224,7 +225,7 @@ const StoreBrowseProduct = () => {
                         <TextField
                             margin="dense" label="Search Product" id="search" type='text'
                             value={search}
-                            onChange={e => setSearch(e.target.value)}
+                            onChange={e => dispatch(setSearch(e.target.value))}
                             onKeyUp={onKeyUp}
                             fullWidth required
                             InputProps={{

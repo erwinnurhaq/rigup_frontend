@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button } from '@material-ui/core'
 
-import { resendVerification } from '../redux/actions'
+import { resendVerification, userLogout } from '../redux/actions'
 import Loading from '../components/Loading'
 const ModalWarning = lazy(() => import('../components/ModalWarning'))
 
@@ -23,13 +23,16 @@ const Verification = () => {
             <ModalWarning
                 show={modalShow}
                 setShow={setModalShow}
-                title={loading ? 'Waiting' : 'Success!'}
-            >{loading ? 'Resend...' : 'Verification link has been sent'}</ModalWarning>
+                title={loading ? 'Please Wait' : 'Success!'}
+            >{loading ? 'Sending Email...' : 'Verification link has been sent'}</ModalWarning>
         </Suspense>
     ) : null
 
     useEffect(() => {
         document.title = 'Verification - RIGUP!'
+        return () => {
+            dispatch(userLogout())
+        }
     }, [])
 
     if (user && user.verified === 1) {

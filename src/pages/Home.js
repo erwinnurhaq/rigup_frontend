@@ -1,5 +1,6 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
+import { Mouse } from '../components/IconSVG'
 
 class Home extends React.Component {
 
@@ -26,7 +27,9 @@ class Home extends React.Component {
                         <p>Take me to</p>
                         <div className="jumbo" >S T O R E</div>
                     </div>
-
+                    <div className="iconMouseContainer">
+                        <Mouse height='100%' width='100%' color='white' />
+                    </div>
                 </div>
                 <div
                     className={`rightContainer ${this.state.clicked ? '' : `show`}`}
@@ -36,7 +39,9 @@ class Home extends React.Component {
                         <p>I'm ready to</p>
                         <div className="jumbo" >B U I L D</div>
                     </div>
-
+                    <div className="iconMouseContainer">
+                        <Mouse height='100%' width='100%' color='white' />
+                    </div>
                 </div>
             </div>
         )

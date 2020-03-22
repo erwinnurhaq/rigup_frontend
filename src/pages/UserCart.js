@@ -15,8 +15,7 @@ import {
     InputLabel,
     Select,
     MenuItem,
-    Button,
-    DialogActions
+    Button
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -375,7 +374,7 @@ const UserCart = (props) => {
                                     onChange={e => setCityId(parseInt(e.target.value))}
                                     style={{ color: 'white' }}
                                 >
-                                    <MenuItem value="0"><em>Please select one:</em></MenuItem>
+                                    <MenuItem value={0}><em>Please select one:</em></MenuItem>
                                     {renderCityList()}
                                 </Select>
                             </FormControl>

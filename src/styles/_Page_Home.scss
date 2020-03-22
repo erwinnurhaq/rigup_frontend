@@ -23,6 +23,15 @@
             font-size: 17vh;
         }
     }
+    .iconMouseContainer{
+        width: 7vh;
+        height: 7vh;
+        align-self: flex-end;
+        margin-right: 7vh;
+        margin-bottom: 5vh;
+        opacity: 0;
+        transition: all 1s ease;
+    }
     .leftContainer{
         background-image: url('../img/1.jpg');
         background-attachment: fixed;
@@ -37,6 +46,10 @@
             width: 75%;
             .title{
                 pointer-events: none;
+            }
+            .iconMouseContainer{
+                opacity: 0.8;
+                margin-bottom: 15vh;
             }
         }
     }
@@ -54,6 +67,10 @@
             width: 75%;
             .title{
                 pointer-events: none;
+            }
+            .iconMouseContainer{
+                opacity: 0.8;
+                margin-bottom: 15vh;
             }
         }
     }

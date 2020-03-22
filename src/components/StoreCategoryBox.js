@@ -10,7 +10,8 @@ import {
     selectChildCat,
     getChildOfMainParent,
     getCountProductByCategoryId,
-    getProductByCategoryId
+    getProductByCategoryId,
+    setSearch
 } from '../redux/actions'
 
 const CategoryBox = () => {
@@ -28,11 +29,13 @@ const CategoryBox = () => {
             dispatch(selectFilter(0))
             dispatch(selectCat(0))
             dispatch(selectChildCat(0))
+            dispatch(setSearch(''))
             window.scrollTo(0, 0)
         } else {
             dispatch(setChangeStyle('changeBrowseProducts', true))
             dispatch(selectFilter(0))
             dispatch(selectCat(id))
+            dispatch(setSearch(''))
             await dispatch(getChildOfMainParent(id))
             await dispatch(getCountProductByCategoryId(id))
             await dispatch(getProductByCategoryId(id, 1, 12, 0))

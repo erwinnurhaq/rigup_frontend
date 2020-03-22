@@ -1,5 +1,6 @@
 import React, { useState, lazy, Suspense } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { Button, IconButton } from '@material-ui/core'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart'
@@ -29,6 +30,8 @@ const StoreProductCard = (props) => {
         let id = props.product.productId || props.product.id
         if (!props.user) {
             props.setShowModalWarning(!props.showModalWarning)
+        } else if (props.user && props.user.verified === 0) {
+            props.history.push('/verification')
         } else if (quantity < 1) {
             alert('Minimum purchase 1pcs')
         } else {
@@ -57,6 +60,8 @@ const StoreProductCard = (props) => {
         let id = props.product.productId || props.product.id
         if (!props.user) {
             props.setShowModalWarning(!props.showModalWarning)
+        } else if (props.user && props.user.verified === 0) {
+            props.history.push('/verification')
         } else {
             let find = props.userWishlist.filter(i => i.productId === id)
             if (find.length === 0) {
@@ -64,7 +69,6 @@ const StoreProductCard = (props) => {
             } else {
                 await dispatch(deleteWishlist(find[0].id))
             }
-            setShowModalDetail(false)
         }
     }
 
@@ -127,4 +131,4 @@ const StoreProductCard = (props) => {
     )
 }
 
-export default StoreProductCard
+export default withRouter(StoreProductCard)

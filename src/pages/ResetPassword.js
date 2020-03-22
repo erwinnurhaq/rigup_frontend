@@ -1,6 +1,6 @@
 import React, { useState, Suspense } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useParams, Redirect, withRouter } from 'react-router-dom'
+import { useParams, withRouter } from 'react-router-dom'
 import { TextField, InputAdornment, IconButton, Button } from '@material-ui/core'
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';

@@ -10,7 +10,6 @@ import LocalMallIcon from '@material-ui/icons/LocalMall';
 import BrandingWatermarkIcon from '@material-ui/icons/BrandingWatermark'
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt'
 import HistoryIcon from '@material-ui/icons/History'
-import SaveIcon from '@material-ui/icons/Save'
 import ShopTwoIcon from '@material-ui/icons/ShopTwo'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 

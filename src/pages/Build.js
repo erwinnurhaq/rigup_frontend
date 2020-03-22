@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { Button } from '@material-ui/core'
 import { Case, Motherboard2, Processor, Storage, Memory, VGA, PSU, Monitor, Accessories } from '../components/IconSVG'
 import { API_URL } from '../support/API_URL'
@@ -9,7 +10,7 @@ import Loading from '../components/Loading'
 import ModalDefault from '../components/ModalDefault'
 import { getMostParent, selectCat, getProductByCategoryId, setChangeStyle, addBuild, deleteBuild, addCart, getUserBuild } from '../redux/actions'
 
-const Build = () => {
+const Build = (props) => {
 
     const dispatch = useDispatch()
     const { mostParent, selectedCat } = useSelector(({ categories }) => categories)
@@ -34,19 +35,25 @@ const Build = () => {
     const onCatClick = (id) => dispatch(selectCat(id))
     const onRemoveItemBuildClick = async (id) => await dispatch(deleteBuild(id))
     const onSelectionClick = async (i) => {
-        let existItem = build.findIndex(j => j.productId === i.id)
-        let existCategory = build.findIndex(j => j.mainCategoryId === i.categories[0].categoryId)
-        if (existItem >= 0) {
-            await dispatch(deleteBuild(build[existItem].id))
-        } else if (existCategory >= 0) {
-            if (i.categories[0].categoryId === 6 || i.categories[0].categoryId === 9) {
-                await dispatch(addBuild({ productId: i.id, quantity: 1 }))
+        if (!user) {
+            alert('Please Login First')
+        } else if (user && user.verified === 0) {
+            props.history.push('/verification')
+        } else {
+            let existItem = build.findIndex(j => j.productId === i.id)
+            let existCategory = build.findIndex(j => j.mainCategoryId === i.categories[0].categoryId)
+            if (existItem >= 0) {
+                await dispatch(deleteBuild(build[existItem].id))
+            } else if (existCategory >= 0) {
+                if (i.categories[0].categoryId === 6 || i.categories[0].categoryId === 9) {
+                    await dispatch(addBuild({ productId: i.id, quantity: 1 }))
+                } else {
+                    await dispatch(deleteBuild(build[existCategory].id))
+                    await dispatch(addBuild({ productId: i.id, quantity: 1 }))
+                }
             } else {
-                await dispatch(deleteBuild(build[existCategory].id))
                 await dispatch(addBuild({ productId: i.id, quantity: 1 }))
             }
-        } else {
-            await dispatch(addBuild({ productId: i.id, quantity: 1 }))
         }
     }
 
@@ -87,7 +94,7 @@ const Build = () => {
                 <div key={idx} className="illustList"
                     style={{ transform: `rotate(${idx * 20 - 80}deg)`, transformOrigin: 'left' }}
                 >
-                    <div className="imgIllustList">
+                    <div className="imgIllustList" onClick={() => onCatClick(i.id)}>
                         <img src={`${API_URL}${exist[0].image}`} />
                     </div>
                 </div>
@@ -97,7 +104,7 @@ const Build = () => {
                 <div key={idx} className="illustList"
                     style={{ transform: `rotate(${idx * 20 - 80}deg)`, transformOrigin: 'left' }}
                 >
-                    <div className="imgIllustList" />
+                    <div className="imgIllustList" onClick={() => onCatClick(i.id)} />
                 </div>
             )
         }
@@ -255,4 +262,4 @@ const Build = () => {
     )
 }
 
-export default Build
+export default withRouter(Build)
