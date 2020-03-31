@@ -4,7 +4,10 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { setChangeStyle, selectCat, getChildOfMainParent, getCountProductByCategoryId, getProductByCategoryId, setSearch } from '../redux/actions'
+import {
+    setChangeStyle, selectFilter, selectCat, selectChildCat, setSearch,
+    getChildOfMainParent, getCountProductByCategoryId, getProductByCategoryId
+} from '../redux/actions'
 
 import StoreCarousel from '../components/StoreCarousel'
 import StoreCategoryBox from '../components/StoreCategoryBox'
@@ -22,18 +25,23 @@ const Store = () => {
     ]
 
     const onBrowseProductsClick = async () => {
-        if (selectedCat === 0 && !changeBrowseProducts) {
+        if (changeBrowseProducts === false) {
             dispatch(setChangeStyle('changeBrowseProducts', true))
-            dispatch(selectCat(1))
-            await dispatch(getChildOfMainParent(1))
-            await dispatch(getCountProductByCategoryId(1))
-            await dispatch(getProductByCategoryId(1, 1, 12, 0))
             window.scrollTo(0, 0.725 * window.innerHeight)
+            dispatch(selectFilter(0))
+            dispatch(selectCat(0))
+            dispatch(selectChildCat(0))
+            dispatch(setSearch(''))
+            // await dispatch(getChildOfMainParent(1))
+            // await dispatch(getCountProductByCategoryId(1))
+            // await dispatch(getProductByCategoryId(1, 1, 12, 0))
         } else {
             dispatch(setChangeStyle('changeBrowseProducts', false))
-            dispatch(selectCat(0))
-            dispatch(setSearch(''))
             window.scrollTo(0, 0)
+            dispatch(selectFilter(null))
+            dispatch(selectCat(null))
+            dispatch(selectChildCat(null))
+            dispatch(setSearch(''))
         }
     }
 

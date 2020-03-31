@@ -22,6 +22,7 @@ import ModalDefault from './ModalDefault'
 const ModalWarning = lazy(() => import('./ModalWarning'))
 
 const StoreBrowseProduct = () => {
+
     const dispatch = useDispatch()
     const { selectedCat, selectedChildCat, selectedFilter, searchFilter, mostParent, childOfMainParent } = useSelector(({ categories }) => categories)
     const { changeCategoryBox, changeBrowseProducts } = useSelector(({ changeStyle }) => changeStyle)
@@ -165,10 +166,10 @@ const StoreBrowseProduct = () => {
     }
 
     const renderTitleListProduct = () => {
-        if (childOfMainParent && selectedChildCat !== 0) {
+        if (childOfMainParent && selectedChildCat > 0) {
             return childOfMainParent.filter(i => i.id === selectedChildCat)[0].category.toUpperCase()
-        } else if (mostParent && selectedChildCat === 0) {
-            return mostParent.filter(i => i.id === selectedCat)[0].category.toUpperCase()
+        } else {
+            return 'ALL'
         }
     }
     const renderListProduct = () => {
@@ -275,7 +276,7 @@ const StoreBrowseProduct = () => {
                         </div>
                     </div>
                     <div className="productsContainer">
-                        <h3>{selectedCat !== 0 ? renderTitleListProduct() : null}</h3>
+                        <h3>{renderTitleListProduct()}</h3>
                         <div className="productListByCat">
                             {renderListProduct()}
                         </div>

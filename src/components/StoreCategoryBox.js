@@ -1,20 +1,23 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import AppsIcon from '@material-ui/icons/Apps';
 import { Case, Motherboard2, Processor, Storage, Memory, VGA, PSU, Monitor, Accessories } from './IconSVG'
 import Loading from './Loading'
+import CategoryBox from './CategoryBox'
 import {
     getMostParent,
     selectCat,
     selectFilter,
     setChangeStyle,
     selectChildCat,
+    setSearch,
     getChildOfMainParent,
     getCountProductByCategoryId,
-    getProductByCategoryId,
-    setSearch
+    getProductByCategoryId
 } from '../redux/actions'
 
-const CategoryBox = () => {
+const StoreCategoryBox = () => {
+
     const dispatch = useDispatch()
     const { mostParent, selectedCat } = useSelector(({ categories }) => categories)
     const changeCategoryBox = useSelector(({ changeStyle }) => changeStyle.changeCategoryBox)
@@ -23,24 +26,24 @@ const CategoryBox = () => {
         dispatch(getMostParent())
     }, [dispatch])
 
-    const onCategoryClick = async (id) => {
+    const onTabClick = async (id) => {
         if (selectedCat === id) {
             dispatch(setChangeStyle('changeBrowseProducts', false))
-            dispatch(selectFilter(0))
-            dispatch(selectCat(0))
-            dispatch(selectChildCat(0))
-            dispatch(setSearch(''))
             window.scrollTo(0, 0)
+            dispatch(selectFilter(null))
+            dispatch(selectCat(null))
+            dispatch(selectChildCat(null))
+            dispatch(setSearch(''))
         } else {
             dispatch(setChangeStyle('changeBrowseProducts', true))
+            window.scrollTo(0, 0.725 * window.innerHeight)
             dispatch(selectFilter(0))
             dispatch(selectCat(id))
-            dispatch(setSearch(''))
-            await dispatch(getChildOfMainParent(id))
-            await dispatch(getCountProductByCategoryId(id))
-            await dispatch(getProductByCategoryId(id, 1, 12, 0))
-            window.scrollTo(0, 0.725 * window.innerHeight)
             dispatch(selectChildCat(0))
+            dispatch(setSearch(''))
+            // await dispatch(getChildOfMainParent(id))
+            // await dispatch(getCountProductByCategoryId(id))
+            // await dispatch(getProductByCategoryId(id, 1, 12, 0))
         }
     }
 
@@ -56,19 +59,26 @@ const CategoryBox = () => {
         <Accessories height='100%' width='100%' color='darkviolet' />
     ]
 
-    const renderCategoryBox = () => !mostParent ? (
-        <div style={{ width: '100%', height: '10vh', backgroundColor: 'rgb(44, 44, 44)' }}><Loading /></div>
-    ) : mostParent.map(i => (
-        <div key={i.id}
-            className={`categoryBox ${selectedCat === i.id ? 'active' : ''}`}
-            onClick={() => onCategoryClick(i.id)}
-        >
-            <div className='iconBox'>
-                {icon[i.id - 1]}
-            </div>
-            <div className='iconText'>{i.category}</div>
-        </div>
-    ))
+    const renderCategoryBox = () => {
+        if (mostParent) {
+            return (<>
+                <CategoryBox id={0} onTabClick={onTabClick} label='ALL'>
+                    <AppsIcon style={{ height: '100%', width: '100%', color: 'darkviolet' }} />
+                </CategoryBox>
+                {mostParent.map(i => (
+                    <CategoryBox key={i.id} id={i.id} onTabClick={onTabClick} label={i.category}>
+                        {icon[i.id - 1]}
+                    </CategoryBox>
+                ))}
+            </>)
+        } else {
+            return (
+                <div style={{ width: '100%', height: '10vh', backgroundColor: 'rgb(44, 44, 44)' }}>
+                    <Loading />
+                </div>
+            )
+        }
+    }
 
     return (
         <div className={`CategoryBoxContainer ${changeCategoryBox ? 'change' : ''}`}>
@@ -79,4 +89,4 @@ const CategoryBox = () => {
     )
 }
 
-export default CategoryBox
+export default StoreCategoryBox

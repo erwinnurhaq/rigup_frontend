@@ -13,16 +13,16 @@ import {
 } from '../actions/Types'
 
 const initialState = {
-    selectedCat: 0,
+    selectedCat: null,
     categories: null,
     mostParent: null,
     mostChild: null,
     child: null,
     childOfMainParent: null,
-    selectedChildCat: 0,
+    selectedChildCat: null,
     searchFilter: null,
-    selectedFilter: 0,
-    loading: true,
+    selectedFilter: null,
+    loading: false,
     error: null
 }
 

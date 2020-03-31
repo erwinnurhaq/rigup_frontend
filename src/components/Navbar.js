@@ -54,12 +54,12 @@ class Navbar extends React.Component {
         if (window.scrollY > window.innerHeight / 40) {
             this.props.setChangeStyle('changeNav', true);
         } else {
-            this.props.setChangeStyle('changeNav', false)
+            this.props.setChangeStyle('changeNav', false);
         }
         if (window.scrollY >= 0.72 * window.innerHeight) {
-            this.props.setChangeStyle('changeCategoryBox', true)
+            this.props.setChangeStyle('changeCategoryBox', true);
         } else {
-            this.props.setChangeStyle('changeCategoryBox', false)
+            this.props.setChangeStyle('changeCategoryBox', false);
         }
     }
 
