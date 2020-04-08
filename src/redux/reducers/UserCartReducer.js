@@ -1,7 +1,8 @@
 import {
     USER_CART_LOADING,
     USER_CART_FETCHED,
-    USER_CART_ERROR
+    USER_CART_ERROR,
+    USER_CART_INITIAL
 } from '../actions/Types'
 
 const initialState = {
@@ -18,6 +19,8 @@ export default (state = initialState, action) => {
             return { ...state, cart: action.payload, loading: false }
         case USER_CART_ERROR:
             return { ...state, error: action.payload, loading: false }
+        case USER_CART_INITIAL:
+            return initialState
         default:
             return state
     }

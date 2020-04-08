@@ -51,11 +51,11 @@ export const selectFilter = (categoryId) => {
 	};
 };
 
-export const getCategoriesSearchFilter = (search) => {
+export const getCategoriesSearchFilter = (search, filter) => {
 	return async (dispatch) => {
 		try {
 			const res = await axios.get(`${API_URL}/products`, {
-				params: { search }
+				params: { search, filter }
 			});
 			console.log(res.data)
 			dispatch({
@@ -171,16 +171,23 @@ export const getChild = (parentId) => {
 
 export const getChildOfMainParent = (mainParentId) => {
 	return async (dispatch) => {
-		try {
-			dispatch({ type: CATEGORY_LOADING });
-			const res = await axios.get(`${API_URL}/categories/childofmainparent/${mainParentId}`);
-			console.log('child by mainParentId: ', res.data);
+		if (mainParentId !== 0) {
+			try {
+				dispatch({ type: CATEGORY_LOADING });
+				const res = await axios.get(`${API_URL}/categories/childofmainparent/${mainParentId}`);
+				console.log('child by mainParentId: ', res.data);
+				dispatch({
+					type: CHILDOFMAINPARENT_FETCH_SUCCESS,
+					payload: res.data
+				});
+			} catch (err) {
+				dispatch(error(err));
+			}
+		} else {
 			dispatch({
 				type: CHILDOFMAINPARENT_FETCH_SUCCESS,
-				payload: res.data
+				payload: []
 			});
-		} catch (err) {
-			dispatch(error(err));
 		}
 	};
 };

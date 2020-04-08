@@ -8,7 +8,8 @@ import {
     USER_TRANSACTION_SELECTED,
     USER_TRANSACTION_RECEIPT,
     USER_TRANSACTION_RECEIPT_ERROR,
-    USER_TRANSACTION_EDIT_SUCCESS
+    USER_TRANSACTION_EDIT_SUCCESS,
+    USER_TRANSACTION_INITIAL
 } from '../actions/Types'
 
 const initialState = {
@@ -45,6 +46,8 @@ export default (state = initialState, action) => {
             return { ...state, receiptImgError: action.payload }
         case USER_TRANSACTION_EDIT_SUCCESS:
             return { ...state, loading: false }
+        case USER_TRANSACTION_INITIAL:
+            return initialState
         default:
             return state
     }

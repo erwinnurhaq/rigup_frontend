@@ -5,8 +5,12 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward'
 import { useSelector, useDispatch } from 'react-redux'
 
 import {
-    setChangeStyle, selectFilter, selectCat, selectChildCat, setSearch,
-    getChildOfMainParent, getCountProductByCategoryId, getProductByCategoryId
+    setChangeStyle,
+    selectFilter,
+    selectCat,
+    selectChildCat,
+    setSearch,
+    productInitial
 } from '../redux/actions'
 
 import StoreCarousel from '../components/StoreCarousel'
@@ -16,7 +20,6 @@ import StoreBottomContentA from '../components/StoreBottomContentA'
 
 const Store = () => {
     const dispatch = useDispatch()
-    const selectedCat = useSelector(({ categories }) => categories.selectedCat)
     const changeBrowseProducts = useSelector(({ changeStyle }) => changeStyle.changeBrowseProducts)
 
     const listLogo = [
@@ -24,23 +27,21 @@ const Store = () => {
         'kingston.png', 'klevv.png', 'logitech.png', 'samsung.png', 'sandisk.png', 'seasonic.png', 'zotac.png'
     ]
 
-    const onBrowseProductsClick = async () => {
+    const onBrowseProductsClick = () => {
         if (changeBrowseProducts === false) {
             dispatch(setChangeStyle('changeBrowseProducts', true))
             window.scrollTo(0, 0.725 * window.innerHeight)
-            dispatch(selectFilter(0))
             dispatch(selectCat(0))
+            dispatch(selectFilter(0))
             dispatch(selectChildCat(0))
             dispatch(setSearch(''))
-            // await dispatch(getChildOfMainParent(1))
-            // await dispatch(getCountProductByCategoryId(1))
-            // await dispatch(getProductByCategoryId(1, 1, 12, 0))
         } else {
             dispatch(setChangeStyle('changeBrowseProducts', false))
             window.scrollTo(0, 0)
-            dispatch(selectFilter(null))
             dispatch(selectCat(null))
+            dispatch(selectFilter(null))
             dispatch(selectChildCat(null))
+            dispatch(productInitial())
             dispatch(setSearch(''))
         }
     }
@@ -53,7 +54,6 @@ const Store = () => {
         <div className='storeContainer'>
             <StoreCarousel />
             <StoreCategoryBox />
-            {/* <div style={{ width: '100%', height: '8vh', display: `${changeCategoryBox ? 'block' : 'none'}` }} /> */}
             <StoreBrowseProduct />
             <Button className='btnBrowseProducts' onClick={onBrowseProductsClick} >
                 <div style={{ display: 'flex' }}>

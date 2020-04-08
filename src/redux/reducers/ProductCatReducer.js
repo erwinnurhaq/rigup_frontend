@@ -6,7 +6,7 @@ import {
 
 const initialState = {
     productCats: null,
-    loading: true,
+    loading: false,
     error: null
 }
 

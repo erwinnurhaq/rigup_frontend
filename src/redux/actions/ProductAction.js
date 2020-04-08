@@ -9,7 +9,8 @@ import {
 	PRODUCTLISTBYCATEGORY_FETCH_SUCCESS,
 	PRODUCTLISTBYCATEGORYCOUNT_FETCH_SUCCESS,
 	INITIALFORMPRODUCT,
-	INITIALPRODUCTDETAIL
+	INITIALPRODUCTDETAIL,
+	PRODUCT_INITIAL
 } from './Types'
 
 const error = (err) => {
@@ -19,6 +20,10 @@ const error = (err) => {
 		payload: error
 	};
 };
+
+export const productInitial = () => {
+	return { type: PRODUCT_INITIAL }
+}
 
 export const getProductList = (search, sort, limit, offset, filter) => {
 	return async (dispatch) => {

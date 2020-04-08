@@ -1,7 +1,8 @@
 import {
     USER_WISHLIST_LOADING,
     USER_WISHLIST_FETCHED,
-    USER_WISHLIST_ERROR
+    USER_WISHLIST_ERROR,
+    USER_WISHLIST_INITIAL
 } from '../actions/Types'
 
 const initialState = {
@@ -18,6 +19,8 @@ export default (state = initialState, action) => {
             return { ...state, wishlist: action.payload, loading: false }
         case USER_WISHLIST_ERROR:
             return { ...state, error: action.payload, loading: false }
+        case USER_WISHLIST_INITIAL:
+            return initialState
         default:
             return state
     }

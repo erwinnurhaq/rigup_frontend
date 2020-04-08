@@ -27,23 +27,16 @@ const StoreCategoryBox = () => {
     }, [dispatch])
 
     const onTabClick = async (id) => {
+        dispatch(setChangeStyle('changeBrowseProducts', true))
+        window.scrollTo(0, 0.725 * window.innerHeight)
+        dispatch(selectCat(id))
+        dispatch(selectFilter(0))
+        dispatch(selectChildCat(0))
+        dispatch(setSearch(''))
         if (selectedCat === id) {
-            dispatch(setChangeStyle('changeBrowseProducts', false))
-            window.scrollTo(0, 0)
-            dispatch(selectFilter(null))
-            dispatch(selectCat(null))
-            dispatch(selectChildCat(null))
-            dispatch(setSearch(''))
-        } else {
-            dispatch(setChangeStyle('changeBrowseProducts', true))
-            window.scrollTo(0, 0.725 * window.innerHeight)
-            dispatch(selectFilter(0))
-            dispatch(selectCat(id))
-            dispatch(selectChildCat(0))
-            dispatch(setSearch(''))
-            // await dispatch(getChildOfMainParent(id))
-            // await dispatch(getCountProductByCategoryId(id))
-            // await dispatch(getProductByCategoryId(id, 1, 12, 0))
+            await dispatch(getChildOfMainParent(id))
+            await dispatch(getCountProductByCategoryId(id))
+            await dispatch(getProductByCategoryId(id, 1, 12, 0))
         }
     }
 

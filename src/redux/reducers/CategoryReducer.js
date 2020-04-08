@@ -86,15 +86,15 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 selectedChildCat: action.payload,
-                searchFilter: null,
-                selectedFilter: 0,
+                // searchFilter: null,
+                // selectedFilter: 0,
                 loading: false,
                 error: null
             }
         case SELECT_FILTER_CAT:
             return {
                 ...state,
-                selectedChildCat: 0,
+                // selectedChildCat: 0,
                 selectedFilter: action.payload,
                 loading: false,
                 error: null

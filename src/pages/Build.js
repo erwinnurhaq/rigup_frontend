@@ -224,7 +224,8 @@ const Build = (props) => {
 
     useEffect(() => {
         document.title = 'Build - RIGUP!'
-    }, [])
+        dispatch(getUserBuild())
+    }, [dispatch])
 
     //-------------------------------------USEEFFECT---------------------------------------/
 

@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { TextField, Button, InputAdornment, IconButton, Select, MenuItem } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search'
 import {
+    getChildOfMainParent,
     getProductByCategoryId,
     getCountProductByCategoryId,
     selectChildCat,
     getProductList,
-    selectCat,
     selectFilter,
     getCategoriesSearchFilter,
     getCountProductList,
@@ -24,7 +24,7 @@ const ModalWarning = lazy(() => import('./ModalWarning'))
 const StoreBrowseProduct = () => {
 
     const dispatch = useDispatch()
-    const { selectedCat, selectedChildCat, selectedFilter, searchFilter, mostParent, childOfMainParent } = useSelector(({ categories }) => categories)
+    const { selectedCat, selectedChildCat, selectedFilter, searchFilter, childOfMainParent } = useSelector(({ categories }) => categories)
     const { changeCategoryBox, changeBrowseProducts } = useSelector(({ changeStyle }) => changeStyle)
     const { productList, productListCount, productListByCat, productListByCatCount, error } = useSelector(({ products }) => products)
     const userCartLoading = useSelector(({ userCart }) => userCart.loading)
@@ -48,95 +48,75 @@ const StoreBrowseProduct = () => {
         { id: 5, label: 'Price High to Low' }
     ]
     const [sort, setSort] = useState(1)
+    const [activeCat, setActiveCat] = useState(null)
 
     //----------------------------------------USE EFFECT---------------------------------------//
 
-    //fetch product by category and it's count every change happen to sort, limit and offset by pagination
-    //if clicked is main category, id is selectedCat. if child of main category, id is selectedChildCat
-    //this effect will only run if product by category is fetched before.
-    useEffect(() => {
-        if (productListByCatCount) {
-            let id = selectedChildCat !== 0 ? selectedChildCat : selectedCat
-            dispatch(getCountProductByCategoryId(id))
-            dispatch(getProductByCategoryId(id, sort, state.limit, state.offset))
-        }
-    }, [dispatch, sort, state.limit, state.offset])
-
-
-    //set total page by count of product list by category
-    //this effect will run every change happen to count product list and limit by pagination
-    useEffect(() => {
-        if (productListByCatCount) {
-            setState((prev) => {
-                return { ...prev, totalPage: Math.ceil(productListByCatCount / state.limit) };
-            });
-        }
-    }, [productListByCatCount, state.limit]);
-
-
-    //this effect is like the first one, but run for search function
-    //this will fetch product list searched and will re-fetch every change happen to sort, limit and offset by pagination
-    useEffect(() => {
-        if (productListCount) {
-            if (selectedFilter !== 0) {
+    const getProductFunction = async () => {
+        if (selectedCat !== null) {
+            if (search.length === 0 && activeCat !== selectedCat) {
+                setActiveCat(selectedCat)
+                setState(initialState)
+                await dispatch(getChildOfMainParent(selectedCat))
+                await dispatch(getCountProductByCategoryId(selectedCat))
+                await dispatch(getProductByCategoryId(selectedCat, sort, 12, 0))
+            } else if (search.length === 0 && activeCat === selectedCat) {
+                let id = selectedChildCat !== 0 ? selectedChildCat : selectedCat
+                await dispatch(getCountProductByCategoryId(id))
+                await dispatch(getProductByCategoryId(id, sort, state.limit, state.offset))
+            } else if (search.length > 0 && selectedFilter > 0) {
                 dispatch(getProductList(search, sort, state.limit, state.offset, selectedFilter))
             } else {
-                dispatch(getProductList(search, sort, state.limit, state.offset))
+                dispatch(getProductList(search, sort, state.limit, state.offset, selectedCat))
             }
         }
-    }, [dispatch, sort, state.limit, state.offset])
+    }
 
+    const setTotalPageFunction = () => {
+        let count = productListByCatCount || productListCount
+        setState({ ...state, totalPage: Math.ceil(count / state.limit) })
+    }
 
-    //set total page by count of product list by search
-    //this effect will run every change happen to count product list and limit by pagination
     useEffect(() => {
-        if (productListCount) {
-            setState((prev) => {
-                return { ...prev, totalPage: Math.ceil(productListCount / state.limit) };
-            });
-        }
-    }, [productListCount, state.limit]);
+        getProductFunction()
+    }, [dispatch, sort, state.limit, state.offset, selectedChildCat, selectedCat, selectedFilter])
+
+    useEffect(() => {
+        setTotalPageFunction()
+    }, [productListByCatCount, productListCount, productListCount, state.limit]);
 
     //----------------------------------------USE EFFECT---------------------------------------//
 
     const onBtnSearchClick = async () => {
-        setState(initialState)
-        dispatch(selectCat(0))
-        await dispatch(getCategoriesSearchFilter(search))
-        await dispatch(getProductList(search, sort, 12, 0))
+        setState({ ...state, page: 1, offset: 0 })
+        await dispatch(getCategoriesSearchFilter(search, selectedCat))
+        await dispatch(getProductList(search, sort, 12, 0, selectedCat))
     }
 
     const onBtnFilterAll = async () => {
         setState({ ...state, page: 1, offset: 0 })
-        if (childOfMainParent) {
-            dispatch(selectChildCat(0))
-            await dispatch(getCountProductByCategoryId(selectedCat))
-            await dispatch(getProductByCategoryId(selectedCat, sort, 12, 0))
-        } else if (searchFilter) {
-            dispatch(selectFilter(0))
-            await dispatch(getCategoriesSearchFilter(search))
-            await dispatch(getProductList(search, sort, 12, 0))
+        dispatch(selectFilter(0))
+        dispatch(selectChildCat(0))
+        if (search.length > 0) {
+            await dispatch(getCountProductList(search, selectedCat))
         }
     }
 
     const onBtnFilterSearchListClick = async (id) => {
         setState({ ...state, page: 1, offset: 0 })
-        dispatch(selectCat(0))
         dispatch(selectFilter(id))
         await dispatch(getCountProductList(search, id))
-        await dispatch(getProductList(search, sort, 12, 0, id))
     }
 
-    const onBtnFilterListClick = async (id) => {
+    const onBtnFilterListClick = (id) => {
         setState({ ...state, page: 1, offset: 0 })
         dispatch(selectFilter(0))
         dispatch(selectChildCat(id))
-        await dispatch(getCountProductByCategoryId(id))
-        await dispatch(getProductByCategoryId(id, sort, 12, 0))
+        dispatch(setSearch(''))
     }
 
     const onKeyUp = e => {
-        if (e.key === "Enter") {
+        if (e.key === "Enter" && search.length > 0) {
             onBtnSearchClick()
         }
     }
@@ -235,6 +215,7 @@ const StoreBrowseProduct = () => {
                                         aria-label="toggle password visibility"
                                         onClick={onBtnSearchClick}
                                         onMouseDown={e => e.preventDefault()}
+                                        disabled={search.length === 0}
                                     >
                                         <SearchIcon style={{ color: 'whitesmoke' }} />
                                     </IconButton>

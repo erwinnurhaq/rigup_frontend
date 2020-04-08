@@ -1,7 +1,8 @@
 import {
     USER_BUILD_LOADING,
     USER_BUILD_FETCHED,
-    USER_BUILD_ERROR
+    USER_BUILD_ERROR,
+    USER_BUILD_INITIAL
 } from '../actions/Types'
 
 const initialState = {
@@ -18,6 +19,8 @@ export default (state = initialState, action) => {
             return { ...state, build: action.payload, loading: false }
         case USER_BUILD_ERROR:
             return { ...state, error: action.payload, loading: false }
+        case USER_BUILD_INITIAL:
+            return initialState
         default:
             return state
     }

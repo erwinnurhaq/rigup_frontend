@@ -5,7 +5,8 @@ import {
     PRODUCTLISTCOUNT_FETCH_SUCCESS,
     UNCATEGORIZEDPRODUCTLIST_FETCH_SUCCESS,
     PRODUCTLISTBYCATEGORY_FETCH_SUCCESS,
-    PRODUCTLISTBYCATEGORYCOUNT_FETCH_SUCCESS
+    PRODUCTLISTBYCATEGORYCOUNT_FETCH_SUCCESS,
+    PRODUCT_INITIAL
 } from '../actions/Types'
 
 const initialState = {
@@ -14,7 +15,7 @@ const initialState = {
     uncategorizedProductList: null,
     productListByCat: null,
     productListByCatCount: null,
-    loading: true,
+    loading: false,
     error: null
 }
 
@@ -70,6 +71,8 @@ export default (state = initialState, action) => {
                 loading: false,
                 error: null
             }
+        case PRODUCT_INITIAL:
+            return initialState
         default:
             return state
     }

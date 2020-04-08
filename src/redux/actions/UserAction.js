@@ -2,7 +2,6 @@ import axios from 'axios'
 import { API_URL } from '../../support/API_URL'
 import { getUserCart } from './UserCartAction'
 import { getUserWishlist } from './UserWishlistAction'
-import { getUserBuild } from './UserBuildAction'
 import {
     USER_LOADING,
     USER_ERROR,
@@ -10,7 +9,10 @@ import {
     USER_LOGOUT,
     RESEND_VERIFICATION_SUCCESS,
     SEND_EMAIL_RESETPASS_SUCCESS,
-    RESETPASS_SUCCESS
+    RESETPASS_SUCCESS,
+    USER_WISHLIST_INITIAL,
+    USER_CART_INITIAL,
+    USER_TRANSACTION_INITIAL
 } from './Types'
 
 const error = (err) => {
@@ -30,17 +32,16 @@ export const userLoginByGoogle = (token) => {
                 { headers: { Authorization: `Bearer ${token}` } }
             )
             console.log('user login: ', res.data)
-            dispatch({
-                type: USER_LOGIN,
-                payload: res.data.user
-            })
             if (res.data.user.verified === 1) {
                 localStorage.setItem('riguptoken', res.data.token)
                 localStorage.removeItem('rigupprevpath')
                 dispatch(getUserCart())
                 dispatch(getUserWishlist())
-                dispatch(getUserBuild())
             }
+            dispatch({
+                type: USER_LOGIN,
+                payload: res.data.user
+            })
         } catch (err) {
             dispatch(error(err))
         }
@@ -55,17 +56,16 @@ export const userLogin = ({ userOrEmail, password, keepLogin }) => {
                 { userOrEmail, password, keepLogin }
             )
             console.log('user login: ', res.data)
-            dispatch({
-                type: USER_LOGIN,
-                payload: res.data.user
-            })
             if (res.data.user.verified === 1) {
                 localStorage.setItem('riguptoken', res.data.token)
                 localStorage.removeItem('rigupprevpath')
                 dispatch(getUserCart())
                 dispatch(getUserWishlist())
-                dispatch(getUserBuild())
             }
+            dispatch({
+                type: USER_LOGIN,
+                payload: res.data.user
+            })
         } catch (err) {
             dispatch(error(err))
         }
@@ -74,8 +74,11 @@ export const userLogin = ({ userOrEmail, password, keepLogin }) => {
 
 export const userLogout = () => {
     localStorage.removeItem('riguptoken')
-    return {
-        type: USER_LOGOUT
+    return dispatch => {
+        dispatch({ type: USER_LOGOUT })
+        dispatch({ type: USER_CART_INITIAL })
+        dispatch({ type: USER_WISHLIST_INITIAL })
+        dispatch({ type: USER_TRANSACTION_INITIAL })
     }
 }
 
@@ -89,15 +92,14 @@ export const userKeepLogin = () => {
                     headers: { Authorization: `Bearer ${token}` }
                 })
                 console.log('user login: ', res.data)
+                if (res.data.user.verified === 1) {
+                    dispatch(getUserCart())
+                    dispatch(getUserWishlist())
+                }
                 dispatch({
                     type: USER_LOGIN,
                     payload: res.data.user
                 })
-                if (res.data.user.verified === 1) {
-                    dispatch(getUserCart())
-                    dispatch(getUserWishlist())
-                    dispatch(getUserBuild())
-                }
             } catch (err) {
                 dispatch(userLogout())
                 dispatch(error(err))
@@ -141,17 +143,16 @@ export const newUserVerification = usertoken => {
                 headers: { Authorization: `Bearer ${usertoken}` }
             })
             console.log('user login: ', res.data)
-            dispatch({
-                type: USER_LOGIN,
-                payload: res.data.user
-            })
             if (res.data.user.verified === 1) {
                 localStorage.setItem('riguptoken', res.data.token)
                 localStorage.removeItem('rigupprevpath')
                 dispatch(getUserCart())
                 dispatch(getUserWishlist())
-                dispatch(getUserBuild())
             }
+            dispatch({
+                type: USER_LOGIN,
+                payload: res.data.user
+            })
         } catch (err) {
             dispatch(error(err))
         }
