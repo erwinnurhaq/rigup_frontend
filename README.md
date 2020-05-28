@@ -1,5 +1,8 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## IMPORTANT!
+## Change the API_URL for your backend IN /src/support/API_URL.js
+
 ## Available Scripts
 
 In the project directory, you can run:
